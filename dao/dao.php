@@ -138,16 +138,15 @@ function CheckLogin($nickname, $pwd) {
     $sql = "SELECT `user_nickname`, `user_password` FROM `users` WHERE `user_nickname` = :nickname AND `user_password` = :pwd";
     $query = pdo()->prepare($sql);
 
-    $pwd = sha1($pwd);
+    $pwdsha1 = sha1($pwd);
     
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
-    $query->bindParam(':pwd', $pwd, PDO::PARAM_STR);
+    $query->bindParam(':pwd', $pwdsha1, PDO::PARAM_STR);
     $query->execute();
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($nickname === $user['user_nickname'] && $pwd === $user['user_password']) {
+    if ($nickname === $user['user_nickname'] && $pwdsha1 === $user['user_password']) {
         $_SESSION['user_nickname'] = $nickname;
-
         header('Location:profile.php');
     } else {
         $_SESSION['user_nickname'] = "";
