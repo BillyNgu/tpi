@@ -23,13 +23,15 @@
                         <a class="nav-link" href="param.php">Paramètres</a>
                     <?php endif; ?>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mon profil</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="updatepwd.php">Changer le mot de passe</a>
-                        <a class="dropdown-item" href="logout.php">Se déconnecter</a>
-                    </div>
+                <li class="nav-item">
+                    <?php if (!empty($profile)): ?>
+                        <a class="nav-link active" href="#">Mon profil</a>
+                    <?php else: ?>
+                        <a class="nav-link" href="profile.php">Mon profil</a>
+                    <?php endif; ?>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">Se déconnecter</a>
                 </li>
             </ul>
         </div>
