@@ -10,6 +10,31 @@ require_once './dao/dao.php';
 $register = TRUE;
 
 if (isset($_POST['register'])) {
+
+    if (!empty($_FILES['profile_pic'])) {
+        $uploadOk = 1;
+        $target_dir = "./uploaded_files/img/";
+        $target_file = $target_dir . basename($_FILES["profile_pic"]["name"][$index]);
+        $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        // Allow certain file formats
+        if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
+            $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+            // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                echo "The file " . basename($_FILES["profile_pic"]["name"]) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+    }
+
     $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
@@ -17,7 +42,7 @@ if (isset($_POST['register'])) {
     $pwd = filter_input(INPUT_POST, 'password');
     $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
     $profilepic = $_POST['profile_pic'];
-    
+
     $errors = [];
 
     if (empty($name)) {
@@ -39,7 +64,7 @@ if (isset($_POST['register'])) {
     if ($pwd !== $pwdRepeat) {
         $errors['passwordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
     }
-    
+
     if (empty($errors)) {
         CreateUser($name, $nickname, $email, $pwd, $profilepic);
         SetFlashMessage("Utilisateur ajouté.");
@@ -53,11 +78,11 @@ if (isset($_POST['register'])) {
     <head>
         <meta charset="UTF-8">
         <title>Blindtest</title>
-        <?php require_once './css/css_js.php'; ?>
+<?php require_once './css/css_js.php'; ?>
     </head>
     <body>
         <div class="container">
-            <?php require_once './navbar.php'; ?>
+<?php require_once './navbar.php'; ?>
             <form action="register.php" method="post">
                 <h3>Inscription</h3>
                 <div class="form-group">
