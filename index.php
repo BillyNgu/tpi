@@ -11,8 +11,8 @@ require_once './dao/dao.php';
 $index = TRUE;
 
 if (isset($_POST['connection'])) {
-    $nickname = trim(filter_input(INPUT_POST, 'Nickname', FILTER_SANITIZE_STRING));
-    $pwd = filter_input(INPUT_POST, 'Password', FILTER_SANITIZE_STRING);
+    $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
+    $pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     CheckLogin(strtolower($nickname), $pwd);
 }
@@ -35,11 +35,11 @@ if (isset($_POST['connection'])) {
                                 <p><?= $message ?></p>
                             <?php endif; ?>
                             <label for="exampleInputNickname">Identifiant :</label>
-                            <input type="text" name="Nickname" class="form-control col-5" id="exampleInputNickname" placeholder="Entrez votre pseudo">
+                            <input type="text" name="nickname" class="form-control col-5" id="exampleInputNickname" placeholder="Entrez votre pseudo">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mot de passe :</label>
-                            <input type="password" name="Password" class="form-control col-5" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
+                            <input type="password" name="password" class="form-control col-5" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
                             <a href="forgottenpwd.php">Mot de passe oublié ?</a>
                         </div>
                         <button type="submit" name="connection" class="btn btn-primary">Se connecter</button>

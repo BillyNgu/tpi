@@ -7,7 +7,7 @@
  */
 require_once './dao/dao.php';
 
-$nickname = $_SESSION['pseudo'];
+$nickname = $_SESSION['user_nickname'];
 
 ?>
 <!DOCTYPE html>

@@ -10,34 +10,34 @@ require_once './dao/dao.php';
 $register = TRUE;
 
 if (isset($_POST['register'])) {
-    $name = trim(filter_input(INPUT_POST, 'Name', FILTER_SANITIZE_STRING));
-    $nickname = trim(filter_input(INPUT_POST, 'Nickname', FILTER_SANITIZE_STRING));
-    $email = trim(filter_input(INPUT_POST, 'Email', FILTER_VALIDATE_EMAIL));
+    $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
+    $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
+    $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
     // pas de filtre, parce que hashage prochainement
-    $pwd = filter_input(INPUT_POST, 'Password');
-    $pwdRepeat = filter_input(INPUT_POST, 'PasswordConfirmation');
-    $profilepic = INPUT_POST['profile_pic'];
+    $pwd = filter_input(INPUT_POST, 'password');
+    $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
+    $profilepic = $_POST['profile_pic'];
     
     $errors = [];
 
     if (empty($name)) {
-        $errors['LastName'] = 'Le nom ne peut pas être vide.';
+        $errors['name'] = 'Le nom ne peut pas être vide.';
     }
     if (empty($nickname)) {
-        $errors['Nickname'] = 'Le pseudo ne peut pas être vide.';
+        $errors['nickname'] = 'Le pseudo ne peut pas être vide.';
     }
     if (empty($email)) {
-        $errors['Email'] = 'L\'email ne peut pas être vide.';
+        $errors['email'] = 'L\'email ne peut pas être vide.';
     }
     if (empty($pwd)) {
-        $errors['Password'] = 'Le mot de passe ne peut pas être vide.';
+        $errors['password'] = 'Le mot de passe ne peut pas être vide.';
     }
     if (empty($pwdRepeat)) {
-        $errors['PasswordConfirmation'] = 'La confirmation du mot de passe ne peut pas être vide.';
+        $errors['passwordConfirmation'] = 'La confirmation du mot de passe ne peut pas être vide.';
     }
 
     if ($pwd !== $pwdRepeat) {
-        $errors['PasswordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
+        $errors['passwordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
     }
     
     if (empty($errors)) {

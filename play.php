@@ -7,7 +7,7 @@
  */
 require_once './dao/dao.php';
 
-$nickname = $_SESSION['pseudo'];
+$nickname = $_SESSION['user_nickname'];
 $play = TRUE;
 
 ?>
@@ -22,5 +22,6 @@ $play = TRUE;
         <div class="container">
             <?php require_once './navbar.php'; ?>
         </div>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
     </body>
 </html>
