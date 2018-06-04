@@ -41,7 +41,7 @@ if (isset($_POST['register'])) {
     // pas de filtre, parce que hashage prochainement
     $pwd = filter_input(INPUT_POST, 'password');
     $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
-    $profilepic = $_POST['profile_pic'];
+//    $profilepic = $_POST['profile_pic'];
 
     $errors = [];
 
@@ -66,7 +66,7 @@ if (isset($_POST['register'])) {
     }
 
     if (empty($errors)) {
-        CreateUser($name, $nickname, $email, $pwd, $profilepic);
+        CreateUser($name, $nickname, $email, $pwd, $_FILES["profile_pic"]["name"]);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
