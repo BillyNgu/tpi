@@ -152,7 +152,7 @@ if (isset($_POST['register'])) {
                     ?>
                 </div>
                 <a class="btn btn-primary" href="index.php">Retour</a>
-                <input class="btn btn-primary" name="register" type="submit">
+                <input class="btn btn-primary" value="S'inscrire" name="register" type="submit">
             </form>
         </div>
         <script type="text/javascript" src="js/bootstrap.js"></script>
