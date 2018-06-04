@@ -1,5 +1,10 @@
 <?php
-
+/*
+ * Auteur : Nguyen Billy
+ * Date : 2018-06-04
+ * Titre : Jouer
+ * Description : TPI
+ */
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['pseudo'];

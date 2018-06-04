@@ -1,4 +1,9 @@
 <?php
+/*
+ * Auteur : Nguyen Billy
+ * Date : 2018-06-04
+ * Description : TPI
+ */
 session_start();
 
 function SetFlashMessage($message) {

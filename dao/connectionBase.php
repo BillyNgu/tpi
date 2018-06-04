@@ -1,9 +1,7 @@
 <?php
-
 /*
- * Authors : Dubas Loïc, Pighini Lucas, Nguyen Billy
- * Description : Connection settings
- * Date : 20.02.18
+ * Auteur : Nguyen Billy
+ * Date : 2018-06-04
  */
 
  function pdo() {

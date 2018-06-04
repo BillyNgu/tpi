@@ -1,9 +1,9 @@
 <?php
 /*
  * Auteur : Nguyen Billy
- * Date : 2018-01-31
- * Titre : Forum
- * Description : Forum PHP
+ * Date : 2018-06-04
+ * Titre : S'inscrire
+ * Description : TPI
  */
 require_once './dao/dao.php';
 

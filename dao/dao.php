@@ -3,7 +3,7 @@
 /*
  * Authors : Nguyen Billy
  * Description : Functions
- * Date : 2018-05-08
+ * Date : 2018-06-04
  */
 
 require_once './dao/mySql.inc.php';

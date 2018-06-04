@@ -1,9 +1,9 @@
 <?php
 /*
  * Auteur : Nguyen Billy
- * Date : 2018-01-31
- * Titre : Forum
- * Description : Forum PHP
+ * Date : 2018-06-04
+ * Titre : Index
+ * Description : TPI
  */
 require_once './dao/flashmessage.php';
 require_once './dao/dao.php';
@@ -109,7 +109,7 @@ if (isset($_POST['connection'])) {
                                                     </p>
                                                 </div>
                                             </div>
-        <?php else: ?>
+                                        <?php else: ?>
                                             <div class="card mt-3">
                                                 <div class="card-body">
                                                     <h5 class="card-title"><?= $value['titleComment'] ?></h5>
@@ -121,7 +121,7 @@ if (isset($_POST['connection'])) {
                                                     </p>
                                                 </div>
                                             </div>
-        <?php endif; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </article>
                                 <?php
