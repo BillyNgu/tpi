@@ -148,7 +148,7 @@ function CheckLogin($nickname, $pwd) {
     if ($nickname === $user['user_nickname'] && $pwd === $user['user_password']) {
         $_SESSION['user_nickname'] = $nickname;
 
-        header('Location:login.php');
+        header('Location:profile.php');
     } else {
         $_SESSION['user_nickname'] = "";
     }
