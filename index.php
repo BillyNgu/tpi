@@ -40,7 +40,6 @@ if (isset($_POST['connection'])) {
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mot de passe :</label>
                             <input type="password" name="password" class="form-control col-5" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
-                            <a href="forgottenpwd.php">Mot de passe oublié ?</a>
                         </div>
                         <button type="submit" name="connection" class="btn btn-primary">Se connecter</button>
                     </form>
