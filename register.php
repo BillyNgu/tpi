@@ -50,7 +50,7 @@ if (isset($_POST['register'])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Webpost</title>
+        <title>Blindtest</title>
         <?php require_once './css/css_js.php'; ?>
     </head>
     <body>

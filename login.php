@@ -14,7 +14,7 @@ $nickname = $_SESSION['pseudo'];
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>VidéoQuizz</title>
+        <title>Blindtest</title>
         <?php require_once './css/css_js.php'; ?>
     </head>
     <body>
