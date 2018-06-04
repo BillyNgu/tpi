@@ -10,36 +10,38 @@ require_once './dao/dao.php';
 $register = TRUE;
 
 if (isset($_POST['register'])) {
-    $Name = trim(filter_input(INPUT_POST, 'Name', FILTER_SANITIZE_STRING));
-    $Nickname = trim(filter_input(INPUT_POST, 'Nickname', FILTER_SANITIZE_STRING));
-    $Email = trim(filter_input(INPUT_POST, 'Email', FILTER_VALIDATE_EMAIL));
+    $name = trim(filter_input(INPUT_POST, 'Name', FILTER_SANITIZE_STRING));
+    $nickname = trim(filter_input(INPUT_POST, 'Nickname', FILTER_SANITIZE_STRING));
+    $email = trim(filter_input(INPUT_POST, 'Email', FILTER_VALIDATE_EMAIL));
     // pas de filtre, parce que hashage prochainement
-    $Pwd = filter_input(INPUT_POST, 'Password');
-    $PwdRepeat = filter_input(INPUT_POST, 'PasswordConfirmation');
-
+    $pwd = filter_input(INPUT_POST, 'Password');
+    $pwdRepeat = filter_input(INPUT_POST, 'PasswordConfirmation');
+    $profilepic = INPUT_POST['profile_pic'];
+    
     $errors = [];
 
-    if (empty($Name)) {
+    if (empty($name)) {
         $errors['LastName'] = 'Le nom ne peut pas être vide.';
     }
-    if (empty($Nickname)) {
+    if (empty($nickname)) {
         $errors['Nickname'] = 'Le pseudo ne peut pas être vide.';
     }
-    if (empty($Email)) {
+    if (empty($email)) {
         $errors['Email'] = 'L\'email ne peut pas être vide.';
     }
-    if (empty($Pwd)) {
+    if (empty($pwd)) {
         $errors['Password'] = 'Le mot de passe ne peut pas être vide.';
     }
-    if (empty($PwdRepeat)) {
+    if (empty($pwdRepeat)) {
         $errors['PasswordConfirmation'] = 'La confirmation du mot de passe ne peut pas être vide.';
     }
 
-    if ($Pwd !== $PwdRepeat) {
+    if ($pwd !== $pwdRepeat) {
         $errors['PasswordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
     }
+    
     if (empty($errors)) {
-        CreateUser(strtolower($Name), strtolower($Nickname), $Email, $Pwd, "");
+        CreateUser($name, $nickname, $email, $pwd, $profilepic);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
@@ -60,58 +62,67 @@ if (isset($_POST['register'])) {
                 <h3>Inscription</h3>
                 <div class="form-group">
                     <label for="lastname_login">Nom :</label>
-                    <input type="text" name="Name" class="form-control col-3" id="lastname_login" value="<?php
-                    if (!empty($Name)) {
-                        echo $Name;
+                    <input type="text" name="name" class="form-control col-3" id="lastname_login" value="<?php
+                    if (!empty($name)) {
+                        echo $name;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['Name'])) {
-                               echo $errors['Name'];
+                           if (!empty($errors['name'])) {
+                               echo $errors['name'];
                            }
                            ?>
                 </div>
                 <div class="form-group">
                     <label for="nickname_login">Pseudo :</label>
-                    <input type="text" name="Nickname" class="form-control col-3" id="nickname_login" value="<?php
-                    if (!empty($Nickname)) {
-                        echo $Nickname;
+                    <input type="text" name="nickname" class="form-control col-3" id="nickname_login" value="<?php
+                    if (!empty($nickname)) {
+                        echo $nickname;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['Nickname'])) {
-                               echo $errors['Nickname'];
+                           if (!empty($errors['nickname'])) {
+                               echo $errors['nickname'];
                            }
                            ?>
                 </div>
                 <div class="form-group">
                     <label for="email_login">Email :</label>
-                    <input type="email" name="Email" class="form-control col-3" id="email_login" value="<?php
-                    if (!empty($Email)) {
-                        echo $Email;
+                    <input type="email" name="email" class="form-control col-3" id="email_login" value="<?php
+                    if (!empty($email)) {
+                        echo $email;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['Email'])) {
-                               echo $errors['Email'];
+                           if (!empty($errors['email'])) {
+                               echo $errors['email'];
                            }
                            ?>
                 </div>
                 <div class="form-group">
                     <label for="password_login">Mot de passe :</label>
-                    <input type="password" name="Password" class="form-control col-3" id="password_login">
+                    <input type="password" name="password" class="form-control col-3" id="password_login">
                     <?php
-                    if (!empty($errors['Password'])) {
-                        echo $errors['Password'];
+                    if (!empty($errors['password'])) {
+                        echo $errors['password'];
                     }
                     ?>
                 </div>
                 <div class="form-group">
                     <label for="passwordconfirmation_login">Confirmer mot de passe :</label>
-                    <input type="password" name="PasswordConfirmation" class="form-control col-3" id="passwordconfirmation_login">
+                    <input type="password" name="passwordConfirmation" class="form-control col-3" id="passwordconfirmation_login">
                     <?php
-                    if (!empty($errors['PasswordConfirmation'])) {
-                        echo $errors['PasswordConfirmation'];
+                    if (!empty($errors['passwordConfirmation'])) {
+                        echo $errors['passwordConfirmation'];
+                    }
+                    ?>
+                </div>
+                <div class="form-group">
+                    <label>Image de profil :</label>
+                    <input type="file" name="profile_pic" class="form-control col-3" multiple accept="image/*">
+                    <?php
+                    if (!empty($errors['profile_pic'])) {
+                        echo $errors['profile_pic'];
                     }
                     ?>
                 </div>

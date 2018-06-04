@@ -113,36 +113,37 @@ function getDescription($idPokemon) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function CreateUser($Name, $Nickname, $Email, $Pwd) {
-    $sql = "INSERT INTO `utilisateurs`(`nom`, `pseudo`, `email`, `mdp`, `status`) "
-            . "VALUES (:name, :nickname, :email, :pwd, 0)";
+
+function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
+    $sql = "INSERT INTO `users`(`user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) "
+            . "VALUES (:name, :nickname, :email, :pwd, $profilepic, 0)";
     
     $query = pdo()->prepare($sql);
-    $query->bindParam('name', $Name, PDO::PARAM_STR);
-    $query->bindParam('nickname', $Nickname, PDO::PARAM_STR);
-    $query->bindParam('email', $Email, PDO::PARAM_STR);
-    $query->bindParam('pwd', $Pwd, PDO::PARAM_STR);
+    $query->bindParam('name', $name, PDO::PARAM_STR);
+    $query->bindParam('nickname', $nickname, PDO::PARAM_STR);
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->bindParam('pwd', $pwd, PDO::PARAM_STR);
     $query->execute(array(
-        'name' => strtolower($Name),
-        'nickname' => strtolower($Nickname),
-        'email' => strtolower($Email),
-        'pwd' => sha1($Pwd)
+        'name' => strtolower($name),
+        'nickname' => strtolower($nickname),
+        'email' => strtolower($email),
+        'pwd' => sha1($pwd)
     ));
 }
 
-function CheckLogin($Nickname, $Pwd) {
+function CheckLogin($nickname, $pwd) {
     $sql = "SELECT `pseudo`, `mdp` FROM `utilisateurs` WHERE `pseudo` = :nickname AND `mdp` = :pwd";
     $query = pdo()->prepare($sql);
 
-    $Pwd = sha1($Pwd);
+    $pwd = sha1($pwd);
     
-    $query->bindParam(':nickname', $Nickname, PDO::PARAM_STR);
-    $query->bindParam(':pwd', $Pwd, PDO::PARAM_STR);
+    $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+    $query->bindParam(':pwd', $pwd, PDO::PARAM_STR);
     $query->execute();
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($Nickname === $user['pseudo'] && $Pwd === $user['mdp']) {
-        $_SESSION['pseudo'] = $Nickname;
+    if ($nickname === $user['pseudo'] && $pwd === $user['mdp']) {
+        $_SESSION['pseudo'] = $nickname;
 //        $_SESSION['idUser'] = $idUser;
 
         header('Location:login.php');
