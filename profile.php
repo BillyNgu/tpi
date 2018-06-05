@@ -15,7 +15,7 @@ $userData = GetData($nickname);
 if (isset($_POST['change'])) {
     $uploadOk = 1;
     $target_dir = "./uploaded_files/img/";
-    $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
+    $target_file = $target_dir . basename($nickname . "-" . $_FILES["profile_pic"]["name"]);
     $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     if (!empty($_FILES['profile_pic'])) {

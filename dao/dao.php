@@ -73,22 +73,23 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
     $target_dir = "./uploaded_files/img/";
     $target_file = $target_dir . $old_picture;
 
+    $picture_unique_name = $nickname . "-" . $picture;
+    
     if (empty($old_picture)) {
         $sql = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
         $query = pdo()->prepare($sql);
         $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
-        $query->bindParam(':picture_name', $picture, PDO::PARAM_STR);
+        $query->bindParam(':picture_name', $picture_unique_name, PDO::PARAM_STR);
         $query->execute();
         header("Refresh:0");
     } else {
         opendir($target_dir);
         unlink($target_file);
-//        closedir($target_dir);
 
         $sql2 = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
         $query2 = pdo()->prepare($sql2);
         $query2->bindParam(':nickname', $nickname, PDO::PARAM_STR);
-        $query2->bindParam(':picture_name', $picture, PDO::PARAM_STR);
+        $query2->bindParam(':picture_name', $picture_unique_name, PDO::PARAM_STR);
         $query2->execute();
         header("Refresh:0");
     }
