@@ -8,6 +8,7 @@
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
+$userData = GetData($nickname);
 $play = TRUE;
 
 ?>

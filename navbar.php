@@ -30,6 +30,15 @@
                         <a class="nav-link" href="profile.php">Mon profil</a>
                     <?php endif; ?>
                 </li>
+                <?php if ($userData['user_status'] == 1): ?>
+                    <li class="nav-item">
+                        <?php if (!empty($crud)): ?>
+                            <a class="nav-link active" href="#">Ajouter / modifier questions</a>
+                        <?php else: ?>
+                            <a class="nav-link" href="crud.php">Ajouter / modifier questions</a>
+                        <?php endif; ?>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php">Se déconnecter</a>
                 </li>
