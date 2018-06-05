@@ -21,9 +21,9 @@ require_once './dao/flashmessage.php';
 function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
     $sql = "INSERT INTO `users`(`user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) "
             . "VALUES (:name, :nickname, :email, :pwd, :profilepic, 0)";
-    
+
     $pwdsha1 = sha1($pwd);
-    
+
     $query = pdo()->prepare($sql);
     $query->bindParam(':name', $name, PDO::PARAM_STR);
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
@@ -43,7 +43,7 @@ function CheckLogin($nickname, $pwd) {
     $query = pdo()->prepare($sql);
 
     $pwdsha1 = sha1($pwd);
-    
+
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
     $query->bindParam(':pwd', $pwdsha1, PDO::PARAM_STR);
     $query->execute();
@@ -61,10 +61,35 @@ function CheckLogin($nickname, $pwd) {
  * Get data from db with nickname
  * @param type $nickname nickname of the user
  */
-function GetData($nickname){
+function GetData($nickname) {
     $sql = "SELECT `user_name`, `user_email`, `user_profilepic` FROM `users` WHERE `user_nickname` = :nickname";
     $query = pdo()->prepare($sql);
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function UpdateProfilePicture($nickname, $picture, $old_picture) {
+    $target_dir = "./uploaded_files/img/";
+    $target_file = $target_dir . $old_picture;
+
+    if (empty($old_picture)) {
+        $sql = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+        $query->bindParam(':picture_name', $picture, PDO::PARAM_STR);
+        $query->execute();
+        header("Refresh:0");
+    } else {
+        opendir($target_dir);
+        unlink($target_file);
+//        closedir($target_dir);
+
+        $sql2 = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
+        $query2 = pdo()->prepare($sql2);
+        $query2->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+        $query2->bindParam(':picture_name', $picture, PDO::PARAM_STR);
+        $query2->execute();
+        header("Refresh:0");
+    }
 }
