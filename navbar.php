@@ -33,9 +33,9 @@
                 <?php if ($userData['user_status'] == 1): ?>
                     <li class="nav-item">
                         <?php if (!empty($crud)): ?>
-                            <a class="nav-link active" href="#">Ajouter / modifier questions</a>
+                            <a class="nav-link active" href="#">Configuration des questions</a>
                         <?php else: ?>
-                            <a class="nav-link" href="crud.php">Ajouter / modifier questions</a>
+                            <a class="nav-link" href="crud.php">Configuration des questions</a>
                         <?php endif; ?>
                     </li>
                 <?php endif; ?>
