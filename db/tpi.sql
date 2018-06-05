@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 04, 2018 at 02:55 PM
--- Server version: 5.7.19
--- PHP Version: 7.1.9
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  mar. 05 juin 2018 à 09:40
+-- Version du serveur :  5.7.21
+-- Version de PHP :  7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tpi`
+-- Base de données :  `tpi`
 --
 CREATE DATABASE IF NOT EXISTS `tpi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `tpi`;
@@ -27,7 +27,7 @@ USE `tpi`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `blindtest_contains`
+-- Structure de la table `blindtest_contains`
 --
 
 DROP TABLE IF EXISTS `blindtest_contains`;
@@ -41,37 +41,23 @@ CREATE TABLE IF NOT EXISTS `blindtest_contains` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `blindtest_defines`
---
-
-DROP TABLE IF EXISTS `blindtest_defines`;
-CREATE TABLE IF NOT EXISTS `blindtest_defines` (
-  `user_id` int(11) NOT NULL,
-  `parameters_id` int(11) NOT NULL,
-  PRIMARY KEY (`user_id`,`parameters_id`),
-  KEY `blindtest_defines_parameters0_FK` (`parameters_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `music`
+-- Structure de la table `music`
 --
 
 DROP TABLE IF EXISTS `music`;
 CREATE TABLE IF NOT EXISTS `music` (
   `music_id` int(11) NOT NULL AUTO_INCREMENT,
-  `music_title` varchar(50) NOT NULL,
-  `music_description` varchar(50) NOT NULL,
-  `music_file` text NOT NULL,
-  `music_cover` blob NOT NULL,
+  `music_title` varchar(50) NOT NULL COMMENT 'Title of the song',
+  `music_description` varchar(50) NOT NULL COMMENT 'Description of the song',
+  `music_file` text NOT NULL COMMENT 'The directory of the file',
+  `music_cover` blob NOT NULL COMMENT 'The cover of the song',
   PRIMARY KEY (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `music_type`
+-- Structure de la table `music_type`
 --
 
 DROP TABLE IF EXISTS `music_type`;
@@ -86,27 +72,31 @@ CREATE TABLE IF NOT EXISTS `music_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `parameters`
+-- Structure de la table `parameters`
 --
 
 DROP TABLE IF EXISTS `parameters`;
 CREATE TABLE IF NOT EXISTS `parameters` (
   `parameters_id` int(11) NOT NULL AUTO_INCREMENT,
-  `parameters_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`parameters_id`)
+  `parameters_time` int(11) NOT NULL COMMENT 'The time in second',
+  `parameters_questions` int(11) NOT NULL COMMENT 'The number of questions',
+  `parameters_type` int(11) NOT NULL COMMENT '1 -> image, 2 -> song, 3 -> both',
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`parameters_id`),
+  KEY `parameters_users_FK` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quizz`
+-- Structure de la table `quizz`
 --
 
 DROP TABLE IF EXISTS `quizz`;
 CREATE TABLE IF NOT EXISTS `quizz` (
   `quizz_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quizz_date` date NOT NULL,
-  `quizz_score` int(11) NOT NULL,
+  `quizz_date` date NOT NULL COMMENT 'Date of the day of the quizz',
+  `quizz_score` int(11) NOT NULL COMMENT 'The score got during the quizz',
   `parameters_id` int(11) NOT NULL,
   PRIMARY KEY (`quizz_id`),
   KEY `quizz_parameters_FK` (`parameters_id`)
@@ -115,47 +105,53 @@ CREATE TABLE IF NOT EXISTS `quizz` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) NOT NULL,
-  `user_nickname` varchar(50) NOT NULL,
-  `user_email` varchar(50) NOT NULL,
-  `user_password` varchar(50) NOT NULL,
-  `user_profilepic` text,
+  `user_name` varchar(50) NOT NULL COMMENT 'Name of the user',
+  `user_nickname` varchar(50) NOT NULL COMMENT 'Nickname of the user',
+  `user_email` varchar(50) NOT NULL COMMENT 'Email of the user',
+  `user_password` varchar(50) NOT NULL COMMENT 'Password of the user',
+  `user_profilepic` text NOT NULL COMMENT 'Profile picture of the user (dir)',
   `user_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Constraints for dumped tables
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
+(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'WWDTM_logo_clr_stacked_highres.jpg', 1);
+
+--
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `blindtest_contains`
+-- Contraintes pour la table `blindtest_contains`
 --
 ALTER TABLE `blindtest_contains`
   ADD CONSTRAINT `blindtest_contains_music0_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
   ADD CONSTRAINT `blindtest_contains_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
 
 --
--- Constraints for table `blindtest_defines`
---
-ALTER TABLE `blindtest_defines`
-  ADD CONSTRAINT `blindtest_defines_parameters0_FK` FOREIGN KEY (`parameters_id`) REFERENCES `parameters` (`parameters_id`),
-  ADD CONSTRAINT `blindtest_defines_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `music_type`
+-- Contraintes pour la table `music_type`
 --
 ALTER TABLE `music_type`
   ADD CONSTRAINT `music_type_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
 
 --
--- Constraints for table `quizz`
+-- Contraintes pour la table `parameters`
+--
+ALTER TABLE `parameters`
+  ADD CONSTRAINT `parameters_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Contraintes pour la table `quizz`
 --
 ALTER TABLE `quizz`
   ADD CONSTRAINT `quizz_parameters_FK` FOREIGN KEY (`parameters_id`) REFERENCES `parameters` (`parameters_id`);
