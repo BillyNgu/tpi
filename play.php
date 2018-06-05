@@ -22,6 +22,10 @@ $play = TRUE;
     <body>
         <div class="container">
             <?php require_once './navbar.php'; ?>
+            <fieldset>
+                <legend>Jouer</legend>
+                <a class="btn btn-primary" href="playing.php">Commencer</a>
+            </fieldset>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
     </body>
