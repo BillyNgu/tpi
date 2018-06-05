@@ -11,19 +11,17 @@ $register = TRUE;
 
 if (isset($_POST['register'])) {
 
-    $uploadOk = 1;
-    $target_dir = "./uploaded_files/img/";
-    $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
-    $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
     $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
     // pas de filtre, parce que hashage prochainement
     $pwd = filter_input(INPUT_POST, 'password');
     $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
-//    $profilepic = $_POST['profile_pic'];
 
+    $uploadOk = 1;
+    $target_dir = "./uploaded_files/img/";
+    $target_file = $target_dir . $nickname . "-" . basename($_FILES["profile_pic"]["name"]);
+    $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $errors = [];
 
     if (empty($name)) {
@@ -65,7 +63,7 @@ if (isset($_POST['register'])) {
                 }
             }
         }
-        CreateUser(strtolower($name), strtolower($nickname), strtolower($email), $pwd, $_FILES["profile_pic"]["name"]);
+        CreateUser(strtolower($name), strtolower($nickname), strtolower($email), $pwd, $nickname . "-" . $_FILES["profile_pic"]["name"]);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
