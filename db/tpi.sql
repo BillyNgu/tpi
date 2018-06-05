@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 05 juin 2018 à 09:40
+-- Généré le :  mar. 05 juin 2018 à 10:44
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -117,7 +117,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_password` varchar(50) NOT NULL COMMENT 'Password of the user',
   `user_profilepic` text NOT NULL COMMENT 'Profile picture of the user (dir)',
   `user_status` tinyint(1) NOT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_nickname` (`user_nickname`,`user_email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
