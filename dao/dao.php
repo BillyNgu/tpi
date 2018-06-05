@@ -70,7 +70,7 @@ function GetData($nickname) {
 }
 
 /**
- * 
+ * Update the profile picture of a user
  * @param type $nickname nickname of the user
  * @param type $picture new picture of the profile
  * @param type $old_picture old picture of the profile
@@ -81,6 +81,8 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
 
     $picture_unique_name = $nickname . "-" . $picture;
     
+    // if there isn't an image in the database, update the record
+    // if there is, remove the old image + the file and update the record
     if (empty($old_picture)) {
         $sql = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
         $query = pdo()->prepare($sql);
