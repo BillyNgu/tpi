@@ -56,7 +56,7 @@ if (isset($_POST['change'])) {
                         <?php endif; ?>
                     </div>
                     <form action="profile.php" method="post" enctype="multipart/form-data">
-                        <input class="mt-2" type="file" name="profile_pic" accept="image/*"><br>
+                        <input class="form-control-file mt-2" type="file" name="profile_pic" accept="image/*"><br>
                         <input class="mt-2 btn btn-primary" name="change" type="submit">
                     </form>
                 </div>

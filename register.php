@@ -141,7 +141,7 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="form-group">
                     <label>Image de profil :</label>
-                    <input type="file" name="profile_pic" class="form-control col-3" multiple accept="image/*">
+                    <input type="file" name="profile_pic" class="form-control-file col-3" multiple accept="image/*">
                     <?php
                     if (!empty($errors['profile_pic'])) {
                         echo $errors['profile_pic'];
