@@ -121,9 +121,9 @@ function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
     $pwdsha1 = sha1($pwd);
     
     $query = pdo()->prepare($sql);
-    $query->bindParam(':name', strtolower($name), PDO::PARAM_STR);
-    $query->bindParam(':nickname', strtolower($nickname), PDO::PARAM_STR);
-    $query->bindParam(':email', strtolower($email), PDO::PARAM_STR);
+    $query->bindParam(':name', $name, PDO::PARAM_STR);
+    $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':pwd', $pwdsha1, PDO::PARAM_STR);
     $query->bindParam(':profilepic', $profilepic, PDO::PARAM_STR);
     $query->execute();

@@ -11,29 +11,10 @@ $register = TRUE;
 
 if (isset($_POST['register'])) {
 
-    if (!empty($_FILES['profile_pic'])) {
-        $uploadOk = 1;
-        $target_dir = "./uploaded_files/img/";
-        $target_file = $target_dir . basename($_FILES["profile_pic"]["name"][$index]);
-        $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        // Allow certain file formats
-        if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
-            $uploadOk = 0;
-        }
-
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.";
-            // if everything is ok, try to upload file
-        } else {
-            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
-                echo "The file " . basename($_FILES["profile_pic"]["name"]) . " has been uploaded.";
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-            }
-        }
-    }
+    $uploadOk = 1;
+    $target_dir = "./uploaded_files/img/";
+    $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
+    $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
@@ -66,7 +47,25 @@ if (isset($_POST['register'])) {
     }
 
     if (empty($errors)) {
-        CreateUser($name, $nickname, $email, $pwd, $_FILES["profile_pic"]["name"]);
+        if (!empty($_FILES['profile_pic'])) {
+            // Allow certain file formats
+            if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
+                $uploadOk = 0;
+            }
+
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+                // if everything is ok, try to upload file
+            } else {
+                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                    echo "The file " . basename($_FILES["profile_pic"]["name"]) . " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+        }
+        CreateUser(strtolower($name), strtolower($nickname), strtolower($email), $pwd, $_FILES["profile_pic"]["name"]);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
@@ -78,12 +77,12 @@ if (isset($_POST['register'])) {
     <head>
         <meta charset="UTF-8">
         <title>Blindtest</title>
-<?php require_once './css/css_js.php'; ?>
+        <?php require_once './css/css_js.php'; ?>
     </head>
     <body>
         <div class="container">
-<?php require_once './navbar.php'; ?>
-            <form action="register.php" method="post">
+            <?php require_once './navbar.php'; ?>
+            <form action="register.php" method="post" enctype="multipart/form-data">
                 <h3>Inscription</h3>
                 <div class="form-group">
                     <label for="lastname_login">Nom :</label>
