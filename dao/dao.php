@@ -69,6 +69,12 @@ function GetData($nickname) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * 
+ * @param type $nickname nickname of the user
+ * @param type $picture new picture of the profile
+ * @param type $old_picture old picture of the profile
+ */
 function UpdateProfilePicture($nickname, $picture, $old_picture) {
     $target_dir = "./uploaded_files/img/";
     $target_file = $target_dir . $old_picture;
