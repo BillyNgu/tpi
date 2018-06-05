@@ -21,8 +21,8 @@ $crud = TRUE;
     <body>
         <div class="container">
             <?php require_once './navbar.php'; ?>
-            <form action="crud.php" method="post">
-                <h2>Configuration des questions</h2>
+            <h2>Configuration des questions</h2>
+            <form action="crud.php" method="post" enctype="multipart/form-data">
                 <div class="form-group">      
                     <label class="">Nom de la question : <input class="form-control" name="question" type="text"></label>
                 </div>
@@ -48,6 +48,11 @@ $crud = TRUE;
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Le morceau : <input class="form-control-file" type="file" accept="audio/*"></label>
+                    <label>Le cover (optionnel) : <input class="form-control-file" type="file" accept="image/*"></label>
+                </div>
+                <button class="btn btn-primary" type="submit">Ajouter</button>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
