@@ -77,7 +77,7 @@ function GetData($nickname) {
  * @param type $old_picture old picture of the profile
  */
 function UpdateProfilePicture($nickname, $picture, $old_picture) {
-    $target_dir = "./uploaded_files/img/";
+    $target_dir = "./uploaded_files/img/profile/";
     $target_file = $target_dir . $old_picture;
 
     $picture_unique_name = $nickname . "-" . $picture;

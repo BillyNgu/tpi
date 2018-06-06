@@ -18,7 +18,7 @@ if (isset($_POST['register'])) {
     $pwd_register_form = filter_input(INPUT_POST, 'password');
     $pwdRepeat_register_form = filter_input(INPUT_POST, 'passwordConfirmation');
 
-    $uploadOk = 1;
+    $uploadOk_register = 1;
     $target_dir = "./uploaded_files/img/";
     $target_file = $target_dir . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
     $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -48,11 +48,11 @@ if (isset($_POST['register'])) {
         if (!empty($_FILES['profile_pic'])) {
             // Allow certain file formats
             if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
-                $uploadOk = 0;
+                $uploadOk_register = 0;
             }
 
             // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
+            if ($uploadOk_register == 0) {
                 echo "Sorry, your file was not uploaded.";
                 // if everything is ok, try to upload file
             } else {

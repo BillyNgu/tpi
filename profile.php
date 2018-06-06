@@ -13,19 +13,19 @@ $profile = TRUE;
 $userData = GetData($nickname);
 
 if (isset($_POST['change'])) {
-    $uploadOk = 1;
-    $target_dir = "./uploaded_files/img/";
+    $uploadOk_profile = 1;
+    $target_dir = "./uploaded_files/img/profile/";
     $target_file = $target_dir . basename($nickname . "-" . $_FILES["profile_pic"]["name"]);
     $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     if (!empty($_FILES['profile_pic'])) {
         // Allow certain file formats
         if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
-            $uploadOk = 0;
+            $uploadOk_profile = 0;
         }
 
         // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
+        if ($uploadOk_profile == 0) {
             echo "Sorry, your file was not uploaded.";
             // if everything is ok, try to upload file
         } else {
@@ -50,9 +50,9 @@ if (isset($_POST['change'])) {
                 <div class="col-md-auto">
                     <div class="card" style="width: 16rem;">
                         <?php if (!empty($userData['user_profilepic'])): ?>
-                            <img class="card-img-top" src="./uploaded_files/img/<?php echo $userData['user_profilepic']; ?>">
+                            <img class="card-img-top" src="./uploaded_files/img/profile/<?php echo $userData['user_profilepic']; ?>">
                         <?php else: ?>
-                            <img class="card-img-top" src="./uploaded_files/img/no-avatar.png">
+                            <img class="card-img-top" src="./uploaded_files/img/profile/no-avatar.png">
                         <?php endif; ?>
                     </div>
                     <form action="profile.php" method="post" enctype="multipart/form-data">
