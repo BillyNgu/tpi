@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 06 juin 2018 à 11:37
--- Version du serveur :  5.7.21
--- Version de PHP :  7.2.4
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 06, 2018 at 08:50 PM
+-- Server version: 5.7.19
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `tpi`
+-- Database: `tpi`
 --
 CREATE DATABASE IF NOT EXISTS `tpi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `tpi`;
@@ -27,7 +27,21 @@ USE `tpi`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `blindtest_possesses`
+-- Table structure for table `blindtest_answers`
+--
+
+DROP TABLE IF EXISTS `blindtest_answers`;
+CREATE TABLE IF NOT EXISTS `blindtest_answers` (
+  `music_id` int(11) NOT NULL,
+  `choice_id` int(11) NOT NULL,
+  PRIMARY KEY (`music_id`,`choice_id`),
+  KEY `ma_choice_FK` (`choice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blindtest_possesses`
 --
 
 DROP TABLE IF EXISTS `blindtest_possesses`;
@@ -41,23 +55,22 @@ CREATE TABLE IF NOT EXISTS `blindtest_possesses` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `choice`
+-- Table structure for table `choice`
 --
 
 DROP TABLE IF EXISTS `choice`;
 CREATE TABLE IF NOT EXISTS `choice` (
   `choice_id` int(11) NOT NULL AUTO_INCREMENT,
-  `choice` varchar(50) NOT NULL,
-  `choice_is_answer` tinyint(1) NOT NULL,
+  `choice_name` varchar(50) NOT NULL,
   `music_id` int(11) NOT NULL,
   PRIMARY KEY (`choice_id`),
-  KEY `choice_music_FK` (`music_id`)
+  UNIQUE KEY `ui1_music_choice_name` (`music_id`,`choice_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `music`
+-- Table structure for table `music`
 --
 
 DROP TABLE IF EXISTS `music`;
@@ -68,12 +81,19 @@ CREATE TABLE IF NOT EXISTS `music` (
   `music_file` text NOT NULL,
   `music_cover` text NOT NULL,
   PRIMARY KEY (`music_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `music`
+--
+
+INSERT INTO `music` (`music_id`, `music_title`, `music_description`, `music_file`, `music_cover`) VALUES
+(1, '24K Magic', 'Bruno Mars', 'root-24K Magic.mp3', '24K Magic-bruno-mars-24k-magic');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `music_style`
+-- Table structure for table `music_style`
 --
 
 DROP TABLE IF EXISTS `music_style`;
@@ -86,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `music_style` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `parameters`
+-- Table structure for table `parameters`
 --
 
 DROP TABLE IF EXISTS `parameters`;
@@ -103,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `score`
+-- Table structure for table `score`
 --
 
 DROP TABLE IF EXISTS `score`;
@@ -121,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `score` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -138,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
@@ -151,30 +171,37 @@ INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `use
 (7, 'user7', 'user7', 'user7@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'user7-1510755737.jpg', 0);
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `blindtest_possesses`
+-- Constraints for table `blindtest_answers`
+--
+ALTER TABLE `blindtest_answers`
+  ADD CONSTRAINT `ma_choice_FK` FOREIGN KEY (`choice_id`) REFERENCES `choice` (`choice_id`),
+  ADD CONSTRAINT `ma_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
+
+--
+-- Constraints for table `blindtest_possesses`
 --
 ALTER TABLE `blindtest_possesses`
   ADD CONSTRAINT `blindtest_possesses_music0_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
   ADD CONSTRAINT `blindtest_possesses_music_style_FK` FOREIGN KEY (`music_style_id`) REFERENCES `music_style` (`music_style_id`);
 
 --
--- Contraintes pour la table `choice`
+-- Constraints for table `choice`
 --
 ALTER TABLE `choice`
   ADD CONSTRAINT `choice_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
 
 --
--- Contraintes pour la table `parameters`
+-- Constraints for table `parameters`
 --
 ALTER TABLE `parameters`
   ADD CONSTRAINT `parameters_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Contraintes pour la table `score`
+-- Constraints for table `score`
 --
 ALTER TABLE `score`
   ADD CONSTRAINT `score_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
