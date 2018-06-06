@@ -11,26 +11,26 @@ $register = TRUE;
 
 if (isset($_POST['register'])) {
 
-    $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
-    $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
-    $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
+    $name_register_form = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
+    $nickname_register_form = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
+    $email_register_form = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
     // pas de filtre, parce que hashage prochainement
     $pwd = filter_input(INPUT_POST, 'password');
     $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
 
     $uploadOk = 1;
     $target_dir = "./uploaded_files/img/";
-    $target_file = $target_dir . $nickname . "-" . basename($_FILES["profile_pic"]["name"]);
+    $target_file = $target_dir . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
     $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $errors = [];
 
-    if (empty($name)) {
+    if (empty($name_register_form)) {
         $errors['name'] = 'Le nom ne peut pas être vide.';
     }
-    if (empty($nickname)) {
+    if (empty($nickname_register_form)) {
         $errors['nickname'] = 'Le pseudo ne peut pas être vide.';
     }
-    if (empty($email)) {
+    if (empty($email_register_form)) {
         $errors['email'] = 'L\'email ne peut pas être vide.';
     }
     if (empty($pwd)) {
@@ -63,7 +63,7 @@ if (isset($_POST['register'])) {
                 }
             }
         }
-        CreateUser(strtolower($name), strtolower($nickname), strtolower($email), $pwd, $nickname . "-" . $_FILES["profile_pic"]["name"]);
+        CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd, $nickname . "-" . $_FILES["profile_pic"]["name"]);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
@@ -85,8 +85,8 @@ if (isset($_POST['register'])) {
                 <div class="form-group">
                     <label for="lastname_login">Nom :</label>
                     <input type="text" name="name" class="form-control col-3" id="lastname_login" value="<?php
-                    if (!empty($name)) {
-                        echo $name;
+                    if (!empty($name_register_form)) {
+                        echo $name_register_form;
                     }
                     ?>">
                            <?php
@@ -98,8 +98,8 @@ if (isset($_POST['register'])) {
                 <div class="form-group">
                     <label for="nickname_login">Pseudo :</label>
                     <input type="text" name="nickname" class="form-control col-3" id="nickname_login" value="<?php
-                    if (!empty($nickname)) {
-                        echo $nickname;
+                    if (!empty($nickname_register_form)) {
+                        echo $nickname_register_form;
                     }
                     ?>">
                            <?php
@@ -111,8 +111,8 @@ if (isset($_POST['register'])) {
                 <div class="form-group">
                     <label for="email_login">Email :</label>
                     <input type="email" name="email" class="form-control col-3" id="email_login" value="<?php
-                    if (!empty($email)) {
-                        echo $email;
+                    if (!empty($email_register_form)) {
+                        echo $email_register_form;
                     }
                     ?>">
                            <?php
