@@ -54,6 +54,7 @@ function CheckLogin($nickname, $pwd) {
         header('Location:profile.php');
     } else {
         $_SESSION['user_nickname'] = "";
+        return FALSE;
     }
 }
 

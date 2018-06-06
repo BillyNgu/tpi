@@ -11,10 +11,15 @@ require_once './dao/dao.php';
 $index = TRUE;
 
 if (isset($_POST['connection'])) {
-    $nickname_login = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
-    $pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
-
-    CheckLogin(strtolower($nickname_login), $pwd);
+    $nickname_login = trim(filter_input(INPUT_POST, 'nicknameLogin', FILTER_SANITIZE_STRING));
+    $pwd_login = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $errors = [];
+    
+    if (CheckLogin(strtolower($nickname_login), $pwd_login) == FALSE ) {
+        $errors['login'] = 'L\'identifiant et/ou le mot de passe sont faux.';
+    }
+    
+    
 }
 ?>
 <!DOCTYPE html>
@@ -35,11 +40,16 @@ if (isset($_POST['connection'])) {
                                 <p><?= $message ?></p>
                             <?php endif; ?>
                             <label for="exampleInputNickname">Identifiant :</label>
-                            <input type="text" name="nickname" class="form-control col-3" id="exampleInputNickname" placeholder="Entrez votre pseudo">
+                            <input type="text" name="nicknameLogin" value="<?php if(!empty($nickname_login)){ echo $nickname_login;} ?>" class="form-control col-3" id="exampleInputNickname" placeholder="Entrez votre pseudo">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mot de passe :</label>
                             <input type="password" name="password" class="form-control col-3" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
+                            <?php
+                           if (!empty($errors['login'])) {
+                               echo $errors['login'];
+                           }
+                           ?>
                         </div>
                         <button type="submit" name="connection" class="btn btn-primary">Se connecter</button>
                     </form>
