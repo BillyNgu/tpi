@@ -109,19 +109,19 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
     }
 }
 
-function Add_Question($question) {
-    $sql = "INSERT INTO `quizz`(`quizz_question`) VALUES (:question)";
+function Add_Music($music_title, $music_description, $music_file, $music_cover) {
+    $sql = "INSERT INTO `music`(`music_title`, `music_description`, `music_file`, `music_cover`) "
+            . "VALUES (:music_title, :music_description, :music_file, :music_cover)";
     $query = pdo()->prepare($sql);
-    $query->bindParam(':question', $question, PDO::PARAM_STR);
+    $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+    $query->bindParam(':music_description', $music_description, PDO::PARAM_STR);
+    $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+    $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
     $query->execute();
 }
 
-/**
- * Get all information of the last record inserted
- * @return type array
- */
-function Get_last_question() {
-    $sql = "SELECT * FROM `quizz` WHERE `quizz_id` = (SELECT MAX(`quizz_id`) FROM `quizz`)";
+function Get_last_music() {
+    $sql = "SELECT * FROM `music` WHERE `music_id` = (SELECT MAX(`music_id`) FROM `music`)";
     $query = pdo()->prepare($sql);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC);
@@ -166,24 +166,6 @@ function Add_Choice($choice1, $choice2, $choice3, $choice4, $answer, $question_i
         $query->bindParam(':choice', $choice[$index], PDO::PARAM_STR);
         $query->execute();
     }
-}
-
-function Add_Music($music_title, $music_description, $music_file, $music_cover) {
-    $sql = "INSERT INTO `music`(`music_title`, `music_description`, `music_file`, `music_cover`) "
-            . "VALUES (:music_title, :music_description, :music_file, :music_cover)";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
-    $query->bindParam(':music_description', $music_description, PDO::PARAM_STR);
-    $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
-    $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
-    $query->execute();
-}
-
-function Get_last_music() {
-    $sql = "SELECT * FROM `music` WHERE `music_id` = (SELECT MAX(`music_id`) FROM `music`)";
-    $query = pdo()->prepare($sql);
-    $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function Add_Music_Style($style, $music_id) {
