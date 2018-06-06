@@ -24,16 +24,12 @@ if (isset($_POST['change'])) {
             $uploadOk_profile = 0;
         }
 
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk_profile == 0) {
-            echo "Sorry, your file was not uploaded.";
-            // if everything is ok, try to upload file
-        } else {
-            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_profile)) {
-            }
+        // if everything is ok, try to upload file
+        if ($uploadOk_profile == 1) {
+            move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_profile);
         }
+        UpdateProfilePicture($nickname, $_FILES["profile_pic"]["name"], $userData['user_profilepic']);
     }
-    UpdateProfilePicture($nickname, $_FILES["profile_pic"]["name"], $userData['user_profilepic']);
 }
 ?>
 <!DOCTYPE html>
