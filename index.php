@@ -11,10 +11,10 @@ require_once './dao/dao.php';
 $index = TRUE;
 
 if (isset($_POST['connection'])) {
-    $nickname = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
+    $nickname_login = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-    CheckLogin(strtolower($nickname), $pwd);
+    CheckLogin(strtolower($nickname_login), $pwd);
 }
 ?>
 <!DOCTYPE html>
