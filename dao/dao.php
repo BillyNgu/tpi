@@ -23,13 +23,18 @@ function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
             . "VALUES (:name, :nickname, :email, :pwd, :profilepic, 0)";
 
     $pwdsha1 = sha1($pwd);
+    if (!empty($profilepic)) {
+        $profilepic_unique = $nickname . "-" . $profilepic;
+    } else {
+        $profilepic_unique = null;
+    }
 
     $query = pdo()->prepare($sql);
     $query->bindParam(':name', $name, PDO::PARAM_STR);
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':pwd', $pwdsha1, PDO::PARAM_STR);
-    $query->bindParam(':profilepic', $profilepic, PDO::PARAM_STR);
+    $query->bindParam(':profilepic', $profilepic_unique, PDO::PARAM_STR);
     $query->execute();
 }
 
