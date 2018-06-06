@@ -68,7 +68,7 @@ function CheckLogin($nickname, $pwd) {
  * @param type $nickname nickname of the user
  */
 function GetData($nickname) {
-    $sql = "SELECT `user_name`, `user_email`, `user_profilepic`, `user_status` FROM `users` WHERE `user_nickname` = :nickname";
+    $sql = "SELECT * FROM `users` WHERE `user_nickname` = :nickname";
     $query = pdo()->prepare($sql);
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
     $query->execute();
@@ -108,3 +108,4 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
         header("Refresh:0");
     }
 }
+
