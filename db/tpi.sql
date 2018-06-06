@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 06 juin 2018 à 11:15
+-- Généré le :  mer. 06 juin 2018 à 11:37
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -23,20 +23,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `tpi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `tpi`;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `blindtest_contains`
---
-
-DROP TABLE IF EXISTS `blindtest_contains`;
-CREATE TABLE IF NOT EXISTS `blindtest_contains` (
-  `quizz_id` int(11) NOT NULL,
-  `music_id` int(11) NOT NULL,
-  PRIMARY KEY (`quizz_id`,`music_id`),
-  KEY `blindtest_contains_music0_FK` (`music_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -63,9 +49,9 @@ CREATE TABLE IF NOT EXISTS `choice` (
   `choice_id` int(11) NOT NULL AUTO_INCREMENT,
   `choice` varchar(50) NOT NULL,
   `choice_is_answer` tinyint(1) NOT NULL,
-  `quizz_id` int(11) NOT NULL,
+  `music_id` int(11) NOT NULL,
   PRIMARY KEY (`choice_id`),
-  KEY `choice_quizz_FK` (`quizz_id`)
+  KEY `choice_music_FK` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -117,19 +103,6 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `quizz`
---
-
-DROP TABLE IF EXISTS `quizz`;
-CREATE TABLE IF NOT EXISTS `quizz` (
-  `quizz_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quizz_question` varchar(50) NOT NULL,
-  PRIMARY KEY (`quizz_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `score`
 --
 
@@ -138,10 +111,10 @@ CREATE TABLE IF NOT EXISTS `score` (
   `score_id` int(11) NOT NULL AUTO_INCREMENT,
   `score_date` date NOT NULL,
   `score` int(11) NOT NULL,
-  `quizz_id` int(11) NOT NULL,
+  `music_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`score_id`),
-  KEY `score_quizz_FK` (`quizz_id`),
+  KEY `score_music_FK` (`music_id`),
   KEY `score_users0_FK` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -182,13 +155,6 @@ INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `use
 --
 
 --
--- Contraintes pour la table `blindtest_contains`
---
-ALTER TABLE `blindtest_contains`
-  ADD CONSTRAINT `blindtest_contains_music0_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
-  ADD CONSTRAINT `blindtest_contains_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
-
---
 -- Contraintes pour la table `blindtest_possesses`
 --
 ALTER TABLE `blindtest_possesses`
@@ -199,7 +165,7 @@ ALTER TABLE `blindtest_possesses`
 -- Contraintes pour la table `choice`
 --
 ALTER TABLE `choice`
-  ADD CONSTRAINT `choice_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
+  ADD CONSTRAINT `choice_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
 
 --
 -- Contraintes pour la table `parameters`
@@ -211,7 +177,7 @@ ALTER TABLE `parameters`
 -- Contraintes pour la table `score`
 --
 ALTER TABLE `score`
-  ADD CONSTRAINT `score_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`),
+  ADD CONSTRAINT `score_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
   ADD CONSTRAINT `score_users0_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
