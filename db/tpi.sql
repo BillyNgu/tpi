@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 06 juin 2018 à 09:13
+-- Généré le :  mer. 06 juin 2018 à 11:15
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -36,6 +36,20 @@ CREATE TABLE IF NOT EXISTS `blindtest_contains` (
   `music_id` int(11) NOT NULL,
   PRIMARY KEY (`quizz_id`,`music_id`),
   KEY `blindtest_contains_music0_FK` (`music_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `blindtest_possesses`
+--
+
+DROP TABLE IF EXISTS `blindtest_possesses`;
+CREATE TABLE IF NOT EXISTS `blindtest_possesses` (
+  `music_style_id` int(11) NOT NULL,
+  `music_id` int(11) NOT NULL,
+  PRIMARY KEY (`music_style_id`,`music_id`),
+  KEY `blindtest_possesses_music0_FK` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -80,9 +94,7 @@ DROP TABLE IF EXISTS `music_style`;
 CREATE TABLE IF NOT EXISTS `music_style` (
   `music_style_id` int(11) NOT NULL AUTO_INCREMENT,
   `music_style` varchar(50) NOT NULL,
-  `music_id` int(11) NOT NULL,
-  PRIMARY KEY (`music_style_id`),
-  KEY `music_type_music_FK` (`music_id`)
+  PRIMARY KEY (`music_style_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -177,16 +189,17 @@ ALTER TABLE `blindtest_contains`
   ADD CONSTRAINT `blindtest_contains_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
 
 --
+-- Contraintes pour la table `blindtest_possesses`
+--
+ALTER TABLE `blindtest_possesses`
+  ADD CONSTRAINT `blindtest_possesses_music0_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
+  ADD CONSTRAINT `blindtest_possesses_music_style_FK` FOREIGN KEY (`music_style_id`) REFERENCES `music_style` (`music_style_id`);
+
+--
 -- Contraintes pour la table `choice`
 --
 ALTER TABLE `choice`
   ADD CONSTRAINT `choice_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
-
---
--- Contraintes pour la table `music_style`
---
-ALTER TABLE `music_style`
-  ADD CONSTRAINT `music_type_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
 
 --
 -- Contraintes pour la table `parameters`
