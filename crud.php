@@ -11,7 +11,7 @@ $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $crud = TRUE;
 
-if (filter_has_var(INPUT_POST,"add_question")) {
+if (filter_has_var(INPUT_POST, "add_question")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $description = trim(filter_input(INPUT_POST, 'music_description', FILTER_SANITIZE_STRING));
 
@@ -19,6 +19,9 @@ if (filter_has_var(INPUT_POST,"add_question")) {
     $choice2 = trim(filter_input(INPUT_POST, 'choice2', FILTER_SANITIZE_STRING));
     $choice3 = trim(filter_input(INPUT_POST, 'choice3', FILTER_SANITIZE_STRING));
     $choice4 = trim(filter_input(INPUT_POST, 'choice4', FILTER_SANITIZE_STRING));
+    
+    $choice = [$choice1, $choice2, $choice3, $choice4];
+    $answer = filter_has_var(INPUT_POST, 'answer');
     
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
@@ -58,7 +61,10 @@ if (filter_has_var(INPUT_POST,"add_question")) {
     Add_Music($title, $description, $_FILES["song"]["name"], $_FILES["cover"]["name"]);
     $last_music = Get_last_music();
     // Add these value in db
-    Add_Choice($choice1, $choice2, $choice3, $choice4, $answer, $last_music['music_id']);
+    for ($index = 0; $index < count($choice); $index++) {
+        Add_Choice($choice[$index], $answer, $last_music['music_id']);
+        var_dump($answer);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -72,7 +78,7 @@ if (filter_has_var(INPUT_POST,"add_question")) {
         <div class="container">
             <?php require_once './navbar.php'; ?>
             <h2>Configuration des questions</h2>
-            <form method="post" role="form" enctype="multipart/form-data">
+            <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">      
                     <div class="row">
                         <div class="col">
@@ -89,21 +95,21 @@ if (filter_has_var(INPUT_POST,"add_question")) {
                     <div class="form-row">
                         <div class="col">
                             <label>Proposition 1 : <input required="" class="form-control" name="choice1" type="text"></label>
-                            <label><input type="radio" name="answer" value="1" checked="checked" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="1" checked="checked" /> Make the answer.</label>
                         </div>
                         <div class="col">
                             <label>Proposition 2 : <input required="" class="form-control" name="choice2" type="text"></label>
-                            <label><input type="radio" name="answer" value="2" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="2" /> Make the answer.</label>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col">
                             <label>Proposition 3 : <input required="" class="form-control" name="choice3" type="text"></label>
-                            <label><input type="radio" name="answer" value="3" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="3" /> Make the answer.</label>
                         </div>
                         <div class="col">
                             <label>Proposition 4 : <input required="" class="form-control" name="choice4" type="text"></label>
-                            <label><input type="radio" name="answer" value="4" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="4" /> Make the answer.</label>
                         </div>
                     </div>
                 </div>
