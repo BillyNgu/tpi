@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 05 juin 2018 à 13:56
+-- Généré le :  mer. 06 juin 2018 à 08:33
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -73,11 +73,11 @@ CREATE TABLE IF NOT EXISTS `music` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `music_type`
+-- Structure de la table `music_style`
 --
 
-DROP TABLE IF EXISTS `music_type`;
-CREATE TABLE IF NOT EXISTS `music_type` (
+DROP TABLE IF EXISTS `music_style`;
+CREATE TABLE IF NOT EXISTS `music_style` (
   `music_style_id` int(11) NOT NULL AUTO_INCREMENT,
   `music_style` varchar(50) NOT NULL,
   `music_id` int(11) NOT NULL,
@@ -111,12 +111,28 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 DROP TABLE IF EXISTS `quizz`;
 CREATE TABLE IF NOT EXISTS `quizz` (
   `quizz_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quizz_date` date NOT NULL,
-  `quizz_score` int(11) NOT NULL,
   `quizz_question` varchar(50) NOT NULL,
   `parameters_id` int(11) NOT NULL,
   PRIMARY KEY (`quizz_id`),
   KEY `quizz_parameters_FK` (`parameters_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `score`
+--
+
+DROP TABLE IF EXISTS `score`;
+CREATE TABLE IF NOT EXISTS `score` (
+  `score_id` int(11) NOT NULL AUTO_INCREMENT,
+  `score_date` date NOT NULL,
+  `score` int(11) NOT NULL,
+  `quizz_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`score_id`),
+  KEY `score_quizz_FK` (`quizz_id`),
+  KEY `score_users0_FK` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -136,7 +152,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_nickname` (`user_nickname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
+(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 1),
+(2, 'guess', 'guess', 'guess@guess.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'guess-ApplicationFrameHost_2018-06-05_13-46-49.png', 0),
+(3, 'test', 'test', 'test@test.com', '1161e6ffd3637b302a5cd74076283a7bd1fc20d3', NULL, 0),
+(4, 'user4', 'user4', 'user4@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
+(5, 'user5', 'user5', 'user5@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
+(6, 'user6', 'user6', 'user6@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
+(7, 'user7', 'user7', 'user7@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'user7-1510755737.jpg', 0);
 
 --
 -- Contraintes pour les tables déchargées
@@ -156,9 +185,9 @@ ALTER TABLE `choice`
   ADD CONSTRAINT `choice_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`);
 
 --
--- Contraintes pour la table `music_type`
+-- Contraintes pour la table `music_style`
 --
-ALTER TABLE `music_type`
+ALTER TABLE `music_style`
   ADD CONSTRAINT `music_type_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`);
 
 --
@@ -172,6 +201,13 @@ ALTER TABLE `parameters`
 --
 ALTER TABLE `quizz`
   ADD CONSTRAINT `quizz_parameters_FK` FOREIGN KEY (`parameters_id`) REFERENCES `parameters` (`parameters_id`);
+
+--
+-- Contraintes pour la table `score`
+--
+ALTER TABLE `score`
+  ADD CONSTRAINT `score_quizz_FK` FOREIGN KEY (`quizz_id`) REFERENCES `quizz` (`quizz_id`),
+  ADD CONSTRAINT `score_users0_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
