@@ -9,7 +9,7 @@ require_once './dao/dao.php';
 
 $register = TRUE;
 
-if (isset($_POST['register'])) {
+if (filter_has_var(INPUT_POST, 'register')) {
 
     $name_register_form = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname_register_form = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));

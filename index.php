@@ -10,7 +10,7 @@ require_once './dao/dao.php';
 
 $index = TRUE;
 
-if (isset($_POST['connection'])) {
+if (filter_has_var(INPUT_POST, 'connection')) {
     $nickname_login = trim(filter_input(INPUT_POST, 'nicknameLogin', FILTER_SANITIZE_STRING));
     $pwd_login = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
     $errors = [];
