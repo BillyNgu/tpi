@@ -80,7 +80,7 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
     $target_file = $target_dir . $old_picture;
 
     $picture_unique_name = $nickname . "-" . $picture;
-    
+
     // if there isn't an image in the database, update the record
     // if there is, remove the old image + the file and update the record
     if (empty($old_picture)) {
