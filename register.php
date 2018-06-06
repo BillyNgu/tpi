@@ -15,36 +15,36 @@ if (isset($_POST['register'])) {
     $nickname_register_form = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $email_register_form = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
     // pas de filtre, parce que hashage prochainement
-    $pwd = filter_input(INPUT_POST, 'password');
-    $pwdRepeat = filter_input(INPUT_POST, 'passwordConfirmation');
+    $pwd_register_form = filter_input(INPUT_POST, 'password');
+    $pwdRepeat_register_form = filter_input(INPUT_POST, 'passwordConfirmation');
 
     $uploadOk = 1;
     $target_dir = "./uploaded_files/img/";
     $target_file = $target_dir . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
     $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    $errors = [];
+    $errors_register_form = [];
 
     if (empty($name_register_form)) {
-        $errors['name'] = 'Le nom ne peut pas être vide.';
+        $errors_register_form['name'] = 'Le nom ne peut pas être vide.';
     }
     if (empty($nickname_register_form)) {
-        $errors['nickname'] = 'Le pseudo ne peut pas être vide.';
+        $errors_register_form['nickname'] = 'Le pseudo ne peut pas être vide.';
     }
     if (empty($email_register_form)) {
-        $errors['email'] = 'L\'email ne peut pas être vide.';
+        $errors_register_form['email'] = 'L\'email ne peut pas être vide.';
     }
-    if (empty($pwd)) {
-        $errors['password'] = 'Le mot de passe ne peut pas être vide.';
+    if (empty($pwd_register_form)) {
+        $errors_register_form['password'] = 'Le mot de passe ne peut pas être vide.';
     }
-    if (empty($pwdRepeat)) {
-        $errors['passwordConfirmation'] = 'La confirmation du mot de passe ne peut pas être vide.';
-    }
-
-    if ($pwd !== $pwdRepeat) {
-        $errors['passwordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
+    if (empty($pwdRepeat_register_form)) {
+        $errors_register_form['passwordConfirmation'] = 'La confirmation du mot de passe ne peut pas être vide.';
     }
 
-    if (empty($errors)) {
+    if ($pwd_register_form !== $pwdRepeat_register_form) {
+        $errors_register_form['passwordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
+    }
+
+    if (empty($errors_register_form)) {
         if (!empty($_FILES['profile_pic'])) {
             // Allow certain file formats
             if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
@@ -63,7 +63,7 @@ if (isset($_POST['register'])) {
                 }
             }
         }
-        CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd, $nickname . "-" . $_FILES["profile_pic"]["name"]);
+        CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $nickname . "-" . $_FILES["profile_pic"]["name"]);
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
@@ -84,40 +84,40 @@ if (isset($_POST['register'])) {
                 <h3>Inscription</h3>
                 <div class="form-group">
                     <label for="lastname_login">Nom :</label>
-                    <input type="text" name="name" class="form-control col-3" id="lastname_login" value="<?php
+                    <input type="text" name="name" placeholder="Lennon" class="form-control col-3" id="lastname_login" value="<?php
                     if (!empty($name_register_form)) {
                         echo $name_register_form;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['name'])) {
-                               echo $errors['name'];
+                           if (!empty($errors_register_form['name'])) {
+                               echo $errors_register_form['name'];
                            }
                            ?>
                 </div>
                 <div class="form-group">
                     <label for="nickname_login">Pseudo :</label>
-                    <input type="text" name="nickname" class="form-control col-3" id="nickname_login" value="<?php
+                    <input type="text" name="nickname" placeholder="BobL" class="form-control col-3" id="nickname_login" value="<?php
                     if (!empty($nickname_register_form)) {
                         echo $nickname_register_form;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['nickname'])) {
-                               echo $errors['nickname'];
+                           if (!empty($errors_register_form['nickname'])) {
+                               echo $errors_register_form['nickname'];
                            }
                            ?>
                 </div>
                 <div class="form-group">
                     <label for="email_login">Email :</label>
-                    <input type="email" name="email" class="form-control col-3" id="email_login" value="<?php
+                    <input type="email" name="email" placeholder="random@email.com" class="form-control col-3" id="email_login" value="<?php
                     if (!empty($email_register_form)) {
                         echo $email_register_form;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['email'])) {
-                               echo $errors['email'];
+                           if (!empty($errors_register_form['email'])) {
+                               echo $errors_register_form['email'];
                            }
                            ?>
                 </div>
@@ -125,8 +125,8 @@ if (isset($_POST['register'])) {
                     <label for="password_login">Mot de passe :</label>
                     <input type="password" name="password" class="form-control col-3" id="password_login">
                     <?php
-                    if (!empty($errors['password'])) {
-                        echo $errors['password'];
+                    if (!empty($errors_register_form['password'])) {
+                        echo $errors_register_form['password'];
                     }
                     ?>
                 </div>
@@ -134,8 +134,8 @@ if (isset($_POST['register'])) {
                     <label for="passwordconfirmation_login">Confirmer mot de passe :</label>
                     <input type="password" name="passwordConfirmation" class="form-control col-3" id="passwordconfirmation_login">
                     <?php
-                    if (!empty($errors['passwordConfirmation'])) {
-                        echo $errors['passwordConfirmation'];
+                    if (!empty($errors_register_form['passwordConfirmation'])) {
+                        echo $errors_register_form['passwordConfirmation'];
                     }
                     ?>
                 </div>
@@ -143,8 +143,8 @@ if (isset($_POST['register'])) {
                     <label>Image de profil :</label>
                     <input type="file" name="profile_pic" class="form-control-file col-3" multiple accept="image/*">
                     <?php
-                    if (!empty($errors['profile_pic'])) {
-                        echo $errors['profile_pic'];
+                    if (!empty($errors_register_form['profile_pic'])) {
+                        echo $errors_register_form['profile_pic'];
                     }
                     ?>
                 </div>
