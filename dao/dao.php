@@ -109,3 +109,26 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
     }
 }
 
+
+function Add_Question($question) {
+    $sql = "INSERT INTO `quizz`(`quizz_question`) VALUES (:question)";
+}
+
+
+function Add_Choice($choice1, $choice2, $choice3, $choice4, $answer, $question_id) {
+    $sql = "INSERT INTO `choice`(`choice`, `choice_is_answer`, `quizz_id`) "
+            . "VALUES ([value-1],[value-2],[value-3])";
+    
+    $choice = [$choice1, $choice2, $choice3, $choice4];
+}
+
+
+function Add_Music($music_title, $music_description, $music_file, $music_cover) {
+    $sql = "INSERT INTO `music`(`music_title`, `music_description`, `music_file`, `music_cover`) "
+            . "VALUES ([value-1],[value-2],[value-3],[value-4])";
+}
+
+
+function Add_Music_Style($style, $music_id) {
+    
+}
