@@ -62,8 +62,7 @@ if (filter_has_var(INPUT_POST, "add_question")) {
     $last_music = Get_last_music();
     // Add these value in db
     for ($index = 0; $index < count($choice); $index++) {
-        Add_Choice($choice[$index], $answer, $last_music['music_id']);
-//        var_dump($answer);
+        Add_Choice($choice[$index], $last_music['music_id']);
     }
 }
 ?>

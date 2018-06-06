@@ -142,15 +142,13 @@ function Get_last_music() {
  * Add choices to a song
  * @param type $choice choice of the song
  * @param type $answer the answer
- * @param type $music_id the music it's linked to
  */
-function Add_Choice($choice, $answer, $music_id) {
-    $sql = "INSERT INTO `choice`(`choice`, `choice_is_answer`, `music_id`) "
-            . "VALUES (:choice, :answer, :music_id)";
+function Add_Choice($choice, $music_id) {
+    $sql = "INSERT INTO `choice`(`choice_name`, `music_id`) "
+            . "VALUES (:choice_name, :music_id)";
     $query = pdo()->prepare($sql);
-    $query->bindParam(':choice', $choice, PDO::PARAM_STR);
+    $query->bindParam(':choice_name', $choice, PDO::PARAM_STR);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->bindParam(':answer', $answer, PDO::PARAM_INT);
     $query->execute();
 }
 
