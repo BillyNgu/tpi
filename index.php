@@ -40,11 +40,11 @@ if (isset($_POST['connection'])) {
                                 <p><?= $message ?></p>
                             <?php endif; ?>
                             <label for="exampleInputNickname">Identifiant :</label>
-                            <input type="text" name="nicknameLogin" value="<?php if(!empty($nickname_login)){ echo $nickname_login;} ?>" class="form-control col-3" id="exampleInputNickname" placeholder="Entrez votre pseudo">
+                            <input required="" type="text" name="nicknameLogin" value="<?php if(!empty($nickname_login)){ echo $nickname_login;} ?>" class="form-control col-3" id="exampleInputNickname" placeholder="Entrez votre pseudo">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mot de passe :</label>
-                            <input type="password" name="password" class="form-control col-3" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
+                            <input required="" type="password" name="password" class="form-control col-3" id="exampleInputPassword1" placeholder="Entrez votre mot de passe">
                             <?php
                            if (!empty($errors['login'])) {
                                echo $errors['login'];
