@@ -14,13 +14,13 @@ $userData = GetData($nickname);
 
 if (isset($_POST['change'])) {
     $uploadOk_profile = 1;
-    $target_dir = "./uploaded_files/img/profile/";
-    $target_file = $target_dir . basename($nickname . "-" . $_FILES["profile_pic"]["name"]);
-    $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $target_dir_profile = "./uploaded_files/img/profile/";
+    $target_file_profile = $target_dir_profile . basename($nickname . "-" . $_FILES["profile_pic"]["name"]);
+    $FileType_profile = strtolower(pathinfo($target_file_profile, PATHINFO_EXTENSION));
 
     if (!empty($_FILES['profile_pic'])) {
         // Allow certain file formats
-        if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
+        if ($FileType_profile != "jpg" && $FileType_profile != "png" && $FileType_profile != "jpeg" && $FileType_profile != "gif") {
             $uploadOk_profile = 0;
         }
 
@@ -29,7 +29,7 @@ if (isset($_POST['change'])) {
             echo "Sorry, your file was not uploaded.";
             // if everything is ok, try to upload file
         } else {
-            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_profile)) {
             }
         }
     }

@@ -19,9 +19,9 @@ if (isset($_POST['register'])) {
     $pwdRepeat_register_form = filter_input(INPUT_POST, 'passwordConfirmation');
 
     $uploadOk_register = 1;
-    $target_dir = "./uploaded_files/img/";
-    $target_file = $target_dir . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
-    $FileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $target_dir_register = "./uploaded_files/img/";
+    $target_file_register = $target_dir_register . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
+    $FileType_register = strtolower(pathinfo($target_file_register, PATHINFO_EXTENSION));
     $errors_register_form = [];
 
     if (empty($name_register_form)) {
@@ -47,7 +47,7 @@ if (isset($_POST['register'])) {
     if (empty($errors_register_form)) {
         if (!empty($_FILES['profile_pic'])) {
             // Allow certain file formats
-            if ($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg" && $FileType != "gif") {
+            if ($FileType_register != "jpg" && $FileType_register != "png" && $FileType_register != "jpeg" && $FileType_register != "gif") {
                 $uploadOk_register = 0;
             }
 
@@ -56,7 +56,7 @@ if (isset($_POST['register'])) {
                 echo "Sorry, your file was not uploaded.";
                 // if everything is ok, try to upload file
             } else {
-                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_register)) {
                     echo "The file " . basename($_FILES["profile_pic"]["name"]) . " has been uploaded.";
                 } else {
                     echo "Sorry, there was an error uploading your file.";
