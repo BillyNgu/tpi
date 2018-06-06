@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 06 juin 2018 à 08:33
+-- Généré le :  mer. 06 juin 2018 à 09:13
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -112,9 +112,7 @@ DROP TABLE IF EXISTS `quizz`;
 CREATE TABLE IF NOT EXISTS `quizz` (
   `quizz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quizz_question` varchar(50) NOT NULL,
-  `parameters_id` int(11) NOT NULL,
-  PRIMARY KEY (`quizz_id`),
-  KEY `quizz_parameters_FK` (`parameters_id`)
+  PRIMARY KEY (`quizz_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -195,12 +193,6 @@ ALTER TABLE `music_style`
 --
 ALTER TABLE `parameters`
   ADD CONSTRAINT `parameters_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Contraintes pour la table `quizz`
---
-ALTER TABLE `quizz`
-  ADD CONSTRAINT `quizz_parameters_FK` FOREIGN KEY (`parameters_id`) REFERENCES `parameters` (`parameters_id`);
 
 --
 -- Contraintes pour la table `score`
