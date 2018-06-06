@@ -109,6 +109,13 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
     }
 }
 
+/**
+ * Add music into the db
+ * @param type $music_title the title of the music
+ * @param type $music_description some information of the music
+ * @param type $music_file the dir of the file
+ * @param type $music_cover a cover if there is one
+ */
 function Add_Music($music_title, $music_description, $music_file, $music_cover) {
     $sql = "INSERT INTO `music`(`music_title`, `music_description`, `music_file`, `music_cover`) "
             . "VALUES (:music_title, :music_description, :music_file, :music_cover)";
@@ -120,6 +127,10 @@ function Add_Music($music_title, $music_description, $music_file, $music_cover) 
     $query->execute();
 }
 
+/**
+ * Return all of the last record
+ * @return type array
+ */
 function Get_last_music() {
     $sql = "SELECT * FROM `music` WHERE `music_id` = (SELECT MAX(`music_id`) FROM `music`)";
     $query = pdo()->prepare($sql);
@@ -127,6 +138,12 @@ function Get_last_music() {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Add choices to a song
+ * @param type $choice choice of the song
+ * @param type $answer the answer
+ * @param type $music_id the music it's linked to
+ */
 function Add_Choice($choice, $answer, $music_id) {
     $sql = "INSERT INTO `choice`(`choice`, `choice_is_answer`, `music_id`) "
             . "VALUES (:choice, :answer, :music_id)";
@@ -137,10 +154,13 @@ function Add_Choice($choice, $answer, $music_id) {
     $query->execute();
 }
 
-function Add_Music_Style($style, $music_id) {
-    $sql = "INSERT INTO `music_style`(`music_style`, `music_id`) VALUES (:style, :music_id)";
+/**
+ * Add music style
+ * @param type $style a style of music
+ */
+function Add_Music_Style($style) {
+    $sql = "INSERT INTO `music_style`(`music_style`) VALUES (:style)";
     $query = pdo()->prepare($sql);
     $query->bindParam(':style', $style, PDO::PARAM_STR);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->execute();
 }
