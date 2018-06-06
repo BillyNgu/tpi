@@ -58,12 +58,12 @@ if (filter_has_var(INPUT_POST, "add_question")) {
         }
     }
 
-    Add_Music($title, $description, $_FILES["song"]["name"], $_FILES["cover"]["name"]);
+    Add_Music($title, $description, $nickname . "-" . $_FILES["song"]["name"], $title . "-" . $_FILES["cover"]["name"]);
     $last_music = Get_last_music();
     // Add these value in db
     for ($index = 0; $index < count($choice); $index++) {
         Add_Choice($choice[$index], $answer, $last_music['music_id']);
-        var_dump($answer);
+//        var_dump($answer);
     }
 }
 ?>
@@ -95,21 +95,21 @@ if (filter_has_var(INPUT_POST, "add_question")) {
                     <div class="form-row">
                         <div class="col">
                             <label>Proposition 1 : <input required="" class="form-control" name="choice1" type="text"></label>
-                            <label><input type="radio" name="answer[]" value="1" checked="checked" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="1" checked="checked" /> En faire la réponse.</label>
                         </div>
                         <div class="col">
                             <label>Proposition 2 : <input required="" class="form-control" name="choice2" type="text"></label>
-                            <label><input type="radio" name="answer[]" value="2" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="2" /> En faire la réponse.</label>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col">
                             <label>Proposition 3 : <input required="" class="form-control" name="choice3" type="text"></label>
-                            <label><input type="radio" name="answer[]" value="3" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="3" /> En faire la réponse.</label>
                         </div>
                         <div class="col">
                             <label>Proposition 4 : <input required="" class="form-control" name="choice4" type="text"></label>
-                            <label><input type="radio" name="answer[]" value="4" /> Make the answer.</label>
+                            <label><input type="radio" name="answer[]" value="4" /> En faire la réponse.</label>
                         </div>
                     </div>
                 </div>
@@ -117,6 +117,7 @@ if (filter_has_var(INPUT_POST, "add_question")) {
                     <label>Le morceau : <input required="" class="form-control-file" name="song" type="file" accept="audio/*"></label>
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                 </div>
+                <a class="btn btn-primary" href="crud_option.php">Retour</a>
                 <input class="btn btn-primary" name="add_question" type="submit" value="Ajouter"/>
             </form>
         </div>

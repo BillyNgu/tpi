@@ -147,7 +147,7 @@ function Get_last_music() {
 function Add_Choice($choice, $answer, $music_id) {
     $sql = "INSERT INTO `choice`(`choice`, `choice_is_answer`, `music_id`) "
             . "VALUES (:choice, :answer, :music_id)";
-    $query = pdo()->prepare($sql);    
+    $query = pdo()->prepare($sql);
     $query->bindParam(':choice', $choice, PDO::PARAM_STR);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->bindParam(':answer', $answer, PDO::PARAM_INT);
@@ -163,4 +163,11 @@ function Add_Music_Style($style) {
     $query = pdo()->prepare($sql);
     $query->bindParam(':style', $style, PDO::PARAM_STR);
     $query->execute();
+}
+
+function Get_all_music() {
+    $sql = "SELECT * FROM `music`";
+    $query = pdo()->prepare($sql);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }

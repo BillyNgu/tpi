@@ -31,11 +31,20 @@ $music = Get_all_music();
                     <th>Modifier</th>
                     <th>Supprimer / <a class="btn btn-outline-primary" href="crud.php">Ajouter</a></th>
                 </tr>
+                <?php foreach ($music as $value): 
+                    $extension = substr($value['music_file'], -3);
+                ?>
                 <tr>
-                    <?php foreach ($music as $value):?>
-                    <td><?= $value; ?></td>
-                    <?php endforeach; ?>
+                    <td><?php echo $value['music_title']; ?></td>
+                    <td><?php echo $value['music_description']; ?></td>
+                    <td>
+                        <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
+                        </audio>
+                    </td>
+                    <td><img class="img-thumbnail" src="./uploaded_files/img/cover/<?php echo $value['music_cover']; ?>" alt="<?php echo $value['music_cover']; ?>"></td>
+                    <td><a class="btn btn-light">x</a></td>
                 </tr>
+                <?php endforeach; ?>
             </table>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
