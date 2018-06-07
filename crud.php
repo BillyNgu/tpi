@@ -11,29 +11,25 @@ $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $crud = TRUE;
 
+
+
 if (filter_has_var(INPUT_POST, "add_question")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $description = trim(filter_input(INPUT_POST, 'music_description', FILTER_SANITIZE_STRING));
-
-    $choice1 = trim(filter_input(INPUT_POST, 'choice1', FILTER_SANITIZE_STRING));
-    $choice2 = trim(filter_input(INPUT_POST, 'choice2', FILTER_SANITIZE_STRING));
-    $choice3 = trim(filter_input(INPUT_POST, 'choice3', FILTER_SANITIZE_STRING));
-    $choice4 = trim(filter_input(INPUT_POST, 'choice4', FILTER_SANITIZE_STRING));
-
-    $choice = [$choice1, $choice2, $choice3, $choice4];
-    $answer = filter_has_var(INPUT_POST, 'answer');
     $cover = "";
 
+    Add_Music($title, $description);
+    
+    $music = Get_last_music();
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
-    $target_file_cover = $target_dir_cover . basename($title . "-" . $_FILES["cover"]["name"]);
+    $target_file_cover = $target_dir_cover . basename($music['music_id'] . "-" . $_FILES["cover"]["name"]);
     $FileType_cover = strtolower(pathinfo($target_file_cover, PATHINFO_EXTENSION));
 
     $uploadOk_song = 1;
     $target_dir_song = "./uploaded_files/songs/";
-    $target_file_song = $target_dir_song . basename($nickname . "-" . $_FILES["song"]["name"]);
+    $target_file_song = $target_dir_song . basename($music['music_id'] . "-" . $_FILES["song"]["name"]);
     $FileType_song = strtolower(pathinfo($target_file_song, PATHINFO_EXTENSION));
-
 
     if (!empty($_FILES['cover'])) {
         // Allow certain file formats
@@ -62,10 +58,9 @@ if (filter_has_var(INPUT_POST, "add_question")) {
     if (empty($_FILES["cover"]["name"])) {
         $cover = $_FILES["cover"]["name"];
     } else {
-        $cover = $title . "-" . $_FILES["cover"]["name"];
+        $cover = $music['music_id'] . "-" . $_FILES["cover"]["name"];
     }
-
-    Add_Music($title, $description, $nickname . "-" . $_FILES["song"]["name"], $cover);
+    Add_file_cover($music['music_id'], $music['music_id'] . "-" . $_FILES["song"]['name'], $cover);
 }
 ?>
 <!DOCTYPE html>

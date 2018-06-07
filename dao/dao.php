@@ -116,12 +116,31 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
  * @param type $music_file the dir of the file
  * @param type $music_cover a cover if there is one
  */
-function Add_Music($music_title, $music_description, $music_file, $music_cover) {
-    $sql = "INSERT INTO `music`(`music_title`, `music_description`, `music_file`, `music_cover`) "
-            . "VALUES (:music_title, :music_description, :music_file, :music_cover)";
+function Add_Music($music_title, $music_description) {
+    $sql = "INSERT INTO `music`(`music_title`, `music_description`) "
+            . "VALUES (:music_title, :music_description)";
     $query = pdo()->prepare($sql);
     $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
     $query->bindParam(':music_description', $music_description, PDO::PARAM_STR);
+    $query->execute();
+}
+
+/**
+ * Return all of the last record
+ * @return type array
+ */
+function Get_last_music() {
+    $sql = "SELECT * FROM `music` WHERE `music_id` = (SELECT MAX(`music_id`) FROM `music`)";
+    $query = pdo()->prepare($sql);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+
+function Add_file_cover($music_id, $music_file, $music_cover) {
+    $sql = "UPDATE `music` SET `music_file`= :music_file, `music_cover`= :music_cover WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
     $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
     $query->execute();
@@ -176,7 +195,7 @@ function Delete_music($music_id, $music_cover, $music_file) {
     opendir($target_dir_cover);
     unlink($target_file_cover);
     closedir($target_dir_cover);
-    
+
     opendir($target_dir_song);
     unlink($target_file_song);
     closedir($target_dir_song);
