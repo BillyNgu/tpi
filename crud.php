@@ -15,7 +15,7 @@ $crud = TRUE;
 
 if (filter_has_var(INPUT_POST, "add_question")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
-    $author = trim(filter_input(INPUT_POST, 'music_description', FILTER_SANITIZE_STRING));
+    $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $cover = "";
 
     Add_Music($title, $author);
@@ -45,7 +45,7 @@ if (filter_has_var(INPUT_POST, "add_question")) {
 
     if (!empty($_FILES['song'])) {
         // Allow certain file formats
-        if ($FileType_song != "mp3" && $FileType_song != "m4a" && $FileType_song != "ogg" && $FileType_song != "flac") {
+        if ($FileType_song != "mp3" && $FileType_song != "m4a" && $FileType_song != "ogg") {
             $uploadOk_song = 0;
         }
 
@@ -81,14 +81,12 @@ if (filter_has_var(INPUT_POST, "add_question")) {
                             <label>Titre de la musique : <input required="" type="text" name="music_title" class="form-control"></label>
                         </div>
                         <div class="col">
-                            <label>
-                                Description de la musique : <textarea required="" name="music_description" class="form-control"></textarea>
-                            </label>
+                            <label>Auteur de la musique : <input required="" name="music_author" class="form-control"></label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Le morceau : <input required="" class="form-control-file" name="song" type="file" accept="audio/*"></label>
+                    <label>Le morceau (16 Mo max) : <input required="" class="form-control-file" name="song" type="file" accept="audio/*"></label>
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
