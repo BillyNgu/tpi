@@ -134,27 +134,57 @@ function Add_Music($music_title, $music_author) {
 function Update_music($music_id, $music_title, $music_author, $music_file, $music_cover, $old_music_file, $old_music_cover) {
     $target_dir_file = "./uploaded_files/songs/";
     $target_music_file = $target_dir_file . $old_music_file;
-    
+
     $target_dir_cover = "./uploaded_files/img/cover/";
     $target_music_cover = $target_dir_cover . $old_music_cover;
-    
-    if (!empty($old_music_file)) {
-        opendir($target_dir_file);
-        unlink($target_music_file);
+
+    if (!empty($music_file) && !empty($music_cover)) {
+        if (!empty($old_music_file) && !empty($old_music_cover)) {
+            opendir($target_dir_file);
+            unlink($target_music_file);
+            opendir($target_dir_cover);
+            unlink($target_music_cover);
+        }
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file,`music_cover`=:music_cover WHERE `music_id` = :music_id";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+        $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+        $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+        $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
+        $query->execute();
+    } elseif (!empty($music_file)) {
+        if (!empty($old_music_file)) {
+            opendir($target_dir_file);
+            unlink($target_music_file);
+        }
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file WHERE `music_id` = :music_id";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+        $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+        $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+        $query->execute();
+    } elseif (!empty($music_cover)) {
+        if (!empty($old_music_cover)) {
+            opendir($target_dir_cover);
+            unlink($target_music_cover);
+        }
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, `music_cover`=:music_cover WHERE `music_id` = :music_id";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+        $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+        $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
+        $query->execute();
+    } else {
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author WHERE `music_id` = :music_id";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+        $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+        $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->execute();
     }
-    if (!empty($old_music_cover)) {
-        opendir($target_dir_cover);
-        unlink($target_music_cover);
-    }
-    
-    $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file,`music_cover`=:music_cover WHERE `music_id` = :music_id";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
-    $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
-    $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
-    $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
-    $query->execute();
 }
 
 /**

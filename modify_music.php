@@ -17,7 +17,8 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $cover = "";
-    
+    $music_file = "";
+
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
     $target_file_cover = $target_dir_cover . basename($music['music_id'] . "-" . $_FILES["cover"]["name"]);
@@ -57,8 +58,14 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     } else {
         $cover = $music['music_id'] . "-" . $_FILES["cover"]["name"];
     }
+
+    if (empty($_FILES['song']['name'])) {
+        $music_file = $_FILES['song']['name'];
+    } else {
+        $music_file = $music['music_id'] . "-" . $_FILES['song']['name'];
+    }
     
-    Update_music($music['music_id'], $title, $author, $music['music_id'] . "-" . $_FILES['song']['name'], $cover, $music['music_file'], $music['music_cover']);
+    Update_music($music['music_id'], $title, $author, $music_file, $cover, $music['music_file'], $music['music_cover']);
     header('Location:crud_option.php');
 }
 ?>
@@ -85,7 +92,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Le morceau (16 Mo max) : <input required="" class="form-control-file" name="song" type="file" accept="audio/*"></label>
+                    <label>Le morceau (16 Mo max) : <input class="form-control-file" name="song" type="file" accept="audio/*"></label>
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
