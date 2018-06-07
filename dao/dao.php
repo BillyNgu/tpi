@@ -152,6 +152,14 @@ function Add_Choice($choice, $music_id) {
     $query->execute();
 }
 
+function Add_answer($music_id, $choice_id) {
+    $sql = "INSERT INTO `blindtest_answers`(`music_id`, `choice_id`) VALUES (:music_id, :choice_id)";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->bindParam(':choice_id', $choice_id, PDO::PARAM_INT);
+    $query->execute();
+}
+
 /**
  * Add music style
  * @param type $style a style of music
