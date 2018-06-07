@@ -33,7 +33,7 @@
                 <?php if ($userData['user_status'] == 1): ?>
                     <li class="nav-item">
                         <?php if (!empty($crud)): ?>
-                            <a class="nav-link active" href="#">Liste des quesions</a>
+                            <a class="nav-link active" href="#">Liste des questions</a>
                         <?php else: ?>
                             <a class="nav-link" href="crud_option.php">Liste des questions</a>
                         <?php endif; ?>
