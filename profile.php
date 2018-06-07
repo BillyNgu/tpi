@@ -12,7 +12,7 @@ $profile = TRUE;
 
 $userData = GetData($nickname);
 
-if (isset($_POST['change'])) {
+if (filter_has_var(INPUT_POST, 'change')) {
     $uploadOk_profile = 1;
     $target_dir_profile = "./uploaded_files/img/profile/";
     $target_file_profile = $target_dir_profile . basename($nickname . "-" . $_FILES["profile_pic"]["name"]);
