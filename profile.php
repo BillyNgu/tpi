@@ -1,8 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : Profil
+ * Title : Profile
  * Description : TPI
  */
 require_once './dao/dao.php';

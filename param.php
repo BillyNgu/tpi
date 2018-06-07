@@ -1,8 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : Paramètres
+ * Title : Paramètres
  * Description : TPI
  */
 require_once './dao/dao.php';

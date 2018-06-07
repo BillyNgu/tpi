@@ -1,9 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : Index
- * Description : TPI
+ * Description : The index of the website.
  */
 require_once './dao/flashmessage.php';
 require_once './dao/dao.php';

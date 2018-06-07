@@ -1,9 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : Page d'affichage des différentes possibilités
- * Description : TPI
+ * Description : Admin panel. The admin can add, modify or delete music. This page shows every song of the db.
  */
 require_once './dao/dao.php';
 

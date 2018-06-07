@@ -1,9 +1,9 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : CRUD admin
- * Description : TPI
+ * Title : Add music
+ * Description : Add music into the database 
  */
 require_once './dao/dao.php';
 

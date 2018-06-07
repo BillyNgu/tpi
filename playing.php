@@ -1,9 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : En jeu
- * Description : TPI
+ * Description : In game
  */
 require_once './dao/dao.php';
 

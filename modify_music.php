@@ -1,9 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Titre : CRUD admin
- * Description : TPI
+ * Description : The admin can change the music in the db.
  */
 require_once './dao/dao.php';
 
@@ -11,7 +10,8 @@ $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $crud = TRUE;
 
-
+$music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);
+$music = Get_music($music_id);
 
 if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));

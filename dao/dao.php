@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Authors : Nguyen Billy
- * Description : Functions
+ * Author : Nguyen Billy
  * Date : 2018-06-04
+ * Description : Script of functions
  */
 
 require_once './dao/mySql.inc.php';
