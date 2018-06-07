@@ -22,6 +22,7 @@ if (filter_has_var(INPUT_POST, "add_question")) {
 
     $choice = [$choice1, $choice2, $choice3, $choice4];
     $answer = filter_has_var(INPUT_POST, 'answer');
+    $cover = "";
 
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
@@ -57,15 +58,24 @@ if (filter_has_var(INPUT_POST, "add_question")) {
             move_uploaded_file($_FILES["song"]["tmp_name"], $target_file_song);
         }
     }
-    Add_Music($title, $description, $nickname . "-" . $_FILES["song"]["name"], $title . "-" . $_FILES["cover"]["name"]);
+
+    if (empty($_FILES["cover"]["name"])) {
+        $cover = $_FILES["cover"]["name"];
+    } else {
+        $cover = $title . "-" . $_FILES["cover"]["name"];
+    }
+
+    Add_Music($title, $description, $nickname . "-" . $_FILES["song"]["name"], $cover);
+
+
+
+
     $last_music = Get_last_music();
     // Add these value in db
     for ($index = 0; $index < count($choice); $index++) {
         Add_Choice($choice[$index], $last_music['music_id']);
     }
     Add_answer($last_music['music_id'], $_POST['answer']);
-    var_dump($last_music['music_id']);
-    var_dump($_POST['answer']);
 }
 ?>
 <!DOCTYPE html>

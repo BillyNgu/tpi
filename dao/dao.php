@@ -140,8 +140,8 @@ function Get_last_music() {
 
 /**
  * Add choices to a song
- * @param type $choice choice of the song
- * @param type $answer the answer
+ * @param type $choice the choice
+ * @param type $music_id the linked music
  */
 function Add_Choice($choice, $music_id) {
     $sql = "INSERT INTO `choice`(`choice_name`, `music_id`) "
@@ -152,6 +152,11 @@ function Add_Choice($choice, $music_id) {
     $query->execute();
 }
 
+/**
+ * Add the answer
+ * @param type $music_id the linked music
+ * @param type $choice_id the choice which is the answer
+ */
 function Add_answer($music_id, $choice_id) {
     $sql = "INSERT INTO `blindtest_answers`(`music_id`, `choice_id`) VALUES (:music_id, :choice_id)";
     $query = pdo()->prepare($sql);
@@ -171,9 +176,56 @@ function Add_Music_Style($style) {
     $query->execute();
 }
 
+/**
+ * Return all music
+ * @return type array
+ */
 function Get_all_music() {
     $sql = "SELECT * FROM `music`";
     $query = pdo()->prepare($sql);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Return the value of the specified record
+ * @param type $music_id the linked music
+ * @return type array
+ */
+function Get_music($music_id) {
+    $sql = "SELECT * FROM `music` WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function Delete_music($music_id, $music_cover, $music_file) {
+    $target_dir_cover = "./uploaded_files/img/cover/";
+    $target_file_cover = $target_dir_cover . $music_cover;
+    $target_dir_song = "./uploaded_files/songs/";
+    $target_file_song = $target_dir_song . $music_file;
+
+    $sql = "DELETE FROM `blindtest_answers` WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
+
+    $sql2 = "DELETE FROM `choice` WHERE `music_id` = :music_id";
+    $query2 = pdo()->prepare($sql2);
+    $query2->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query2->execute();
+
+    $sql3 = "DELETE FROM `music` WHERE `music_id` = :music_id";
+    $query3 = pdo()->prepare($sql3);
+    $query3->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query3->execute();
+
+    opendir($target_dir_cover);
+    unlink($target_file_cover);
+    closedir($target_dir_cover);
+    
+    opendir($target_dir_song);
+    unlink($target_file_song);
+    closedir($target_dir_song);
 }

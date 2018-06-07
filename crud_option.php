@@ -11,6 +11,7 @@ $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $crud = TRUE;
 $music = Get_all_music();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,27 +25,30 @@ $music = Get_all_music();
             <?php require_once './navbar.php'; ?>
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>Titre</th>
-                    <th>Description</th>
-                    <th>Morceau</th>
-                    <th>Pochette d'album</th>
-                    <th>Modifier</th>
-                    <th>Supprimer / <a class="btn btn-outline-primary" href="crud.php">Ajouter</a></th>
+                    <th class="text-center">Pochette d'album</th>
+                    <th class="text-center">Titre</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Morceau</th>
+                    <th class="text-center">Modifier / Supprimer</th>
+                    <th class="text-center"><a class="btn btn-outline-primary" href="crud.php">Ajouter</a></th>
                 </tr>
-                <?php foreach ($music as $value): 
+                <?php
+                foreach ($music as $value):
                     $extension = substr($value['music_file'], -3);
-                ?>
-                <tr>
-                    <td><?php echo $value['music_title']; ?></td>
-                    <td><?php echo $value['music_description']; ?></td>
-                    <td>
-                        <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
-                        </audio>
-                    </td>
-                    <td><img class="img-thumbnail" src="./uploaded_files/img/cover/<?php echo $value['music_cover']; ?>" alt="<?php echo $value['music_cover']; ?>"></td>
-                    <td><a class="btn btn-light">x</a></td>
-                </tr>
-                <?php endforeach; ?>
+                    ?>
+                    <tr>
+                        <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($value['music_cover'])): ?>No_Cover.jpg<?php else: echo $value['music_cover'];
+                endif; ?>" alt="<?php echo $value['music_cover']; ?>"></td>
+                        <td class="text-center"><?php echo $value['music_title']; ?></td>
+                        <td class="text-center"><?php echo $value['music_description']; ?></td>
+                        <td class="text-center">
+                            <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
+                            </audio>
+                        </td>
+                        <td class="text-center"><a class="btn btn-outline-primary">Modifier</a> / <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id'] ?>">Supprimer</a></td>
+                        <td></td>
+                    </tr>
+<?php endforeach; ?>
             </table>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
