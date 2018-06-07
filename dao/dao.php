@@ -128,44 +128,6 @@ function Add_Music($music_title, $music_description, $music_file, $music_cover) 
 }
 
 /**
- * Return all of the last record
- * @return type array
- */
-function Get_last_music() {
-    $sql = "SELECT * FROM `music` WHERE `music_id` = (SELECT MAX(`music_id`) FROM `music`)";
-    $query = pdo()->prepare($sql);
-    $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC);
-}
-
-/**
- * Add choices to a song
- * @param type $choice the choice
- * @param type $music_id the linked music
- */
-function Add_Choice($choice, $music_id) {
-    $sql = "INSERT INTO `choice`(`choice_name`, `music_id`) "
-            . "VALUES (:choice_name, :music_id)";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':choice_name', $choice, PDO::PARAM_STR);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->execute();
-}
-
-/**
- * Add the answer
- * @param type $music_id the linked music
- * @param type $choice_id the choice which is the answer
- */
-function Add_answer($music_id, $choice_id) {
-    $sql = "INSERT INTO `blindtest_answers`(`music_id`, `choice_id`) VALUES (:music_id, :choice_id)";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->bindParam(':choice_id', $choice_id, PDO::PARAM_INT);
-    $query->execute();
-}
-
-/**
  * Add music style
  * @param type $style a style of music
  */
@@ -205,16 +167,6 @@ function Delete_music($music_id, $music_cover, $music_file) {
     $target_file_cover = $target_dir_cover . $music_cover;
     $target_dir_song = "./uploaded_files/songs/";
     $target_file_song = $target_dir_song . $music_file;
-
-    $sql = "DELETE FROM `blindtest_answers` WHERE `music_id` = :music_id";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->execute();
-
-    $sql2 = "DELETE FROM `choice` WHERE `music_id` = :music_id";
-    $query2 = pdo()->prepare($sql2);
-    $query2->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query2->execute();
 
     $sql3 = "DELETE FROM `music` WHERE `music_id` = :music_id";
     $query3 = pdo()->prepare($sql3);

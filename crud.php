@@ -66,16 +66,6 @@ if (filter_has_var(INPUT_POST, "add_question")) {
     }
 
     Add_Music($title, $description, $nickname . "-" . $_FILES["song"]["name"], $cover);
-
-
-
-
-    $last_music = Get_last_music();
-    // Add these value in db
-    for ($index = 0; $index < count($choice); $index++) {
-        Add_Choice($choice[$index], $last_music['music_id']);
-    }
-    Add_answer($last_music['music_id'], $_POST['answer']);
 }
 ?>
 <!DOCTYPE html>
@@ -99,28 +89,6 @@ if (filter_has_var(INPUT_POST, "add_question")) {
                             <label>
                                 Description de la musique : <textarea required="" name="music_description" class="form-control"></textarea>
                             </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col">
-                            <label>Proposition 1 : <input required="" class="form-control" name="choice1" type="text"></label>
-                            <label><input type="radio" name="answer" value="1" checked="checked" /> En faire la réponse.</label>
-                        </div>
-                        <div class="col">
-                            <label>Proposition 2 : <input required="" class="form-control" name="choice2" type="text"></label>
-                            <label><input type="radio" name="answer" value="2" /> En faire la réponse.</label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <label>Proposition 3 : <input required="" class="form-control" name="choice3" type="text"></label>
-                            <label><input type="radio" name="answer" value="3" /> En faire la réponse.</label>
-                        </div>
-                        <div class="col">
-                            <label>Proposition 4 : <input required="" class="form-control" name="choice4" type="text"></label>
-                            <label><input type="radio" name="answer" value="4" /> En faire la réponse.</label>
                         </div>
                     </div>
                 </div>
