@@ -17,10 +17,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $cover = "";
-
-    Add_Music($title, $author);
     
-    $music = Get_last_music();
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
     $target_file_cover = $target_dir_cover . basename($music['music_id'] . "-" . $_FILES["cover"]["name"]);
@@ -60,7 +57,9 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     } else {
         $cover = $music['music_id'] . "-" . $_FILES["cover"]["name"];
     }
-    Add_file_cover($music['music_id'], $music['music_id'] . "-" . $_FILES["song"]['name'], $cover);
+    
+    Update_music($music['music_id'], $title, $author, $music['music_id'] . "-" . $_FILES['song']['name'], $cover, $music['music_file'], $music['music_cover']);
+    header('Location:crud_option.php');
 }
 ?>
 <!DOCTYPE html>
@@ -78,10 +77,10 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                 <div class="form-group">      
                     <div class="row">
                         <div class="col">
-                            <label>Titre de la musique : <input required="" type="text" name="music_title" class="form-control"></label>
+                            <label>Titre de la musique : <input required="" type="text" name="music_title" class="form-control" value="<?= $music['music_title']; ?>"></label>
                         </div>
                         <div class="col">
-                            <label>Auteur de la musique : <input required="" name="music_author" class="form-control"></label>
+                            <label>Auteur de la musique : <input required="" name="music_author" class="form-control" value="<?= $music['music_author']; ?>"></label>
                         </div>
                     </div>
                 </div>
@@ -90,7 +89,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
-                <input class="btn btn-primary" name="modify_music" type="submit" value="Ajouter"/>
+                <input class="btn btn-primary" name="modify_music" type="submit" value="Modifier"/>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
