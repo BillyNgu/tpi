@@ -45,7 +45,7 @@ $music = Get_all_music();
                             <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
                             </audio>
                         </td>
-                        <td class="text-center"><a class="btn btn-outline-primary">Modifier</a> / <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id'] ?>">Supprimer</a></td>
+                        <td class="text-center"><a class="btn btn-outline-primary">Modifier</a> <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id'] ?>">Supprimer</a></td>
                         <td></td>
                     </tr>
 <?php endforeach; ?>
