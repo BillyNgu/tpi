@@ -18,8 +18,6 @@ if (filter_has_var(INPUT_POST, 'connection')) {
     if (CheckLogin(strtolower($nickname_login), $pwd_login) == FALSE ) {
         $errors['login'] = 'L\'identifiant et/ou le mot de passe sont faux.';
     }
-    
-    
 }
 ?>
 <!DOCTYPE html>
