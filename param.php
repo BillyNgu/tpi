@@ -23,7 +23,7 @@ $param = TRUE;
             <?php require_once './navbar.php'; ?>
             <form action="param.php" method="post">
                 <fieldset>
-                    <legend>Paramètre</legend>
+                    <legend>Paramètres</legend>
                     <p>Temps : </p>
                     <div class="slidecontainer">
                         <input type="range" min="10" max="100" value="30" class="slider" id="myRange">
