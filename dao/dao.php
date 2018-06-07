@@ -201,11 +201,14 @@ function Delete_music($music_id, $music_cover, $music_file) {
     $query3->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query3->execute();
 
-    opendir($target_dir_cover);
-    unlink($target_file_cover);
-    closedir($target_dir_cover);
-
-    opendir($target_dir_song);
-    unlink($target_file_song);
-    closedir($target_dir_song);
+    if (!empty($music_cover)) {
+        opendir($target_dir_cover);
+        unlink($target_file_cover);
+        closedir($target_dir_cover);
+    }
+    if (!empty($music_file)) {
+        opendir($target_dir_song);
+        unlink($target_file_song);
+        closedir($target_dir_song);
+    }
 }
