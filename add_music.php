@@ -13,7 +13,7 @@ $crud = TRUE;
 
 
 
-if (filter_has_var(INPUT_POST, "add_question")) {
+if (filter_has_var(INPUT_POST, "add_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $cover = "";
@@ -90,7 +90,7 @@ if (filter_has_var(INPUT_POST, "add_question")) {
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
-                <input class="btn btn-primary" name="add_question" type="submit" value="Ajouter"/>
+                <input class="btn btn-primary" name="add_music" type="submit" value="Ajouter"/>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
