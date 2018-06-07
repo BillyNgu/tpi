@@ -15,10 +15,10 @@ $crud = TRUE;
 
 if (filter_has_var(INPUT_POST, "add_question")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
-    $description = trim(filter_input(INPUT_POST, 'music_description', FILTER_SANITIZE_STRING));
+    $author = trim(filter_input(INPUT_POST, 'music_description', FILTER_SANITIZE_STRING));
     $cover = "";
 
-    Add_Music($title, $description);
+    Add_Music($title, $author);
     
     $music = Get_last_music();
     $uploadOk_cover = 1;

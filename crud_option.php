@@ -27,7 +27,7 @@ $music = Get_all_music();
                 <tr>
                     <th class="text-center">Pochette d'album</th>
                     <th class="text-center">Titre</th>
-                    <th class="text-center">Description</th>
+                    <th class="text-center">Auteur</th>
                     <th class="text-center">Morceau</th>
                     <th class="text-center">Modifier / Supprimer</th>
                     <th class="text-center"><a class="btn btn-outline-primary" href="crud.php">Ajouter</a></th>
@@ -40,7 +40,7 @@ $music = Get_all_music();
                         <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($value['music_cover'])): ?>No_Cover.jpg<?php else: echo $value['music_cover'];
                 endif; ?>" alt="<?php echo $value['music_cover']; ?>"></td>
                         <td class="text-center"><?php echo $value['music_title']; ?></td>
-                        <td class="text-center"><?php echo $value['music_description']; ?></td>
+                        <td class="text-center"><?php echo $value['music_author']; ?></td>
                         <td class="text-center">
                             <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
                             </audio>
