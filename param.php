@@ -17,6 +17,7 @@ if (filter_has_var(INPUT_POST, 'save')) {
     $question_type = trim(filter_input(INPUT_POST, 'question_type', FILTER_VALIDATE_INT));
 
     Save_parameters($time, $questions_number, $question_type, $userData['user_id']);
+    $param_value = Get_parameters($userData['user_id']);
 }
 ?>
 <!DOCTYPE html>
@@ -34,33 +35,42 @@ if (filter_has_var(INPUT_POST, 'save')) {
                     <legend>Paramètres</legend>
                     <p>Temps : </p>
                     <div class="slidecontainer">
-                        <input name="time" type="range" min="10" max="60" value="<?= $param_value['parameters_time']; ?>" class="slider" id="myRange">
+                        <input name="time" type="range" min="10" max="60" value="<?php
+                        if (!empty($param_value['parameters_time'])):
+                            echo $param_value['parameters_time'];
+                        else:
+                            ?>30<?php endif; ?>" class="slider" id="myRange">
                         <p><span id="demo"></span> seconde(s).</p>
                     </div>
                     <label>Le nombre de questions : 
                         <select name="questions_number">
-                            <?php switch ($param_value['parameters_questions_number']): case 5: ?>
-                                    <option selected="" value="5">5 questions</option>
-                                    <option value="10">10 questions</option>
-                                    <option value="15">15 questions</option>
+                            <?php if (!empty($param_value['parameters_questions_number'])): switch ($param_value['parameters_questions_number']): case 5: ?>
+                                        <option selected="" value="5">5 questions</option>
+                                        <option value="10">10 questions</option>
+                                        <option value="15">15 questions</option>
+                                        <?php
+                                        break;
+                                    case 10:
+                                        ?>
+                                        <option value="5">5 questions</option>
+                                        <option selected="" value="10">10 questions</option>
+                                        <option value="15">15 questions</option>
+                                        <?php
+                                        break;
+                                    case 15:
+                                        ?>
+                                        <option value="5">5 questions</option>
+                                        <option value="10">10 questions</option>
+                                        <option selected="" value="15">15 questions</option>
                                     <?php
-                                    break;
-                                case 10:
-                                    ?>
-                                    <option value="5">5 questions</option>
-                                    <option selected="" value="10">10 questions</option>
-                                    <option value="15">15 questions</option>
-                                    <?php
-                                    break;
-                                case 15:
-                                    ?>
-                                    <option value="5">5 questions</option>
-                                    <option value="10">10 questions</option>
-                                    <option selected="" value="15">15 questions</option>
-                                <?php
-                                default: break;
-                            endswitch;
-                            ?>
+                                    default: break;
+                                endswitch;
+                            else:
+                                ?>
+                                <option selected="" value="5">5 questions</option>
+                                <option value="10">10 questions</option>
+                                <option value="15">15 questions</option> 
+                            <?php endif; ?>
                         </select>
                     </label>
                     <table>
@@ -70,18 +80,28 @@ if (filter_has_var(INPUT_POST, 'save')) {
                         <tr>
                             <td>
                                 <label>
-                                    <?php if ($param_value['parameters_type'] == 1): ?>
+                                    <?php if (!empty($param_value['parameters_type'])): if ($param_value['parameters_type'] == 1): ?>
+                                            <input type="radio" name="question_type" value="1" checked="checked" />Chanson
+                                        <?php else: ?>
+                                            <input type="radio" name="question_type" value="1" />Chanson
+                                        <?php
+                                        endif;
+                                    else:
+                                        ?>
                                         <input type="radio" name="question_type" value="1" checked="checked" />Chanson
-                                    <?php else: ?>
-                                        <input type="radio" name="question_type" value="1" />Chanson
                                     <?php endif; ?>
                                 </label>
                             </td>
                             <td>
                                 <label>
-                                    <?php if ($param_value['parameters_type'] == 2): ?>
-                                        <input type="radio" name="question_type" value="2" checked="checked"/>Pochette d'album
-                                    <?php else: ?>
+                                    <?php if (!empty($param_value['parameters_type'])): if ($param_value['parameters_type'] == 2): ?>
+                                            <input type="radio" name="question_type" value="2" checked="checked"/>Pochette d'album
+                                        <?php else: ?>
+                                            <input type="radio" name="question_type" value="2" />Pochette d'album
+                                        <?php
+                                        endif;
+                                    else:
+                                        ?>
                                         <input type="radio" name="question_type" value="2" />Pochette d'album
                                     <?php endif; ?>
                                 </label>
