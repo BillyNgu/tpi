@@ -39,8 +39,8 @@ if (filter_has_var(INPUT_POST, 'save')) {
                         if (!empty($param_value['parameters_time'])):
                             echo $param_value['parameters_time'];
                         else:
-                            ?>30<?php endif; ?>" class="slider" id="myRange">
-                        <p><span id="demo"></span> seconde(s).</p>
+                            ?>30<?php endif; ?>" class="slider" id="param_time">
+                        <p><span id="param_second"></span> seconde(s).</p>
                     </div>
                     <label>Le nombre de questions : 
                         <select name="questions_number">
@@ -118,8 +118,9 @@ if (filter_has_var(INPUT_POST, 'save')) {
             </form>
         </div>
         <script>
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
+            // Change the style of the slider
+            var slider = document.getElementById("param_time");
+            var output = document.getElementById("param_second");
             output.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)

@@ -257,6 +257,19 @@ function Get_all_music() {
 }
 
 /**
+ * Return a limited number of all music from db
+ * @param type $param_questions_number the limit of music it'll return
+ * @return type array
+ */
+function Get_all_music_random($param_questions_number) {
+    $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT :param_questions_number";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':param_questions_number', $param_questions_number, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
  * Return the value of the specified record
  * @param type $music_id the linked music
  * @return type array
@@ -326,7 +339,7 @@ function Save_parameters($question_time, $questions_number, $question_type, $use
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
     }
-    SetFlashMessage("Paramètres enregistrés");
+    SetFlashMessage("Paramètres enregistrés.");
 }
 
 /**
