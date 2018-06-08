@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 08 juin 2018 à 09:05
+-- Généré le :  ven. 08 juin 2018 à 12:22
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `music` (
   `music_cover` text,
   PRIMARY KEY (`music_id`),
   UNIQUE KEY `music_title` (`music_title`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `music`
@@ -68,7 +68,14 @@ INSERT INTO `music` (`music_id`, `music_title`, `music_author`, `music_file`, `m
 (6, 'Maps', 'Maroon 5', '6-Maps.mp3', '6-maps_maroon5.jpg'),
 (7, 'Cold feat. Future', 'Maroon 5', '7-Cold feat. Future.mp3', ''),
 (8, 'Chandelier', 'Sia', '8-Chandelier.mp3', '8-Sia-Chandelier.jpg'),
-(9, 'Animals', 'Maroon 5', '9-Animals.mp3', '');
+(9, 'Animals', 'Maroon 5', '9-Animals.mp3', ''),
+(10, 'Payphone feat. Wiz Khalifa', 'Maroon 5', '10-Payphone (feat. Wiz Khalifa).mp3', ''),
+(11, 'Feelings', 'Maroon 5', '11-Feelings.mp3', ''),
+(12, 'Moves Like Jagger feat. Christina Aguilera', 'Maroon 5', '12-Moves Like Jagger (feat. Christina Aguilera).mp3', ''),
+(13, 'That&#39;s What I Like', 'Bruno Mars', '13-That’s What I Like.mp3', ''),
+(14, 'Numb', 'Linkin Park', '14-Numb.mp3', ''),
+(15, 'In The End', 'Linkin Park', '15-In The End.mp3', ''),
+(16, 'Talking to Myself', 'Linkin Park', '16-Talking to Myself.mp3', '');
 
 -- --------------------------------------------------------
 
@@ -98,14 +105,15 @@ CREATE TABLE IF NOT EXISTS `parameters` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`parameters_id`),
   KEY `parameters_users_FK` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `parameters`
 --
 
 INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) VALUES
-(1, 25, 5, 1, 1);
+(1, 30, 5, 1, 1),
+(2, 20, 5, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -118,11 +126,11 @@ CREATE TABLE IF NOT EXISTS `score` (
   `score_id` int(11) NOT NULL AUTO_INCREMENT,
   `score_date` date NOT NULL,
   `score` int(11) NOT NULL,
-  `music_id` int(11) NOT NULL,
+  `parameters_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`score_id`),
-  KEY `score_music_FK` (`music_id`),
-  KEY `score_users0_FK` (`user_id`)
+  KEY `score_users0_FK` (`user_id`),
+  KEY `parameters_id_FK` (`parameters_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -149,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
-(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'root-loginformatique_dir_couleur.png', 1),
+(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'root-blindtest.png', 1),
 (2, 'guess', 'guess', 'guess@guess.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'guess-ApplicationFrameHost_2018-06-05_13-46-49.png', 0),
 (3, 'test', 'test', 'test@test.com', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', NULL, 0),
 (4, 'user4', 'user4', 'user4@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
@@ -176,7 +184,7 @@ ALTER TABLE `parameters`
 -- Contraintes pour la table `score`
 --
 ALTER TABLE `score`
-  ADD CONSTRAINT `score_music_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
+  ADD CONSTRAINT `score_ibfk_1` FOREIGN KEY (`parameters_id`) REFERENCES `parameters` (`parameters_id`),
   ADD CONSTRAINT `score_users0_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
