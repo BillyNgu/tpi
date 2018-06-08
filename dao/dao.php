@@ -257,14 +257,19 @@ function Get_all_music() {
 }
 
 /**
- * Return a limited number of all music from db
- * @param type $param_questions_number the limit of music it'll return
+ * Return 4 random musics from db
  * @return type array
  */
-function Get_all_music_random($param_questions_number) {
-    $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT :param_questions_number";
+function Get_all_music_random() {
+    $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
     $query = pdo()->prepare($sql);
-    $query->bindParam(':param_questions_number', $param_questions_number, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function Get_all_cover_random() {
+    $sql = "SELECT DISTINCT * FROM `music` WHERE `music_cover` IS NOT NULL ORDER BY RAND() LIMIT 4";
+    $query = pdo()->prepare($sql);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -353,4 +358,39 @@ function Get_parameters($user_id) {
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Return true or false if the audio is the same as the answer
+ * @param type string. $q_answer The answer the user chooses
+ * @param type string. $q_audio The audio file that was playing
+ * @return boolean
+ */
+function check_answer($q_answer, $q_audio) {
+    $sql = "SELECT `music_title` FROM `music` WHERE `music_file` = :q_audio";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':q_audio', $q_audio, PDO::PARAM_STR);
+    $query->execute();
+
+
+    if ($query->fetch(PDO::FETCH_ASSOC)['music_title'] == $q_answer) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+/**
+ * Add score into db based on the user and its parameters
+ * @param type $score int. The score of the user.
+ * @param type $parameters_id int. The user's parameters.
+ * @param type $user_id int. The user
+ */
+function Add_score($score, $user_id) {
+    $sql = "INSERT INTO `score`(`score`, `user_id`) "
+            . "VALUES (:score, :user_id)";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':score', $score, PDO::PARAM_INT);
+    $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query->execute();
 }

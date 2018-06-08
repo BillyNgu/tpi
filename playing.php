@@ -9,9 +9,24 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $paramData = Get_parameters($userData['user_id']);
-$musics = Get_all_music_random($paramData['parameters_questions_number']);
+$musics = Get_all_music_random();
+$covers = Get_all_cover_random();
 $question_name = [];
 $play = TRUE;
+
+if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
+    $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
+    $_SESSION['cpt'] += 1;
+
+    if (check_answer($q_answer, $_SESSION['q_audio'])) {
+        $_SESSION['score'] += 1;
+    }
+
+    if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
+        Add_score($_SESSION['score'], $userData['user_id']);
+        header('Location:result.php');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,51 +39,113 @@ $play = TRUE;
     <body>
         <div class="container">
             <?php require_once './navbar.php'; ?>
-            <fieldset>
-                <legend>Jouer</legend>
-                <p>Quelle est cette musique ?</p>
-                <?php
-                foreach ($musics as $value):
-                    $question_name[] = $value['music_file'];
-                    ?>
-                    <label>
-                        <input name="answer" value="<?= $value['music_title']; ?>" type="radio" ><?= $value['music_title']; ?>
-                    </label>
-                    <?php
-                endforeach;
-                // a random music file in the $question_name array
-                $question_music = $question_name[array_rand($question_name, 1)];
-                var_dump($question_name);
-                ?>
-                <audio autoplay="" controls="" id="question_audio">
-                    <source src="./uploaded_files/songs/<?php echo $question_music; ?>" type="audio/<?= substr($question_music, -3); ?>">
-                </audio>
-                <!-- A slide bar to control the volume -->
-                <input class="slider" id="q_volume_slide" type="range" min="0" max="1" step="0.1" onchange="setVolume()">
-                <p><span id="q_volume_output"></span>%.</p>
-                <?php var_dump($question_music); ?>
-            </fieldset>
+            <form action="playing.php" method="post">
+                <?php if ($paramData['parameters_type'] == 1): ?>
+                <fieldset>
+                    <legend>Jouer</legend>
+                    <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
+                    <p>Quelle est cette musique ?</p>
+                    <table>
+                        <?php
+                        foreach ($musics as $value):
+                            $question_name[] = $value['music_file'];
+                            ?>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input name="q_answer" value="<?= $value['music_title']; ?>" type="radio" ><?= $value['music_title']; ?>
+                                    </label>
+                                </td>
+                            </tr>
+                            <?php
+                        endforeach;
+                        // a random music file in the $question_name array
+                        $question_music = $question_name[array_rand($question_name, 1)];
+                        $_SESSION['q_audio'] = $question_music;
+                        var_dump($question_name);
+                        ?>
+                    </table>
+                    <audio autoplay="" controls="" id="question_audio">
+                        <source src="./uploaded_files/songs/<?php echo $question_music; ?>" type="audio/<?= substr($question_music, -3); ?>">
+                    </audio>
+                    <!-- A slide bar to control the volume -->
+                    <input class="slider" id="q_volume_slide" type="range" min="0" max="1" step="0.1" onchange="setVolume()">
+                    <p>Volume : <span id="q_volume_output"></span>%.</p>
+                    <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
+                    <button class="btn btn-primary" name="answer">Valider</button>
+                    <?php var_dump($question_music); ?>
+                </fieldset>
+                <?php else: ?>
+                <fieldset>
+                    <legend>Jouer</legend>
+                    <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
+                    <p>Quelle est cette musique ?</p>
+                    <table>
+                        <?php
+                        foreach ($covers as $value):
+                            $question_name[] = $value['music_cover'];
+                            ?>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input name="q_answer" value="<?= $value['music_author']; ?>" type="radio" ><?= $value['music_author']; ?>
+                                    </label>
+                                </td>
+                            </tr>
+                            <?php
+                        endforeach;
+                        // a random music file in the $question_name array
+                        $question_music = $question_name[array_rand($question_name, 1)];
+                        $_SESSION['q_audio'] = $question_music;
+                        var_dump($question_name);
+                        ?>
+                    </table>
+                    <img src="./uploaded_files/img/cover/<?= $value['music_cover']; ?>" alt="<?= $value['music_cover']; ?>">
+                    <!-- A slide bar to control the volume -->
+                    <input class="slider" id="q_volume_slide" type="range" min="0" max="1" step="0.1" onchange="setVolume()">
+                    <p>Volume : <span id="q_volume_output"></span>%.</p>
+                    <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
+                    <button class="btn btn-primary" name="answer">Valider</button>
+                    <?php var_dump($question_music); ?>
+                </fieldset>
+                <?php endif; ?>
+            </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
         <script>
-                    // Change the style of the slider
-                    var q_audio = document.getElementById("question_audio");
-                    q_audio.controls = false;
-                    
-                    var q_audio_slide = document.getElementById("q_volume_slide");
-                    var output = document.getElementById("q_volume_output");
-                    output.innerHTML = q_audio_slide.value * 100; // Display the default slider value
+                        // Change the style of the slider
+                        var q_audio = document.getElementById("question_audio");
+                        q_audio.controls = false;
 
-                    // Update the current slider value (each time you drag the slider handle)
-                    q_audio_slide.oninput = function () {
-                        output.innerHTML = this.value * 100;
-                    };
 
-                    // Disable main function of the html audio tag and add a slider bar to change its volume.                  
-                    function setVolume() {
-                        var volume = document.getElementById("q_volume_slide");
-                        q_audio.volume = volume.value;
-                    }
+                        var q_audio_slide = document.getElementById("q_volume_slide");
+                        var output = document.getElementById("q_volume_output");
+                        output.innerHTML = q_audio_slide.value * 100; // Display the default slider value
+
+                        // Update the current slider value (each time you drag the slider handle)
+                        q_audio_slide.oninput = function () {
+                            output.innerHTML = this.value * 100;
+                        };
+
+                        var q_time_limit = <?= $paramData['parameters_time']; ?>;
+                        q_time_limit.innerHTML = q_time_limit;
+                        // Update the count down every 1 second
+                        var x = setInterval(function () {
+                            q_time_limit--;
+                            // Display the result in the element with id="demo"
+                            document.getElementById("time_limit").innerHTML = q_time_limit;
+
+                            // If the count down is finished, write some text 
+                            if (q_time_limit === 0) {
+                                location.reload();
+                            }
+                        }, 1000);
+
+                        // Disable main function of the html audio tag and add a slider bar to change its volume.                  
+                        function setVolume() {
+                            var volume = document.getElementById("q_volume_slide");
+                            q_audio.volume = volume.value;
+                        }
         </script>
     </body>
 </html>

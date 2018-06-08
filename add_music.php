@@ -71,11 +71,14 @@ if (filter_has_var(INPUT_POST, "add_music")) {
 
     if (!empty($_FILES["cover"]["name"])) {
         $cover = $music['music_id'] . "-" . $_FILES["cover"]["name"];
+    } else {
+        $cover = NULL;
     }
 
     if (!empty($_FILES['song']['name'])) {
         $song = $music['music_id'] . "-" . $_FILES["song"]['name'];
     }
+
 
     if (empty($song)) {
         $errors_add_file_cover['song'] = "Il ne peut pas ne pas y avoir de musique.";

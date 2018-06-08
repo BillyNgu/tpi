@@ -25,7 +25,7 @@ $play = TRUE;
             <?php require_once './navbar.php'; ?>
             <fieldset>
                 <legend>Résultat</legend>
-                <p>Vous avez obtenu <?= $_SESSION['score']; ?> point(s).</p>
+                <p>Vous avez obtenu <?= $_SESSION['score']; ?> point(s) sur <?= $userData['parameters_questions_number']; ?>.</p>
                 <a class="btn btn-primary" href="play.php">Retour</a>
             </fieldset>
         </div>

@@ -12,6 +12,8 @@ $userData = GetData($nickname);
 $paramData = Get_parameters($userData['user_id']);
 $play = TRUE;
 
+$_SESSION['cpt'] = 1;
+$_SESSION['score'] = 0;
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,12 +27,13 @@ $play = TRUE;
             <?php require_once './navbar.php'; ?>
             <fieldset>
                 <legend>Jouer</legend>
-                <p>Vous allez jouer à un quizz de <?php echo $paramData['parameters_questions_number']; ?> questions sur les <?php if ($paramData['parameters_type'] == 1) {
-                echo "chansons.";
-            } else {
-            echo "pochettes d'album.";
-            }
-            ?></p>
+                <p>Vous allez jouer à un quizz de <?php echo $paramData['parameters_questions_number']; ?> questions sur les <?php
+                    if ($paramData['parameters_type'] == 1) {
+                        echo "chansons.";
+                    } else {
+                        echo "pochettes d'album.";
+                    }
+                    ?></p>
                 <p>Vous aurez <?= $paramData['parameters_time']; ?> secondes par question.</p>
                 <a class="btn btn-primary" href="playing.php">Commencer</a>
             </fieldset>
