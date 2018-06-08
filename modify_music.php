@@ -19,6 +19,8 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     $cover = "";
     $music_file = "";
 
+    $errors_modify_music = [];
+
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
     $target_file_cover = $target_dir_cover . basename($music['music_id'] . "-" . $_FILES["cover"]["name"]);
@@ -64,9 +66,19 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     } else {
         $music_file = $music['music_id'] . "-" . $_FILES['song']['name'];
     }
-    
-    Update_music($music['music_id'], $title, $author, $music_file, $cover, $music['music_file'], $music['music_cover']);
-    header('Location:crud_option.php');
+
+    if (empty($title)) {
+        $errors_modify_music['music_title'] = "Le titre ne peut pas être vide.";
+    }
+
+    if (empty($author)) {
+        $errors_modify_music['music_author'] = "L'auteur ne peut pas être vide.";
+    }
+
+    if (empty($errors_modify_music)) {
+        Update_music($music['music_id'], $title, $author, $music_file, $cover, $music['music_file'], $music['music_cover']);
+        header('Location:crud_option.php');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -84,10 +96,20 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                 <div class="form-group">      
                     <div class="row">
                         <div class="col">
-                            <label>Titre de la musique : <input required="" type="text" name="music_title" class="form-control" value="<?= $music['music_title']; ?>"></label>
+                            <label>Titre de la musique : <input type="text" name="music_title" class="form-control" value="<?= $music['music_title']; ?>"></label>
+                            <?php
+                            if (!empty($errors_modify_music['music_title'])) {
+                                echo $errors_modify_music['music_title'];
+                            }
+                            ?>
                         </div>
                         <div class="col">
-                            <label>Auteur de la musique : <input required="" name="music_author" class="form-control" value="<?= $music['music_author']; ?>"></label>
+                            <label>Auteur de la musique : <input name="music_author" class="form-control" value="<?= $music['music_author']; ?>"></label>
+                            <?php
+                            if (!empty($errors_modify_music['music_author'])) {
+                                echo $errors_modify_music['music_author'];
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

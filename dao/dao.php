@@ -36,6 +36,7 @@ function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
     $query->bindParam(':pwd', $pwdsha1, PDO::PARAM_STR);
     $query->bindParam(':profilepic', $profilepic_unique, PDO::PARAM_STR);
     $query->execute();
+    SetFlashMessage("Compte créé.");
 }
 
 /**

@@ -23,6 +23,8 @@ if (filter_has_var(INPUT_POST, 'register')) {
     $target_file_register = $target_dir_register . $nickname_register_form . "-" . basename($_FILES["profile_pic"]["name"]);
     $FileType_register = strtolower(pathinfo($target_file_register, PATHINFO_EXTENSION));
 
+    $errors_register_form = [];
+
     if (!empty($_FILES['profile_pic'])) {
         // Allow certain file formats
         if ($FileType_register != "jpg" && $FileType_register != "png" && $FileType_register != "jpeg" && $FileType_register != "gif") {
@@ -35,11 +37,34 @@ if (filter_has_var(INPUT_POST, 'register')) {
             // if everything is ok, try to upload file
         }
     }
-    CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
-    SetFlashMessage("Utilisateur ajouté.");
-    header("location:index.php");
-    echo GetFlashMessage();
-    exit;
+    
+    if (empty($name_register_form)) {
+        $errors_register_form['name'] = "Le nom ne peut pas être vide.";
+    }
+    
+    if (empty($nickname_register_form)) {
+        $errors_register_form['nickname'] = "Le pseudo ne peut pas être vide.";
+    }
+    
+    if (empty($email_register_form)) {
+        $errors_register_form['email'] = "L'email ne peut pas être vide.";
+    }
+    
+    if (empty($pwd_register_form)) {
+        $errors_register_form['password'] = "Le mot de passe ne peut pas être vide.";
+    }
+    
+    if (empty($pwdRepeat_register_form)) {
+        $errors_register_form['passwordConfirmation'] = "La confirmation ne peut pas être vide.";
+    }
+    
+    if ($pwd_register_form !== $pwdRepeat_register_form) {
+        $errors_register_form['passwordConfirmation'] = "Les mots de passe sont différents.";
+    }
+    
+    if (empty($errors_register_form)) {
+        CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -56,7 +81,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 <h3>Inscription</h3>
                 <div class="form-group">
                     <label for="lastname_login">Nom :</label>
-                    <input required="" type="text" name="name" placeholder="Lennon" class="form-control col-3" id="lastname_login" value="<?php
+                    <input type="text" name="name" placeholder="Lennon" class="form-control col-3" id="lastname_login" value="<?php
                     if (!empty($name_register_form)) {
                         echo $name_register_form;
                     }
@@ -69,7 +94,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 </div>
                 <div class="form-group">
                     <label for="nickname_login">Pseudo :</label>
-                    <input required="" type="text" name="nickname" placeholder="BobL" class="form-control col-3" id="nickname_login" value="<?php
+                    <input type="text" name="nickname" placeholder="BobL" class="form-control col-3" id="nickname_login" value="<?php
                     if (!empty($nickname_register_form)) {
                         echo $nickname_register_form;
                     }
@@ -82,7 +107,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 </div>
                 <div class="form-group">
                     <label for="email_login">Email :</label>
-                    <input required="" type="email" name="email" placeholder="random@email.com" class="form-control col-3" id="email_login" value="<?php
+                    <input type="email" name="email" placeholder="random@email.com" class="form-control col-3" id="email_login" value="<?php
                     if (!empty($email_register_form)) {
                         echo $email_register_form;
                     }
@@ -95,7 +120,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 </div>
                 <div class="form-group">
                     <label for="password_login">Mot de passe :</label>
-                    <input required="" type="password" name="password" class="form-control col-3" id="password_login">
+                    <input type="password" name="password" class="form-control col-3" id="password_login">
                     <?php
                     if (!empty($errors_register_form['password'])) {
                         echo $errors_register_form['password'];
@@ -104,7 +129,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 </div>
                 <div class="form-group">
                     <label for="passwordconfirmation_login">Confirmer mot de passe :</label>
-                    <input required="" type="password" name="passwordConfirmation" class="form-control col-3" id="passwordconfirmation_login">
+                    <input type="password" name="passwordConfirmation" class="form-control col-3" id="passwordconfirmation_login">
                     <?php
                     if (!empty($errors_register_form['passwordConfirmation'])) {
                         echo $errors_register_form['passwordConfirmation'];
@@ -122,6 +147,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
                 </div>
                 <a class="btn btn-primary" href="index.php">Retour</a>
                 <input class="btn btn-primary" value="S'inscrire" name="register" type="submit">
+                <?= GetFlashMessage(); ?>
             </form>
         </div>
         <script type="text/javascript" src="js/bootstrap.js"></script>
