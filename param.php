@@ -44,7 +44,11 @@ if (filter_has_var(INPUT_POST, 'save')) {
                     </div>
                     <label>Le nombre de questions : 
                         <select name="questions_number">
-                            <?php if (!empty($param_value['parameters_questions_number'])): switch ($param_value['parameters_questions_number']): case 5: ?>
+                            <?php
+                            if (!empty($param_value['parameters_questions_number'])):
+                                switch ($param_value['parameters_questions_number']):
+                                    case 5:
+                                        ?>
                                         <option selected="" value="5">5 questions</option>
                                         <option value="10">10 questions</option>
                                         <option value="15">15 questions</option>
