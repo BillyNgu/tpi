@@ -10,7 +10,6 @@ $nickname = $_SESSION['user_nickname'];
 $userData = GetData($nickname);
 $crud = TRUE;
 $music = Get_all_music();
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,8 +36,10 @@ $music = Get_all_music();
                     $extension = substr($value['music_file'], -3);
                     ?>
                     <tr>
-                        <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($value['music_cover'])): ?>No_Cover.jpg<?php else: echo $value['music_cover'];
-                endif; ?>" alt="<?php echo $value['music_cover']; ?>"></td>
+                        <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($value['music_cover'])): ?>No_Cover.jpg<?php
+                            else: echo $value['music_cover'];
+                            endif;
+                            ?>" alt="<?php echo $value['music_cover']; ?>"></td>
                         <td class="text-center"><?php echo $value['music_title']; ?></td>
                         <td class="text-center"><?php echo $value['music_author']; ?></td>
                         <td class="text-center">
@@ -46,14 +47,14 @@ $music = Get_all_music();
                             </audio>
                         </td>
                         <td class="text-center">
-                            <a href="modify_music.php?music_id=<?=$value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a>
+                            <a href="modify_music.php?music_id=<?= $value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id']; ?>">Supprimer</a>
+                            <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?= $value['music_id']; ?>">Supprimer</a>
                         </td>
                         <td></td>
                     </tr>
-<?php endforeach; ?>
+                <?php endforeach; ?>
             </table>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
