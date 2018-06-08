@@ -276,3 +276,35 @@ function Delete_music($music_id, $music_cover, $music_file) {
         closedir($target_dir_song);
     }
 }
+
+function Save_parameters($question_time, $questions_number, $question_type, $user_id) {
+    $userData = Check_parameters($user_id);
+
+    if (!empty($userData)) {
+        $sql = "UPDATE `parameters` SET `parameters_time`=:question_time, `parameters_questions_number`=:questions_number, "
+                . "`parameters_type`=:question_type WHERE `user_id` =:user_id";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
+        $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
+        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
+        $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+    } else {
+        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) "
+                . "VALUES (:question_time, :questions_number, :question_type, :user_id)";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
+        $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
+        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
+        $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+    }
+}
+
+function Check_parameters($user_id) {
+    $sql = "SELECT * FROM `parameters` WHERE `user_id` = :user_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
