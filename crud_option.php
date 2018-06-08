@@ -28,7 +28,8 @@ $music = Get_all_music();
                     <th class="text-center">Titre</th>
                     <th class="text-center">Auteur</th>
                     <th class="text-center">Morceau</th>
-                    <th class="text-center">Modifier / Supprimer</th>
+                    <th class="text-center">Modifier</th>
+                    <th class="text-center">Supprimer</th>
                     <th class="text-center"><a class="btn btn-outline-primary" href="add_music.php">Ajouter</a></th>
                 </tr>
                 <?php
@@ -44,7 +45,12 @@ $music = Get_all_music();
                             <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
                             </audio>
                         </td>
-                        <td class="text-center"><a href="modify_music.php?music_id=<?=$value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a> <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id']; ?>">Supprimer</a></td>
+                        <td class="text-center">
+                            <a href="modify_music.php?music_id=<?=$value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?=$value['music_id']; ?>">Supprimer</a>
+                        </td>
                         <td></td>
                     </tr>
 <?php endforeach; ?>
