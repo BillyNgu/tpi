@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 07 juin 2018 à 08:36
+-- Généré le :  ven. 08 juin 2018 à 09:05
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -48,11 +48,27 @@ DROP TABLE IF EXISTS `music`;
 CREATE TABLE IF NOT EXISTS `music` (
   `music_id` int(11) NOT NULL AUTO_INCREMENT,
   `music_title` varchar(50) NOT NULL,
-  `music_description` varchar(50) NOT NULL,
-  `music_file` text NOT NULL,
-  `music_cover` text NOT NULL,
-  PRIMARY KEY (`music_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+  `music_author` varchar(50) NOT NULL,
+  `music_file` text,
+  `music_cover` text,
+  PRIMARY KEY (`music_id`),
+  UNIQUE KEY `music_title` (`music_title`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `music`
+--
+
+INSERT INTO `music` (`music_id`, `music_title`, `music_author`, `music_file`, `music_cover`) VALUES
+(1, '24K Magic', 'Bruno Mars', '1-24K Magic.mp3', '1-bruno-mars-24k-magic.jpg'),
+(2, 'Billie Jean', 'Michael Jackson', '2-Billie Jean.mp3', '2-s-l300.jpg'),
+(3, 'Beat It', 'Michael Jackson', '3-Beat It.mp3', '3-beat it.jpg'),
+(4, 'Smooth Criminal', 'Michael Jackson', '4-Smooth Criminal.mp3', '4-Smooth_Criminal.jpg'),
+(5, 'We Are The World', 'Michael Jackson', '5-We Are The World (Demo).mp3', '5-Interesting-Facts-About-We-Are-the-World.jpg'),
+(6, 'Maps', 'Maroon 5', '6-Maps.mp3', '6-maps_maroon5.jpg'),
+(7, 'Cold feat. Future', 'Maroon 5', '7-Cold feat. Future.mp3', ''),
+(8, 'Chandelier', 'Sia', '8-Chandelier.mp3', '8-Sia-Chandelier.jpg'),
+(9, 'Animals', 'Maroon 5', '9-Animals.mp3', '');
 
 -- --------------------------------------------------------
 
@@ -82,7 +98,14 @@ CREATE TABLE IF NOT EXISTS `parameters` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`parameters_id`),
   KEY `parameters_users_FK` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `parameters`
+--
+
+INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) VALUES
+(1, 25, 5, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -119,16 +142,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_nickname` (`user_nickname`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
-(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 1),
+(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'root-loginformatique_dir_couleur.png', 1),
 (2, 'guess', 'guess', 'guess@guess.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'guess-ApplicationFrameHost_2018-06-05_13-46-49.png', 0),
-(3, 'test', 'test', 'test@test.com', '1161e6ffd3637b302a5cd74076283a7bd1fc20d3', NULL, 0);
+(3, 'test', 'test', 'test@test.com', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', NULL, 0),
+(4, 'user4', 'user4', 'user4@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
+(5, 'user5', 'user5', 'user5@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0);
 
 --
 -- Contraintes pour les tables déchargées
