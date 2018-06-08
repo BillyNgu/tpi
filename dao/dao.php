@@ -64,7 +64,7 @@ function CheckLogin($nickname, $pwd) {
 }
 
 /**
- * Get data from db with nickname
+ * Get data of the user
  * @param type $nickname nickname of the user
  */
 function GetData($nickname) {
@@ -115,11 +115,28 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
  * @param type $music_author some information of the music
  */
 function Add_Music($music_title, $music_author) {
-    $sql = "INSERT INTO `music`(`music_title`, `music_author`) "
-            . "VALUES (:music_title, :music_author)";
+
+    if (!empty(Check_music($music_title))) {
+        SetFlashMessage("La musique existe déjà.");
+    } else {
+        $sql = "INSERT INTO `music`(`music_title`, `music_author`) "
+                . "VALUES (:music_title, :music_author)";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
+        $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->execute();
+        SetFlashMessage("Musique ajoutée.");
+    }
+}
+
+/**
+ * Check if the music already exists in db
+ * @param type $music_title string
+ */
+function Check_music($music_title) {
+    $sql = "SELECT `music_title` WHERE `music_title` = :music_title";
     $query = pdo()->prepare($sql);
     $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
-    $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
     $query->execute();
 }
 
@@ -145,6 +162,7 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             opendir($target_dir_cover);
             unlink($target_music_cover);
         }
+
         $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file,`music_cover`=:music_cover WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
@@ -158,6 +176,7 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             opendir($target_dir_file);
             unlink($target_music_file);
         }
+
         $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
@@ -170,6 +189,7 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             opendir($target_dir_cover);
             unlink($target_music_cover);
         }
+
         $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, `music_cover`=:music_cover WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
@@ -277,10 +297,16 @@ function Delete_music($music_id, $music_cover, $music_file) {
     }
 }
 
+/**
+ * Save parameters to play
+ * @param type $question_time the time of each question in second
+ * @param type $questions_number the number of questions the user will be asked
+ * @param type $question_type the type of question the user wants to play (1 for songs, 2 for album cover)
+ * @param type $user_id the id of the user
+ */
 function Save_parameters($question_time, $questions_number, $question_type, $user_id) {
-    $userData = Check_parameters($user_id);
-
-    if (!empty($userData)) {
+    // Check if parameters exist for the user, if it doesn't insert, else update
+    if (!empty(Get_parameters($user_id))) {
         $sql = "UPDATE `parameters` SET `parameters_time`=:question_time, `parameters_questions_number`=:questions_number, "
                 . "`parameters_type`=:question_type WHERE `user_id` =:user_id";
         $query = pdo()->prepare($sql);
@@ -299,9 +325,15 @@ function Save_parameters($question_time, $questions_number, $question_type, $use
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
     }
+    SetFlashMessage("Paramètres enregistrés");
 }
 
-function Check_parameters($user_id) {
+/**
+ * Check if there is a parameter linked to a user
+ * @param type $user_id the id of the user
+ * @return type array
+ */
+function Get_parameters($user_id) {
     $sql = "SELECT * FROM `parameters` WHERE `user_id` = :user_id";
     $query = pdo()->prepare($sql);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);

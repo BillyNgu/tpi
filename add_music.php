@@ -91,6 +91,7 @@ if (filter_has_var(INPUT_POST, "add_music")) {
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
                 <input class="btn btn-primary" name="add_music" type="submit" value="Ajouter"/>
+                <?= GetFlashMessage(); ?>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>

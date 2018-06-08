@@ -55,6 +55,7 @@ if (filter_has_var(INPUT_POST, 'change')) {
                         <input class="form-control-file mt-2" type="file" name="profile_pic" accept="image/*"><br>
                         <input class="mt-2 btn btn-primary" value="Valider" name="change" type="submit">
                     </form>
+                    <?= GetFlashMessage(); ?>
                 </div>
                 <div class="col">
                     <h3>Pseudo : <?php echo $nickname ?></h3>
