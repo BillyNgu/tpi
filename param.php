@@ -38,9 +38,28 @@ if (filter_has_var(INPUT_POST, 'save')) {
                         <p><span id="demo"></span> seconde(s).</p>
                     </div>
                     <select name="questions_number">
-                        <option value="5">5 questions</option>
-                        <option value="10">10 questions</option>
-                        <option value="15">15 questions</option>
+                        <?php switch ($param_value['parameters_questions_number']): case 5: ?>
+                                <option selected="" value="5">5 questions</option>
+                                <option value="10">10 questions</option>
+                                <option value="15">15 questions</option>
+                                <?php
+                                break;
+                            case 10:
+                                ?>
+                                <option value="5">5 questions</option>
+                                <option selected="" value="10">10 questions</option>
+                                <option value="15">15 questions</option>
+                                <?php
+                                break;
+                            case 15:
+                                ?>
+                                <option value="5">5 questions</option>
+                                <option value="10">10 questions</option>
+                                <option selected="" value="15">15 questions</option>
+                            <?php
+                            default: break;
+                        endswitch;
+                        ?>
                     </select>
                     <table>
                         <tr>
@@ -59,7 +78,7 @@ if (filter_has_var(INPUT_POST, 'save')) {
                             <td>
                                 <label>
                                     <?php if ($param_value['parameters_type'] == 2): ?>
-                                    <input type="radio" name="question_type" value="2" checked="checked"/>Pochette d'album
+                                        <input type="radio" name="question_type" value="2" checked="checked"/>Pochette d'album
                                     <?php else: ?>
                                         <input type="radio" name="question_type" value="2" />Pochette d'album
                                     <?php endif; ?>
