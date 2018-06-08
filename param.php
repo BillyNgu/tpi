@@ -37,30 +37,32 @@ if (filter_has_var(INPUT_POST, 'save')) {
                         <input name="time" type="range" min="10" max="60" value="<?= $param_value['parameters_time']; ?>" class="slider" id="myRange">
                         <p><span id="demo"></span> seconde(s).</p>
                     </div>
-                    <select name="questions_number">
-                        <?php switch ($param_value['parameters_questions_number']): case 5: ?>
-                                <option selected="" value="5">5 questions</option>
-                                <option value="10">10 questions</option>
-                                <option value="15">15 questions</option>
+                    <label>Le nombre de questions : 
+                        <select name="questions_number">
+                            <?php switch ($param_value['parameters_questions_number']): case 5: ?>
+                                    <option selected="" value="5">5 questions</option>
+                                    <option value="10">10 questions</option>
+                                    <option value="15">15 questions</option>
+                                    <?php
+                                    break;
+                                case 10:
+                                    ?>
+                                    <option value="5">5 questions</option>
+                                    <option selected="" value="10">10 questions</option>
+                                    <option value="15">15 questions</option>
+                                    <?php
+                                    break;
+                                case 15:
+                                    ?>
+                                    <option value="5">5 questions</option>
+                                    <option value="10">10 questions</option>
+                                    <option selected="" value="15">15 questions</option>
                                 <?php
-                                break;
-                            case 10:
-                                ?>
-                                <option value="5">5 questions</option>
-                                <option selected="" value="10">10 questions</option>
-                                <option value="15">15 questions</option>
-                                <?php
-                                break;
-                            case 15:
-                                ?>
-                                <option value="5">5 questions</option>
-                                <option value="10">10 questions</option>
-                                <option selected="" value="15">15 questions</option>
-                            <?php
-                            default: break;
-                        endswitch;
-                        ?>
-                    </select>
+                                default: break;
+                            endswitch;
+                            ?>
+                        </select>
+                    </label>
                     <table>
                         <tr>
                             <th colspan="2">Type de questions : </th>
