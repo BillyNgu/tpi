@@ -28,6 +28,7 @@ if (filter_has_var(INPUT_POST, 'change')) {
         if ($uploadOk_profile == 1) {
             move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_profile);
             UpdateProfilePicture($nickname, $_FILES["profile_pic"]["name"], $userData['user_profilepic']);
+            $userData = GetData($nickname);
         }
     }
 }

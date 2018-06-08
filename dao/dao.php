@@ -95,17 +95,17 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
         $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
         $query->bindParam(':picture_name', $picture_unique_name, PDO::PARAM_STR);
         $query->execute();
-        header("Refresh:0");
+        SetFlashMessage("Image ajoutée.");
     } else {
         opendir($target_dir);
         unlink($target_file);
 
-        $sql2 = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
-        $query2 = pdo()->prepare($sql2);
-        $query2->bindParam(':nickname', $nickname, PDO::PARAM_STR);
-        $query2->bindParam(':picture_name', $picture_unique_name, PDO::PARAM_STR);
-        $query2->execute();
-        header("Refresh:0");
+        $sql = "UPDATE `users` SET `user_profilepic`= :picture_name WHERE `user_nickname` = :nickname";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+        $query->bindParam(':picture_name', $picture_unique_name, PDO::PARAM_STR);
+        $query->execute();
+        SetFlashMessage("Image modifiée.");
     }
 }
 
