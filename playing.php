@@ -10,20 +10,29 @@ $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
 //$covers = Get_all_cover_random();
-$musics_to_play = "";
-$question_name = [];
 
+$question_name = [];
+$music_played = "";
 $play = TRUE;
 
-if ($_SESSION['score'] > 1) {
-    $answered = Get_all_music_random(implode(' AND `music_file` NOT LIKE ', $_SESSION['played']));
-    $musics_to_play = $answered;
-    var_dump($answered);
-} elseif ($_SESSION['score'] > 0) {
-    $musics_to_play = Get_all_music_random($_SESSION['played']);
-} else {
-    $musics_to_play = Get_all_music_random($_SESSION['played']);
+if (!isset($_SESSION['party_id'])) {
+    $_SESSION['party_id'] = Create_party();
 }
+var_dump("party_id:" . $_SESSION['party_id']);
+$musics_to_play = Get_all_music_random($_SESSION['party_id']);
+var_dump($musics_to_play);
+
+
+//if ($_SESSION['score'] > 1) {    
+//    
+//    $answered = Get_all_music_random($music_played);
+//    $musics_to_play = $answered;
+//    var_dump($music_played);
+//} elseif ($_SESSION['score'] > 0) {
+//    $musics_to_play = Get_all_music_random(Get_music_id($_SESSION['played'][0]));
+//} else {
+//    $musics_to_play = Get_all_music_random($_SESSION['played']);
+//}
 
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
@@ -31,7 +40,11 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
 
     if (check_answer($q_answer, $_SESSION['q_audio'])) {
         $_SESSION['score'] += 1;
-        $_SESSION['played'][] = $_SESSION['q_audio'];
+        Add_party($_SESSION['party_id'], $userData['user_id'], Get_music_id($_SESSION['q_audio']));
+        var_dump("answer:" . $_SESSION['q_audio']);
+        var_dump(Get_music_id($_SESSION['q_audio']));
+        
+//        $_SESSION['played'][] = $_SESSION['q_audio'];
     }
 
     if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
@@ -50,18 +63,18 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
     </head>
     <body>
         <div class="container">
-<?php require_once './navbar.php'; ?>
+                <?php require_once './navbar.php'; ?>
             <form action="playing.php" method="post">
-            <?php if ($paramData['parameters_type'] == 1): ?>
+<?php if ($paramData['parameters_type'] == 1): ?>
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
                         <p>Quelle est cette musique ?</p>
                         <table>
-    <?php
-    foreach ($musics_to_play as $question_value):
-        $question_name[] = $question_value['music_file'];
-        ?>
+                            <?php
+                            foreach ($musics_to_play as $question_value):
+                                $question_name[] = $question_value['music_file'];
+                                ?>
                                 <tr>
                                     <td>
                                         <label>
@@ -69,13 +82,13 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                                         </label>
                                     </td>
                                 </tr>
-        <?php
-    endforeach;
-    // a random music file in the $question_name array
-    $question_music = $question_name[array_rand($question_name, 1)];
-    $_SESSION['q_audio'] = $question_music;
-    var_dump($question_music);
-    ?>
+                                <?php
+                            endforeach;
+                            // a random music file in the $question_name array
+                            $question_music = $question_name[array_rand($question_name, 1)];
+                            $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_music);
+                            ?>
                         </table>
                         <audio autoplay="" controls="" id="question_audio">
                             <source src="./uploaded_files/songs/<?= $question_music; ?>" type="audio/<?= substr($question_music, -3); ?>">
@@ -92,10 +105,10 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
                         <p>Quelle est cette musique ?</p>
                         <table>
-    <?php
-    foreach ($covers as $question_value):
-        $question_name[] = $question_value['music_cover'];
-        ?>
+                            <?php
+                            foreach ($covers as $question_value):
+                                $question_name[] = $question_value['music_cover'];
+                                ?>
                                 <tr>
                                     <td>
                                         <label>
@@ -103,13 +116,13 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                                         </label>
                                     </td>
                                 </tr>
-        <?php
-    endforeach;
-    // a random music file in the $question_name array
-    $question_music = $question_name[array_rand($question_name, 1)];
-    $_SESSION['q_audio'] = $question_music;
-    var_dump($question_name);
-    ?>
+                                <?php
+                            endforeach;
+                            // a random music file in the $question_name array
+                            $question_music = $question_name[array_rand($question_name, 1)];
+                            $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_name);
+                            ?>
                         </table>
                         <img src="./uploaded_files/img/cover/<?= $question_value['music_cover']; ?>" alt="<?= $question_value['music_cover']; ?>">
                         <!-- A slide bar to control the volume -->
@@ -117,9 +130,9 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                         <p>Volume : <span id="q_volume_output"></span>%.</p>
                         <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
                         <button class="btn btn-primary" name="answer">Valider</button>
-    <?php var_dump($question_music); ?>
+                    <?php var_dump($question_music); ?>
                     </fieldset>
-                    <?php endif; ?>
+<?php endif; ?>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>

@@ -14,6 +14,7 @@ $play = TRUE;
 $_SESSION['cpt'] = 1;
 $_SESSION['score'] = 0;
 $_SESSION['played'] = [];
+unset($_SESSION['party_id']);
 ?>
 <!DOCTYPE html>
 <html>

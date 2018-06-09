@@ -258,28 +258,43 @@ function Get_all_music() {
 
 /**
  * Return 4 random musics from db
- * @param type $answer string the answer that the user scored
+ * @param type $party_id int the answer that the user scored
  * @return type array
  */
-function Get_all_music_random($answer) {
-    if ($_SESSION['score'] > 1) {
-        $sql = "SELECT * FROM `music` WHERE `music_file` NOT LIKE :answer ORDER BY RAND() LIMIT 4";
-        $query = pdo()->prepare($sql);
-        $query->bindParam(':answer', $answer);
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    } elseif ($_SESSION['score'] > 0) {
-        $sql = "SELECT * FROM `music` WHERE `music_file` NOT LIKE :answer ORDER BY RAND() LIMIT 4";
-        $query = pdo()->prepare($sql);
-        $query->bindParam(':answer', $answer[0]);
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
-        $query = pdo()->prepare($sql);
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
+function Get_all_music_random($party_id) {
+    $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `party` WHERE `party_id` = :party_id) ORDER BY RAND() LIMIT 4";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+
+//    if ($_SESSION['score'] > 1) {
+//        $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (:music_id) ORDER BY RAND() LIMIT 4";
+//        $query = pdo()->prepare($sql);
+//        $query->bindParam(':music_id', $music_id);
+//        var_dump($query);
+//        $query->execute();
+//        return $query->fetchAll(PDO::FETCH_ASSOC);
+//    } elseif ($_SESSION['score'] > 0) {
+//        $sql = "SELECT * FROM `music` WHERE `music_id` NOT LIKE (:music_id) ORDER BY RAND() LIMIT 4";
+//        $query = pdo()->prepare($sql);
+//        $query->bindParam(':music_id', $music_id);
+//        $query->execute();
+//        return $query->fetchAll(PDO::FETCH_ASSOC);
+//    } else {
+//        $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
+//        $query = pdo()->prepare($sql);
+//        $query->execute();
+//        return $query->fetchAll(PDO::FETCH_ASSOC);
+//    }
+}
+
+function Get_music_id($music_file) {
+    $sql = "SELECT `music_id` FROM `music` WHERE `music_file` = :music_file";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['music_id'];
 }
 
 function Get_all_cover_random() {
@@ -360,7 +375,6 @@ function Save_parameters($question_time, $questions_number, $question_type, $use
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
     }
-    
 }
 
 /**
@@ -408,4 +422,20 @@ function Add_score($score, $user_id) {
     $query->bindParam(':score', $score, PDO::PARAM_INT);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->execute();
+}
+
+function Add_party($party_id, $user_id, $music_id) {
+    $sql = "INSERT INTO `party`(`party_id`, `user_id`, `music_id`) VALUES (:party_id, :user_id, :music_id)";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
+    $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function Create_party() {
+    $sql = "SELECT COALESCE(MAX(`party_id`), 0) + 1 as `party_id` FROM `party`";
+    $query = pdo()->prepare($sql);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['party_id'];
 }
