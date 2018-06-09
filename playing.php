@@ -22,18 +22,6 @@ var_dump("party_id:" . $_SESSION['party_id']);
 $musics_to_play = Get_all_music_random($_SESSION['party_id']);
 var_dump($musics_to_play);
 
-
-//if ($_SESSION['score'] > 1) {    
-//    
-//    $answered = Get_all_music_random($music_played);
-//    $musics_to_play = $answered;
-//    var_dump($music_played);
-//} elseif ($_SESSION['score'] > 0) {
-//    $musics_to_play = Get_all_music_random(Get_music_id($_SESSION['played'][0]));
-//} else {
-//    $musics_to_play = Get_all_music_random($_SESSION['played']);
-//}
-
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
     $_SESSION['cpt'] += 1;
@@ -42,9 +30,7 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
         $_SESSION['score'] += 1;
         Add_party($_SESSION['party_id'], $userData['user_id'], Get_music_id($_SESSION['q_audio']));
         var_dump("answer:" . $_SESSION['q_audio']);
-        var_dump(Get_music_id($_SESSION['q_audio']));
-        
-//        $_SESSION['played'][] = $_SESSION['q_audio'];
+        var_dump("id of the music:" . Get_music_id($_SESSION['q_audio']));
     }
 
     if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
@@ -59,13 +45,13 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
         <meta charset="UTF-8"> 
         <title>Blindtest</title>
         <script src="js/amplitude.js" type="text/javascript"></script>
-<?php require_once './css/css_js.php'; ?>
+        <?php require_once './css/css_js.php'; ?>
     </head>
     <body>
         <div class="container">
-                <?php require_once './navbar.php'; ?>
+            <?php require_once './navbar.php'; ?>
             <form action="playing.php" method="post">
-<?php if ($paramData['parameters_type'] == 1): ?>
+                <?php if ($paramData['parameters_type'] == 1): ?>
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
@@ -99,7 +85,7 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                         <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
                         <button class="btn btn-primary" name="answer">Valider</button>
                     </fieldset>
-<?php else: ?>
+                <?php else: ?>
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
@@ -130,9 +116,9 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
                         <p>Volume : <span id="q_volume_output"></span>%.</p>
                         <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
                         <button class="btn btn-primary" name="answer">Valider</button>
-                    <?php var_dump($question_music); ?>
+                        <?php var_dump($question_music); ?>
                     </fieldset>
-<?php endif; ?>
+                <?php endif; ?>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
