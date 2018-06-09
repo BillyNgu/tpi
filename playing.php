@@ -31,9 +31,9 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
 }
 
 if ($_SESSION['score'] > 1) {
-    $answered = Get_all_music_random(implode(' AND `music_title` NOT LIKE ', $_SESSION['played']));
+    $answered = Get_all_music_random(implode(', ', $_SESSION['played']));
     $musics_to_play = $answered;
-    var_dump(implode(' AND `music_title` NOT LIKE ', $_SESSION['played']));
+    var_dump(implode(', ', $_SESSION['played']));
     var_dump($answered);
 }
  elseif ($_SESSION['score'] > 0) {
@@ -76,6 +76,7 @@ if ($_SESSION['score'] > 1) {
                             // a random music file in the $question_name array
                             $question_music = $question_name[array_rand($question_name, 1)];
                             $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_music);
                             ?>
                         </table>
                         <audio autoplay="" controls="" id="question_audio">
