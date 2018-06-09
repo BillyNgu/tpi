@@ -260,11 +260,25 @@ function Get_all_music() {
  * Return 4 random musics from db
  * @return type array
  */
-function Get_all_music_random() {
-    $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
-    $query = pdo()->prepare($sql);
-    $query->execute();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
+function Get_all_music_random($answer) {
+    if ($_SESSION['score'] > 1) {
+        $sql = "SELECT * FROM `music` WHERE `music_title` NOT LIKE :answer ORDER BY RAND() LIMIT 4";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':answer', $answer);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } elseif ($_SESSION['score'] > 0) {
+        $sql = "SELECT * FROM `music` WHERE `music_title` NOT LIKE :answer ORDER BY RAND() LIMIT 4";
+        $query = pdo()->prepare($sql);
+        $query->bindParam(':answer', $answer[0]);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
+        $query = pdo()->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 function Get_all_cover_random() {
@@ -372,12 +386,19 @@ function check_answer($q_answer, $q_audio) {
     $query->bindParam(':q_audio', $q_audio, PDO::PARAM_STR);
     $query->execute();
 
-
     if ($query->fetch(PDO::FETCH_ASSOC)['music_title'] == $q_answer) {
         return TRUE;
     } else {
         return FALSE;
     }
+}
+
+function Get_music_title($music_file) {
+    $sql = "SELECT `music_title` FROM `music` WHERE `music_file` = :music_file";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['music_title'];
 }
 
 /**
