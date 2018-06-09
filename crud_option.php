@@ -32,25 +32,25 @@ $music = Get_all_music();
                     <th class="text-center"><a class="btn btn-outline-primary" href="add_music.php">Ajouter</a></th>
                 </tr>
                 <?php
-                foreach ($music as $value):
-                    $extension = substr($value['music_file'], -3);
+                foreach ($music as $music_value):
+                    $extension = substr($music_value['music_file'], -3);
                     ?>
                     <tr>
-                        <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($value['music_cover'])): ?>No_Cover.jpg<?php
-                            else: echo $value['music_cover'];
+                        <td class="text-center"><img height="150" width="150" class="img-thumbnail" src="./uploaded_files/img/cover/<?php if (empty($music_value['music_cover'])): ?>No_Cover.jpg<?php
+                            else: echo $music_value['music_cover'];
                             endif;
-                            ?>" alt="<?php echo $value['music_cover']; ?>"></td>
-                        <td class="text-center"><?php echo $value['music_title']; ?></td>
-                        <td class="text-center"><?php echo $value['music_author']; ?></td>
+                            ?>" alt="<?php echo $music_value['music_cover']; ?>"></td>
+                        <td class="text-center"><?php echo $music_value['music_title']; ?></td>
+                        <td class="text-center"><?php echo $music_value['music_author']; ?></td>
                         <td class="text-center">
-                            <audio controls=""><source src="./uploaded_files/songs/<?php echo $value['music_file']; ?>" type="audio/<?= $extension; ?>"
+                            <audio controls=""><source src="./uploaded_files/songs/<?php echo $music_value['music_file']; ?>" type="audio/<?= $extension; ?>"
                             </audio>
                         </td>
                         <td class="text-center">
-                            <a href="modify_music.php?music_id=<?= $value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a>
+                            <a href="modify_music.php?music_id=<?= $music_value['music_id']; ?>" class="btn btn-outline-primary">Modifier</a>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?= $value['music_id']; ?>">Supprimer</a>
+                            <a class="btn btn-outline-danger" href="delete_music.php?music_id=<?= $music_value['music_id']; ?>">Supprimer</a>
                         </td>
                         <td></td>
                     </tr>
