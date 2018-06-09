@@ -7,7 +7,7 @@
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $param = TRUE;
 $param_value = Get_parameters($userData['user_id']);
 

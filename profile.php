@@ -2,15 +2,14 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Profile
- * Description : TPI
+ * Description : Profile page
  */
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
 $profile = TRUE;
 
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 
 if (filter_has_var(INPUT_POST, 'change')) {
     $uploadOk_profile = 1;
@@ -28,7 +27,7 @@ if (filter_has_var(INPUT_POST, 'change')) {
         if ($uploadOk_profile == 1) {
             move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_profile);
             UpdateProfilePicture($nickname, $_FILES["profile_pic"]["name"], $userData['user_profilepic']);
-            $userData = GetData($nickname);
+            $userData = Get_user_data($nickname);
         }
     }
 }

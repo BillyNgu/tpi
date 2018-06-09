@@ -2,13 +2,12 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Jouer
- * Description : TPI
+ * Description : Result page where the user's score is showed
  */
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
 $play = TRUE;
 

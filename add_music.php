@@ -2,13 +2,12 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Add music
  * Description : Add music into the database 
  */
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $crud = TRUE;
 
 

@@ -2,13 +2,12 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Jouer
- * Description : TPI
+ * Description : Page before playing
  */
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
 $play = TRUE;
 
@@ -28,13 +27,11 @@ $_SESSION['played'] = [];
             <?php require_once './navbar.php'; ?>
             <fieldset>
                 <legend>Jouer</legend>
-                <p>Vous allez jouer à un quizz de <?php echo $paramData['parameters_questions_number']; ?> questions sur les <?php
-                    if ($paramData['parameters_type'] == 1) {
-                        echo "chansons.";
-                    } else {
-                        echo "pochettes d'album.";
-                    }
-                    ?></p>
+                <p>Vous allez jouer à un quizz de <?= $paramData['parameters_questions_number']; ?> questions sur les <?php if ($paramData['parameters_type'] == 1): ?>
+                        chansons.
+                    <?php else: ?>
+                        pochettes d'album.
+                    <?php endif; ?></p>
                 <p>Vous aurez <?= $paramData['parameters_time']; ?> secondes par question.</p>
                 <a class="btn btn-primary" href="playing.php">Commencer</a>
             </fieldset>

@@ -3,8 +3,7 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Supression
- * Description : TPI
+ * Description : script to delete a music from the db
  */
 require_once './dao/dao.php';
 

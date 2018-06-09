@@ -7,7 +7,7 @@
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $crud = TRUE;
 
 $music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);

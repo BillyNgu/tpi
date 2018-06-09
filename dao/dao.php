@@ -68,7 +68,7 @@ function CheckLogin($nickname, $pwd) {
  * Get data of the user
  * @param type $nickname nickname of the user
  */
-function GetData($nickname) {
+function Get_user_data($nickname) {
     $sql = "SELECT * FROM `users` WHERE `user_nickname` = :nickname";
     $query = pdo()->prepare($sql);
     $query->bindParam(':nickname', $nickname, PDO::PARAM_STR);
@@ -258,6 +258,7 @@ function Get_all_music() {
 
 /**
  * Return 4 random musics from db
+ * @param type $answer string the answer that the user scored
  * @return type array
  */
 function Get_all_music_random($answer) {
@@ -348,6 +349,7 @@ function Save_parameters($question_time, $questions_number, $question_type, $use
         $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
+        SetFlashMessage("Paramètres enregistrés.");
     } else {
         $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) "
                 . "VALUES (:question_time, :questions_number, :question_type, :user_id)";
@@ -358,7 +360,7 @@ function Save_parameters($question_time, $questions_number, $question_type, $use
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
     }
-    SetFlashMessage("Paramètres enregistrés.");
+    
 }
 
 /**

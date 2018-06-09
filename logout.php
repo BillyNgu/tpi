@@ -1,9 +1,8 @@
 <?php 
 /*
  * Author : Nguyen Billy
- * Date : 2018-01-31
- * Title : Forum
- * Description : Forum PHP
+ * Date : 2018-06-04
+ * Description : script to logout
  */
 session_start();
 

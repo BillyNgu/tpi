@@ -7,7 +7,7 @@
 require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
-$userData = GetData($nickname);
+$userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
 //$covers = Get_all_cover_random();
 $musics_to_play = "";

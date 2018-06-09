@@ -2,8 +2,7 @@
 /*
  * Author : Nguyen Billy
  * Date : 2018-06-04
- * Title : Register
- * Description : TPI
+ * Description : Register page
  */
 require_once './dao/dao.php';
 
@@ -64,6 +63,9 @@ if (filter_has_var(INPUT_POST, 'register')) {
     
     if (empty($errors_register_form)) {
         CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
+        $userdata = Get_user_data($nickname_register_form);
+        // Save default parameters to prevent the user to play without settings
+        Save_parameters(30, 5, 1, $userdata['user_id']);
     }
 }
 ?>
