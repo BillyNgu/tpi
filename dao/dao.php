@@ -272,6 +272,20 @@ function Get_all_music_random($party_id) {
 }
 
 /**
+ * Return 4 random covers that's not null
+ * Covers aren't required when we add a song
+ * @param type $party_id
+ * @return type
+ */
+function Get_all_cover_random($party_id) {
+    $sql = "SELECT DISTINCT * FROM `music` WHERE `music_cover` IS NOT NULL AND `music_id` NOT IN(SELECT `music_id` FROM `party` WHERE `party_id` = :party_id) ORDER BY RAND() LIMIT 4";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
  * Get music_id with its dir
  * @param type $music_file the dir of the music file
  * @return type array
@@ -282,13 +296,6 @@ function Get_music_id($music_file) {
     $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC)['music_id'];
-}
-
-function Get_all_cover_random() {
-    $sql = "SELECT DISTINCT * FROM `music` WHERE `music_cover` IS NOT NULL ORDER BY RAND() LIMIT 4";
-    $query = pdo()->prepare($sql);
-    $query->execute();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -342,26 +349,15 @@ function Delete_music($music_id, $music_cover, $music_file) {
  */
 function Save_parameters($question_time, $questions_number, $question_type, $user_id) {
     // Check if parameters exist for the user, if it doesn't insert, else update
-    if (!empty(Get_parameters($user_id))) {
-        $sql = "UPDATE `parameters` SET `parameters_time`=:question_time, `parameters_questions_number`=:questions_number, "
-                . "`parameters_type`=:question_type WHERE `user_id` =:user_id";
-        $query = pdo()->prepare($sql);
-        $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
-        $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
-        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
-        $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
-        SetFlashMessage("Paramètres enregistrés.");
-    } else {
-        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) "
-                . "VALUES (:question_time, :questions_number, :question_type, :user_id)";
-        $query = pdo()->prepare($sql);
-        $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
-        $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
-        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
-        $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
-    }
+    $sql = "UPDATE `parameters` SET `parameters_time`=:question_time, `parameters_questions_number`=:questions_number, "
+            . "`parameters_type`=:question_type WHERE `user_id` =:user_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
+    $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
+    $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
+    $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    SetFlashMessage("Paramètres enregistrés.");
 }
 
 /**
@@ -402,11 +398,12 @@ function check_answer($q_answer, $q_audio) {
  * @param type $parameters_id int. The user's parameters.
  * @param type $user_id int. The user
  */
-function Add_score($score, $user_id) {
-    $sql = "INSERT INTO `score`(`score`, `user_id`) "
-            . "VALUES (:score, :user_id)";
+function Add_score($score, $score_question, $user_id) {
+    $sql = "INSERT INTO `score`(`score`, `score_questions_number`, `user_id`) "
+            . "VALUES (:score, :score_question, :user_id)";
     $query = pdo()->prepare($sql);
     $query->bindParam(':score', $score, PDO::PARAM_INT);
+    $query->bindParam(':score_question', $score_question, PDO::PARAM_INT);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->execute();
 }
