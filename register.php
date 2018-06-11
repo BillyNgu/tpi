@@ -36,36 +36,37 @@ if (filter_has_var(INPUT_POST, 'register')) {
             // if everything is ok, try to upload file
         }
     }
-    
+
     if (empty($name_register_form)) {
         $errors_register_form['name'] = "Le nom ne peut pas être vide.";
     }
-    
+
     if (empty($nickname_register_form)) {
         $errors_register_form['nickname'] = "Le pseudo ne peut pas être vide.";
     }
-    
+
     if (empty($email_register_form)) {
         $errors_register_form['email'] = "L'email ne peut pas être vide.";
     }
-    
+
     if (empty($pwd_register_form)) {
         $errors_register_form['password'] = "Le mot de passe ne peut pas être vide.";
     }
-    
+
     if (empty($pwdRepeat_register_form)) {
         $errors_register_form['passwordConfirmation'] = "La confirmation ne peut pas être vide.";
     }
-    
+
     if ($pwd_register_form !== $pwdRepeat_register_form) {
         $errors_register_form['passwordConfirmation'] = "Les mots de passe sont différents.";
     }
-    
+
     if (empty($errors_register_form)) {
         CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
         $userdata = Get_user_data($nickname_register_form);
         // Save default parameters to prevent the user to play without settings
         Save_parameters(30, 5, 1, $userdata['user_id']);
+        header('Location:index.php');
     }
 }
 ?>
