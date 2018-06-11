@@ -91,7 +91,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     <body>
         <div class="container">
             <?php require_once './navbar.php'; ?>
-            <h2>Configuration des questions</h2>
+            <h2>Modification de la musique</h2>
             <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">      
                     <div class="row">
