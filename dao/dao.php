@@ -424,6 +424,23 @@ function Add_score($score, $user_id) {
     $query->execute();
 }
 
+/**
+ * Create a party
+ * @return type int
+ */
+function Create_party() {
+    $sql = "SELECT COALESCE(MAX(`party_id`), 0) + 1 as `party_id` FROM `party`";
+    $query = pdo()->prepare($sql);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['party_id'];
+}
+
+/**
+ * Add party
+ * @param type $party_id party_id from Create_party()
+ * @param type $user_id the user id
+ * @param type $music_id the music_id
+ */
 function Add_party($party_id, $user_id, $music_id) {
     $sql = "INSERT INTO `party`(`party_id`, `user_id`, `music_id`) VALUES (:party_id, :user_id, :music_id)";
     $query = pdo()->prepare($sql);
@@ -431,11 +448,4 @@ function Add_party($party_id, $user_id, $music_id) {
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->execute();
-}
-
-function Create_party() {
-    $sql = "SELECT COALESCE(MAX(`party_id`), 0) + 1 as `party_id` FROM `party`";
-    $query = pdo()->prepare($sql);
-    $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC)['party_id'];
 }
