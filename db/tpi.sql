@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 08 juin 2018 à 14:16
--- Version du serveur :  5.7.21
--- Version de PHP :  7.2.4
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 11, 2018 at 05:48 AM
+-- Server version: 5.7.19
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `tpi`
+-- Database: `tpi`
 --
 CREATE DATABASE IF NOT EXISTS `tpi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `tpi`;
@@ -27,7 +27,7 @@ USE `tpi`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `blindtest_possesses`
+-- Table structure for table `blindtest_possesses`
 --
 
 DROP TABLE IF EXISTS `blindtest_possesses`;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `blindtest_possesses` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `music`
+-- Table structure for table `music`
 --
 
 DROP TABLE IF EXISTS `music`;
@@ -53,10 +53,10 @@ CREATE TABLE IF NOT EXISTS `music` (
   `music_cover` text,
   PRIMARY KEY (`music_id`),
   UNIQUE KEY `music_title` (`music_title`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `music`
+-- Dumping data for table `music`
 --
 
 INSERT INTO `music` (`music_id`, `music_title`, `music_author`, `music_file`, `music_cover`) VALUES
@@ -75,12 +75,12 @@ INSERT INTO `music` (`music_id`, `music_title`, `music_author`, `music_file`, `m
 (13, 'That&#39;s What I Like', 'Bruno Mars', '13-That’s What I Like.mp3', ''),
 (14, 'Numb', 'Linkin Park', '14-Numb.mp3', ''),
 (15, 'In The End', 'Linkin Park', '15-In The End.mp3', ''),
-(16, 'Talking to Myself', 'Linkin Park', '16-Chandelier.mp3', '');
+(16, 'Talking to Myself', 'Linkin Park', '16-Talking to Myself.mp3', '');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `music_style`
+-- Table structure for table `music_style`
 --
 
 DROP TABLE IF EXISTS `music_style`;
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `music_style` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `parameters`
+-- Table structure for table `parameters`
 --
 
 DROP TABLE IF EXISTS `parameters`;
@@ -105,20 +105,35 @@ CREATE TABLE IF NOT EXISTS `parameters` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`parameters_id`),
   KEY `parameters_users_FK` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `parameters`
+-- Dumping data for table `parameters`
 --
 
 INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) VALUES
-(1, 10, 5, 1, 1),
-(2, 20, 5, 1, 3);
+(1, 30, 10, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `score`
+-- Table structure for table `party`
+--
+
+DROP TABLE IF EXISTS `party`;
+CREATE TABLE IF NOT EXISTS `party` (
+  `party_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `music_id` int(11) NOT NULL,
+  PRIMARY KEY (`party_id`,`user_id`,`music_id`),
+  KEY `fk_user_id` (`user_id`),
+  KEY `fk_music_id` (`music_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `score`
 --
 
 DROP TABLE IF EXISTS `score`;
@@ -134,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `score` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -148,38 +163,34 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_nickname` (`user_nickname`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) VALUES
-(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'root-blindtest.png', 1),
-(2, 'guess', 'guess', 'guess@guess.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'guess-ApplicationFrameHost_2018-06-05_13-46-49.png', 0),
-(3, 'test', 'test', 'test@test.com', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', NULL, 0),
-(4, 'user4', 'user4', 'user4@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0),
-(5, 'user5', 'user5', 'user5@user.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', NULL, 0);
+(1, 'root', 'root', 'root@admin.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'root-blindtest.png', 1);
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `blindtest_possesses`
+-- Constraints for table `blindtest_possesses`
 --
 ALTER TABLE `blindtest_possesses`
   ADD CONSTRAINT `blindtest_possesses_music0_FK` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
   ADD CONSTRAINT `blindtest_possesses_music_style_FK` FOREIGN KEY (`music_style_id`) REFERENCES `music_style` (`music_style_id`);
 
 --
--- Contraintes pour la table `parameters`
+-- Constraints for table `parameters`
 --
 ALTER TABLE `parameters`
   ADD CONSTRAINT `parameters_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Contraintes pour la table `score`
+-- Constraints for table `score`
 --
 ALTER TABLE `score`
   ADD CONSTRAINT `score_users0_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
