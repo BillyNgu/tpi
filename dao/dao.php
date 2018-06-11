@@ -262,6 +262,8 @@ function Get_all_music() {
  * @return type array
  */
 function Get_all_music_random($party_id) {
+    // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `party` WHERE `party_id` = $party_id)";
+    // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `party` WHERE `party_id` = :party_id)";
     $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `party` WHERE `party_id` = :party_id) ORDER BY RAND() LIMIT 4";
     $query = pdo()->prepare($sql);
     $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
