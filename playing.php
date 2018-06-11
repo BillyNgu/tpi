@@ -9,7 +9,6 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
-//$covers = Get_all_cover_random();
 
 $question_name = [];
 $music_played = "";
@@ -21,7 +20,7 @@ if (!isset($_SESSION['party_id'])) {
 }
 //var_dump("party_id:" . $_SESSION['party_id']);
 $musics_to_play = Get_all_music_random($_SESSION['party_id']);
-//var_dump($musics_to_play);
+$covers_to_play = Get_all_cover_random($_SESSION['party_id']);
 
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
@@ -34,7 +33,7 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
     }
 }
 if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
-    Add_score($_SESSION['score'], $userData['user_id']);
+    Add_score($_SESSION['score'], $paramData['parameters_questions_number'], $userData['user_id']);
     header('Location:result.php');
 }
 ?>
@@ -90,10 +89,10 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
-                        <p>Quelle est cette musique ?</p>
+                        <p>Quelle est cette image ?</p>
                         <table>
                             <?php
-                            foreach ($covers as $question_value):
+                            foreach ($covers_to_play as $question_value):
                                 $question_name[] = $question_value['music_cover'];
                                 ?>
                                 <tr>
@@ -106,8 +105,8 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                                 <?php
                             endforeach;
                             // a random music file in the $question_name array
-                            $question_music = $question_name[array_rand($question_name, 1)];
-                            $_SESSION['q_audio'] = $question_music;
+                            $question_cover = $question_name[array_rand($question_name, 1)];
+                            $_SESSION['q_cover'] = $question_cover;
                             var_dump($question_name);
                             ?>
                         </table>
