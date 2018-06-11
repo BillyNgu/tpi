@@ -44,22 +44,22 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
         <meta charset="UTF-8"> 
         <title>Blindtest</title>
         <script src="js/amplitude.js" type="text/javascript"></script>
-<?php require_once './css/css_js.php'; ?>
+        <?php require_once './css/css_js.php'; ?>
     </head>
     <body>
         <div class="container">
-<?php require_once './navbar.php'; ?>
+            <?php require_once './navbar.php'; ?>
             <form action="playing.php" method="post">
-            <?php if ($paramData['parameters_type'] == 1): ?>
+                <?php if ($paramData['parameters_type'] == 1): ?>
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
                         <p>Quelle est cette musique ?</p>
                         <table>
-    <?php
-    foreach ($musics_to_play as $question_value):
-        $question_name[] = $question_value['music_file'];
-        ?>
+                            <?php
+                            foreach ($musics_to_play as $question_value):
+                                $question_name[] = $question_value['music_file'];
+                                ?>
                                 <tr>
                                     <td>
                                         <label>
@@ -67,13 +67,15 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                                         </label>
                                     </td>
                                 </tr>
-        <?php
-    endforeach;
-    // a random music file in the $question_name array
-    $question_music = $question_name[array_rand($question_name, 1)];
-    $_SESSION['q_audio'] = $question_music;
-    var_dump($question_music);
-    ?>
+                                <?php
+                            endforeach;
+                            // a random music file in the $question_name array
+                            if (!empty($question_name)) {
+                                $question_music = $question_name[array_rand($question_name, 1)];
+                            }
+                            $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_music);
+                            ?>
                         </table>
                         <audio autoplay="" controls="" id="question_audio">
                             <source src="./uploaded_files/songs/<?= $question_music; ?>" type="audio/<?= substr($question_music, -3); ?>">
@@ -84,16 +86,16 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                         <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
                         <button class="btn btn-primary" name="answer">Valider</button>
                     </fieldset>
-<?php else: ?>
+                <?php else: ?>
                     <fieldset>
                         <legend>Jouer</legend>
                         <h5>Question <?= $_SESSION['cpt']; ?>/<?= $paramData['parameters_questions_number']; ?></h5>
                         <p>Quelle est cette musique ?</p>
                         <table>
-    <?php
-    foreach ($covers as $question_value):
-        $question_name[] = $question_value['music_cover'];
-        ?>
+                            <?php
+                            foreach ($covers as $question_value):
+                                $question_name[] = $question_value['music_cover'];
+                                ?>
                                 <tr>
                                     <td>
                                         <label>
@@ -101,13 +103,13 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                                         </label>
                                     </td>
                                 </tr>
-        <?php
-    endforeach;
-    // a random music file in the $question_name array
-    $question_music = $question_name[array_rand($question_name, 1)];
-    $_SESSION['q_audio'] = $question_music;
-    var_dump($question_name);
-    ?>
+                                <?php
+                            endforeach;
+                            // a random music file in the $question_name array
+                            $question_music = $question_name[array_rand($question_name, 1)];
+                            $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_name);
+                            ?>
                         </table>
                         <img src="./uploaded_files/img/cover/<?= $question_value['music_cover']; ?>" alt="<?= $question_value['music_cover']; ?>">
                         <!-- A slide bar to control the volume -->
@@ -115,9 +117,9 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                         <p>Volume : <span id="q_volume_output"></span>%.</p>
                         <p>Temps restant : <span id="time_limit"><?= $paramData['parameters_time']; ?></span> seconde(s).</p>
                         <button class="btn btn-primary" name="answer">Valider</button>
-    <?php var_dump($question_music); ?>
+                        <?php var_dump($question_music); ?>
                     </fieldset>
-                    <?php endif; ?>
+                <?php endif; ?>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
