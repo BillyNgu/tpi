@@ -257,8 +257,8 @@ function Get_all_music() {
 }
 
 /**
- * Return 4 random musics from db
- * @param type $party_id int the answer that the user scored
+ * Return 4 random musics from db 
+ * @param type $party_id int the party the user is playing
  * @return type array
  */
 function Get_all_music_random($party_id) {
@@ -267,28 +267,13 @@ function Get_all_music_random($party_id) {
     $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
-
-//    if ($_SESSION['score'] > 1) {
-//        $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (:music_id) ORDER BY RAND() LIMIT 4";
-//        $query = pdo()->prepare($sql);
-//        $query->bindParam(':music_id', $music_id);
-//        var_dump($query);
-//        $query->execute();
-//        return $query->fetchAll(PDO::FETCH_ASSOC);
-//    } elseif ($_SESSION['score'] > 0) {
-//        $sql = "SELECT * FROM `music` WHERE `music_id` NOT LIKE (:music_id) ORDER BY RAND() LIMIT 4";
-//        $query = pdo()->prepare($sql);
-//        $query->bindParam(':music_id', $music_id);
-//        $query->execute();
-//        return $query->fetchAll(PDO::FETCH_ASSOC);
-//    } else {
-//        $sql = "SELECT * FROM `music` ORDER BY RAND() LIMIT 4";
-//        $query = pdo()->prepare($sql);
-//        $query->execute();
-//        return $query->fetchAll(PDO::FETCH_ASSOC);
-//    }
 }
 
+/**
+ * Get music_id with its dir
+ * @param type $music_file the dir of the music file
+ * @return type array
+ */
 function Get_music_id($music_file) {
     $sql = "SELECT `music_id` FROM `music` WHERE `music_file` = :music_file";
     $query = pdo()->prepare($sql);

@@ -11,7 +11,7 @@ $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
 $play = TRUE;
 
-$_SESSION['cpt'] = 1;
+$_SESSION['cpt'] = 0;
 $_SESSION['score'] = 0;
 $_SESSION['played'] = [];
 unset($_SESSION['party_id']);
