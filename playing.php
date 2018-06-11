@@ -9,16 +9,17 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
-
 $question_name = [];
 $music_played = "";
 $play = TRUE;
 $_SESSION['cpt'] += 1;
 
+// Check if the var is set, if not, set it
 if (!isset($_SESSION['party_id'])) {
     $_SESSION['party_id'] = Create_party();
 }
-//var_dump("party_id:" . $_SESSION['party_id']);
+
+// Get the musics or covers
 $musics_to_play = Get_all_music_random($_SESSION['party_id']);
 $covers_to_play = Get_all_cover_random($_SESSION['party_id']);
 
@@ -32,6 +33,8 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
 //        var_dump("id of the music:" . Get_music_id($_SESSION['q_audio']));
     }
 }
+
+// Check if all the questions have been answered (right or wrong), if so, add the score to the db
 if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
     Add_score($_SESSION['score'], $paramData['parameters_questions_number'], $userData['user_id']);
     header('Location:result.php');

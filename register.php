@@ -9,7 +9,6 @@ require_once './dao/dao.php';
 $register = TRUE;
 
 if (filter_has_var(INPUT_POST, 'register')) {
-
     $name_register_form = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname_register_form = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $email_register_form = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
@@ -61,6 +60,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
         $errors_register_form['passwordConfirmation'] = "Les mots de passe sont différents.";
     }
 
+    // If there is no errors, create the user account
     if (empty($errors_register_form)) {
         CreateUser(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
         $userdata = Get_user_data($nickname_register_form);

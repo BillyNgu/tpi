@@ -8,7 +8,6 @@ require_once './dao/dao.php';
 
 $nickname = $_SESSION['user_nickname'];
 $profile = TRUE;
-
 $userData = Get_user_data($nickname);
 $userScore = Get_score($userData['user_id']);
 
@@ -63,31 +62,27 @@ if (filter_has_var(INPUT_POST, 'change')) {
                     <h5>Nom : <?= $userData['user_name'] ?> </h5> <br>
                 </div>
                 <div class="col">
-                    <fieldset>
-                        <legend>Score</legend>
-                        <table class="table tab-content">
+                    <table class="table tab-content">
+                        <tr>
+                            <th>Score</th>
+                        </tr>
+                        <?php
+                        foreach ($userScore as $scoreValue):
+                            $scoreHour = date('H:i', strtotime($scoreValue['score_date']));
+                            $scoreDate = date('d:m:Y', strtotime($scoreValue['score_date']));
+                            ?>
                             <tr>
-                                <th>Score</th>
-                                <!--<th>Questions</th>-->
+                                <td>
+                                    <?=
+                                    $scoreValue['score'];
+                                    if ($scoreValue['score'] > 1):
+                                        ?> points <?php else: ?> point <?php endif; ?> sur 
+                                    <?= $scoreValue['score_questions_number']; ?> 
+                                    questions le <?= $scoreDate; ?> à <?= $scoreHour; ?>.
+                                </td>
                             </tr>
-                            <?php
-                            foreach ($userScore as $scoreValue):
-                                $scoreHour = date('H:i', strtotime($scoreValue['score_date']));
-                                $scoreDate = date('d:m:Y', strtotime($scoreValue['score_date']));
-                                ?>
-                                <tr>
-                                    <td>
-                                        <?=
-                                        $scoreValue['score'];
-                                        if ($scoreValue['score'] > 1):
-                                            ?> points <?php else: ?> point <?php endif; ?> sur 
-                                        <?= $scoreValue['score_questions_number']; ?> 
-                                        questions le <?= $scoreDate; ?> à <?= $scoreHour; ?>.
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </fieldset>
+                        <?php endforeach; ?>
+                    </table>
                 </div>
             </div>
         </div>
