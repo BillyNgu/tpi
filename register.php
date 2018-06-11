@@ -13,7 +13,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
     $name_register_form = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
     $nickname_register_form = trim(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING));
     $email_register_form = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
-    // pas de filtre, parce que hashage prochainement
+    // no filter for password, only in function
     $pwd_register_form = filter_input(INPUT_POST, 'password');
     $pwdRepeat_register_form = filter_input(INPUT_POST, 'passwordConfirmation');
 
