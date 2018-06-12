@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 12 juin 2018 à 05:49
+-- Généré le :  mar. 12 juin 2018 à 08:36
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -36,6 +36,22 @@ CREATE TABLE IF NOT EXISTS `blindtest_possesses` (
   `music_id` int(11) NOT NULL,
   PRIMARY KEY (`music_style_id`,`music_id`),
   KEY `blindtest_possesses_music0_FK` (`music_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game`
+--
+
+DROP TABLE IF EXISTS `game`;
+CREATE TABLE IF NOT EXISTS `game` (
+  `game_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `music_id` int(11) NOT NULL,
+  PRIMARY KEY (`game_id`,`user_id`,`music_id`) USING BTREE,
+  KEY `fk_user_id` (`user_id`),
+  KEY `fk_music_id` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -114,22 +130,6 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) VALUES
 (1, 30, 5, 1, 1),
 (2, 30, 5, 1, 2);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `party`
---
-
-DROP TABLE IF EXISTS `party`;
-CREATE TABLE IF NOT EXISTS `party` (
-  `party_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `music_id` int(11) NOT NULL,
-  PRIMARY KEY (`party_id`,`user_id`,`music_id`),
-  KEY `fk_user_id` (`user_id`),
-  KEY `fk_music_id` (`music_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
