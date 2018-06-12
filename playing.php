@@ -15,20 +15,20 @@ $play = TRUE;
 $_SESSION['cpt'] += 1;
 
 // Check if the var is set, if not, set it
-if (!isset($_SESSION['party_id'])) {
-    $_SESSION['party_id'] = Create_party();
+if (!isset($_SESSION['game_id'])) {
+    $_SESSION['game_id'] = Create_game();
 }
 
 // Get the musics or covers
-$musics_to_play = Get_all_music_random($_SESSION['party_id']);
-$covers_to_play = Get_all_cover_random($_SESSION['party_id']);
+$musics_to_play = Get_all_music_random($_SESSION['game_id']);
+$covers_to_play = Get_all_cover_random($_SESSION['game_id']);
 
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
 
     if (check_answer($q_answer, $_SESSION['q_audio'])) {
         $_SESSION['score'] += 1;
-        Add_party($_SESSION['party_id'], $userData['user_id'], Get_music_id($_SESSION['q_audio']));
+        Add_game($_SESSION['game_id'], $userData['user_id'], Get_music_id($_SESSION['q_audio']));
         var_dump("answer:" . $_SESSION['q_audio']);
 //        var_dump("id of the music:" . Get_music_id($_SESSION['q_audio']));
     }

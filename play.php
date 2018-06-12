@@ -13,7 +13,7 @@ $play = TRUE;
 $_SESSION['cpt'] = 0;
 $_SESSION['score'] = 0;
 $_SESSION['played'] = [];
-unset($_SESSION['party_id']);
+unset($_SESSION['game_id']);
 ?>
 <!DOCTYPE html>
 <html>

@@ -258,15 +258,15 @@ function Get_all_music() {
 
 /**
  * Return 4 random musics from db 
- * @param type $party_id int the party the user is playing
+ * @param type $game_id int the game the user is playing
  * @return type array
  */
-function Get_all_music_random($party_id) {
+function Get_all_music_random($game_id) {
     // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `party` WHERE `party_id` = $party_id)";
     // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `party` WHERE `party_id` = :party_id)";
-    $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `party` WHERE `party_id` = :party_id) ORDER BY RAND() LIMIT 4";
+    $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) ORDER BY RAND() LIMIT 4";
     $query = pdo()->prepare($sql);
-    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
+    $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -431,23 +431,23 @@ function Get_score($user_id) {
  * Create a party
  * @return type int
  */
-function Create_party() {
-    $sql = "SELECT COALESCE(MAX(`party_id`), 0) + 1 as `party_id` FROM `party`";
+function Create_game() {
+    $sql = "SELECT COALESCE(MAX(`game_id`), 0) + 1 as `game_id` FROM `game`";
     $query = pdo()->prepare($sql);
     $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC)['party_id'];
+    return $query->fetch(PDO::FETCH_ASSOC)['game_id'];
 }
 
 /**
  * Add party
- * @param type $party_id party_id from Create_party()
+ * @param type $game_id game_id from Create_game()
  * @param type $user_id the user id
  * @param type $music_id the music_id
  */
-function Add_party($party_id, $user_id, $music_id) {
-    $sql = "INSERT INTO `party`(`party_id`, `user_id`, `music_id`) VALUES (:party_id, :user_id, :music_id)";
+function Add_game($game_id, $user_id, $music_id) {
+    $sql = "INSERT INTO `game`(`game_id`, `user_id`, `music_id`) VALUES (:game_id, :user_id, :music_id)";
     $query = pdo()->prepare($sql);
-    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
+    $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->execute();
