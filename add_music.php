@@ -9,7 +9,7 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
-$all_music_style = get_music_style();
+$all_music_style = Get_music_style();
 
 if (filter_has_var(INPUT_POST, "add_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));

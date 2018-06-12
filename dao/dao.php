@@ -145,7 +145,7 @@ function Add_music_style($style) {
  * Get all music style from db
  * @return type array
  */
-function get_music_style() {
+function Get_music_style() {
     $sql = "SELECT * FROM `music_style`";
     $query = pdo()->prepare($sql);
     $query->execute();
@@ -251,7 +251,7 @@ function Update_music_style($music_style_id, $music_id) {
     $query->execute();
 }
 
-function get_music_style_by_music_id($music_id){
+function Get_music_style_by_music_id($music_id) {
     $sql = "SELECT `music_style_id` FROM `blindtest_possesses` WHERE `music_id` = :music_id";
     $query = pdo()->prepare($sql);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
@@ -309,20 +309,6 @@ function Get_all_music_random($game_id) {
     $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
     $query->execute();
 //    $query->debugDumpParams();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
-}
-
-/**
- * Return 4 random covers that's not null
- * Covers aren't required when we add a song
- * @param type $party_id
- * @return type
- */
-function Get_all_cover_random($party_id) {
-    $sql = "SELECT DISTINCT * FROM `music` WHERE `music_cover` IS NOT NULL AND `music_id` NOT IN(SELECT `music_id` FROM `party` WHERE `party_id` = :party_id) ORDER BY RAND() LIMIT 4";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':party_id', $party_id, PDO::PARAM_INT);
-    $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -405,28 +391,29 @@ function Delete_music_style($music_id) {
  * Save parameters to play
  * @param type $question_time the time of each question in second
  * @param type $questions_number the number of questions the user will be asked
- * @param type $question_type the type of question the user wants to play (1 for songs, 2 for album cover)
+ * @param type $music_style_id the music style
  * @param type $user_id the id of the user
  */
-function Save_parameters($question_time, $questions_number, $question_type, $user_id) {
+function Save_parameters($question_time, $questions_number, $music_style_id, $user_id) {
     if (!empty(Get_parameters($user_id))) {
         // Check if parameters exist for the user, if it doesn't insert, else update
-        $sql = "UPDATE `parameters` SET `parameters_time`=:question_time, `parameters_questions_number`=:questions_number, "
-                . "`parameters_type`=:question_type WHERE `user_id` =:user_id";
+        $sql = "UPDATE `parameters` SET "
+                . "`parameters_time`=:question_time, `parameters_questions_number`=:questions_number, `music_style_id`=:music_style_id "
+                . "WHERE `user_id` =:user_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
         $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
-        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
         SetFlashMessage("Paramètres enregistrés.");
     } else {
-        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) "
-                . "VALUES (:question_time, :questions_number, :question_type, :user_id)";
+        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `music_style_id`, `user_id`) "
+                . "VALUES (:question_time, :questions_number, :music_style_id, :user_id)";
         $query = pdo()->prepare($sql);
         $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
         $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);
-        $query->bindParam(':question_type', $question_type, PDO::PARAM_INT);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
         $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
     }
@@ -443,6 +430,14 @@ function Get_parameters($user_id) {
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function Get_music_style_by_id($music_style_id) {
+    $sql = "SELECT * FROM `music_style` WHERE `music_style_id` = :music_style_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['music_style'];
 }
 
 /**

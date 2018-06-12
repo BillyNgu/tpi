@@ -11,8 +11,8 @@ $userData = Get_user_data($nickname);
 $crud = TRUE;
 $music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);
 $music = Get_music($music_id);
-$all_music_style = get_music_style();
-$musics_style = get_music_style_by_music_id($music_id);
+$all_music_style = Get_music_style();
+$musics_style = Get_music_style_by_music_id($music_id);
 
 if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));

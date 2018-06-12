@@ -9,15 +9,17 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $param = TRUE;
-$param_value = Get_parameters($userData['user_id']);
+$users_param = Get_parameters($userData['user_id']);
+$music_style = Get_music_style();
 
 if (filter_has_var(INPUT_POST, 'save')) {
     $time = trim(filter_input(INPUT_POST, 'time', FILTER_VALIDATE_INT));
     $questions_number = trim(filter_input(INPUT_POST, 'questions_number', FILTER_VALIDATE_INT));
-    $question_type = trim(filter_input(INPUT_POST, 'question_type', FILTER_VALIDATE_INT));
-
-    Save_parameters($time, $questions_number, $question_type, $userData['user_id']);
-    $param_value = Get_parameters($userData['user_id']);
+    $user_music_style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
+    
+    Save_parameters($time, $questions_number, $user_music_style, $userData['user_id']);
+    var_dump($time, $questions_number, $user_music_style, $userData['user_id']);
+    $users_param = Get_parameters($userData['user_id']);
 }
 ?>
 <!DOCTYPE html>
@@ -32,38 +34,41 @@ if (filter_has_var(INPUT_POST, 'save')) {
             <?php require_once './navbar.php'; ?>
             <form action="param.php" method="post">
                 <fieldset>
-                    <legend>Paramètres</legend>
+                    <h2>Paramètres</h2>
                     <p>Temps : </p>
                     <div class="slidecontainer">
-                        <input name="time" type="range" min="10" max="60" value="<?= $param_value['parameters_time']; ?>" class="slider" id="param_time">
+                        <input name="time" type="range" min="10" max="60" value="<?= $users_param['parameters_time']; ?>" class="slider" id="param_time">
                         <p><span id="param_second"></span> seconde(s).</p>
                     </div>
-                    <label>Le nombre de questions : 
-                        <select name="questions_number">
-                            <option <?php if ($param_value['parameters_questions_number'] == 5): ?> selected="" <?php endif; ?> value="5">5 questions</option>
-                            <option <?php if ($param_value['parameters_questions_number'] == 10): ?> selected="" <?php endif; ?> value="10">10 questions</option>
-                            <option <?php if ($param_value['parameters_questions_number'] == 15): ?> selected="" <?php endif; ?> value="15">15 questions</option>
-                        </select>
-                    </label>
-                    <table>
-                        <tr>
-                            <th colspan="2">Type de questions : </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    <input type="radio" name="question_type" value="1" <?php if ($param_value['parameters_type'] == 1): ?> checked="checked" <?php endif; ?> />Chanson
-                                </label>
-                            </td>
-                            <td>
-                                <label>
-                                    <input type="radio" name="question_type" value="2" <?php if ($param_value['parameters_type'] == 2): ?> checked="checked" <?php endif; ?>/>Pochette d'album
-                                </label>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        <div class="col">
+                            <label>Le nombre de questions : 
+                                <select name="questions_number">
+                                    <option <?php if ($users_param['parameters_questions_number'] == 5): ?> selected="" <?php endif; ?> value="5">
+                                        5 questions</option>
+                                    <option <?php if ($users_param['parameters_questions_number'] == 10): ?> selected="" <?php endif; ?> value="10">
+                                        10 questions</option>
+                                    <option <?php if ($users_param['parameters_questions_number'] == 15): ?> selected="" <?php endif; ?> value="15">
+                                        15 questions</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col">
+                            Le style de musique pour les questions : 
+                            <select name="music_style">
+                                <?php foreach ($music_style as $value_music_style): ?>
+                                    <option 
+                                    <?php if ($value_music_style['music_style_id'] == $users_param['music_style_id']): ?>
+                                            selected="" <?php endif; ?> value="
+                                        <?= $value_music_style['music_style_id']; ?>">
+                                            <?= $value_music_style['music_style']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                     <button name="save" class="btn btn-primary" type="submit">Enregistrer</button>
-                    <?php echo GetFlashMessage(); ?>
+                    <?= GetFlashMessage(); ?>
                 </fieldset>
             </form>
         </div>
