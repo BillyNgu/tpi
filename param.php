@@ -18,7 +18,6 @@ if (filter_has_var(INPUT_POST, 'save')) {
     $user_music_style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
     
     Save_parameters($time, $questions_number, $user_music_style, $userData['user_id']);
-    var_dump($time, $questions_number, $user_music_style, $userData['user_id']);
     $users_param = Get_parameters($userData['user_id']);
 }
 ?>
