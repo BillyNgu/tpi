@@ -305,6 +305,8 @@ function Get_all_music_random($game_id) {
     // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `party` WHERE `party_id` = $party_id)";
     // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `party` WHERE `party_id` = :party_id)";
     $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) ORDER BY RAND() LIMIT 4";
+    // Next query to do
+    // SELECT * FROM `music` WHERE music_id IN (SELECT music_id FROM blindtest_possesses WHERE music_style_id = 2)
     $query = pdo()->prepare($sql);
     $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
     $query->execute();
