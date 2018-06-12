@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 11 juin 2018 à 14:04
+-- Généré le :  mar. 12 juin 2018 à 05:49
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `party` (
   PRIMARY KEY (`party_id`,`user_id`,`music_id`),
   KEY `fk_user_id` (`user_id`),
   KEY `fk_music_id` (`music_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
