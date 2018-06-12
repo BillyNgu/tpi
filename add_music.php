@@ -9,12 +9,15 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
+$music_style = get_music_style();
 
 
 
 if (filter_has_var(INPUT_POST, "add_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
+    $style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
+    var_dump($style);
     $cover = "";
     $song = "";
 
@@ -29,7 +32,9 @@ if (filter_has_var(INPUT_POST, "add_music")) {
     }
 
     if (empty($errors_add_music)) {
-        Add_Music($title, $author);
+        Add_music($title, $author);
+        $music_id = Get_music_id_by_title($title);
+        Add_style_to_music($style, $music_id);
     }
 
 
@@ -126,10 +131,19 @@ if (filter_has_var(INPUT_POST, "add_music")) {
                         <p><?= $errors_add_file_cover['song']; ?></p>
                     <?php endif; ?> 
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
+                    <label>Style de musique : <select name="music_style">
+                            <?php foreach ($music_style as $value_music_style): ?>
+                                <option value="<?= $value_music_style['music_style_id']; ?>"><?= $value_music_style['music_style']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
                 <input class="btn btn-primary" name="add_music" type="submit" value="Ajouter"/>
                 <?= GetFlashMessage(); ?>
+                <div class="form-group">
+                    <a class="float-right btn btn-primary" href="add_music_style.php">Ajouter un style de musique</a>
+                </div>
             </form>
         </div>
         <script src="js/bootstrap.js" type="text/javascript"></script>
