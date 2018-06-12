@@ -428,7 +428,7 @@ function Get_score($user_id) {
 }
 
 /**
- * Create a party
+ * Create a game
  * @return type int
  */
 function Create_game() {
@@ -439,7 +439,7 @@ function Create_game() {
 }
 
 /**
- * Add party
+ * Add game
  * @param type $game_id game_id from Create_game()
  * @param type $user_id the user id
  * @param type $music_id the music_id
