@@ -18,7 +18,7 @@ require_once './dao/flashmessage.php';
  * @param type $pwd password of the user
  * @param type $profilepic profile picture of the user
  */
-function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
+function Create_user($name, $nickname, $email, $pwd, $profilepic) {
     $sql = "INSERT INTO `users`(`user_name`, `user_nickname`, `user_email`, `user_password`, `user_profilepic`, `user_status`) "
             . "VALUES (:name, :nickname, :email, :pwd, :profilepic, 0)";
 
@@ -44,7 +44,7 @@ function CreateUser($name, $nickname, $email, $pwd, $profilepic) {
  * @param type $nickname nickname of the user
  * @param type $pwd password of the user
  */
-function CheckLogin($nickname, $pwd) {
+function Check_login($nickname, $pwd) {
     $sql = "SELECT `user_nickname`, `user_password` FROM `users` WHERE `user_nickname` = :nickname AND `user_password` = :pwd";
     $query = pdo()->prepare($sql);
 
@@ -82,7 +82,7 @@ function Get_user_data($nickname) {
  * @param type $picture new picture of the profile
  * @param type $old_picture old picture of the profile
  */
-function UpdateProfilePicture($nickname, $picture, $old_picture) {
+function Update_profile_picture($nickname, $picture, $old_picture) {
     $target_dir = "./uploaded_files/img/profile/";
     $target_file = $target_dir . $old_picture;
 
@@ -115,8 +115,7 @@ function UpdateProfilePicture($nickname, $picture, $old_picture) {
  * @param type $music_title the title of the music
  * @param type $music_author some information of the music
  */
-function Add_Music($music_title, $music_author) {
-
+function Add_music($music_title, $music_author) {
     if (!empty(Check_music($music_title))) {
         SetFlashMessage("La musique existe déjà.");
     } else {
@@ -128,6 +127,42 @@ function Add_Music($music_title, $music_author) {
         $query->execute();
         SetFlashMessage("Musique ajoutée.");
     }
+}
+
+/**
+ * Add music style
+ * @param type $style a style of music
+ */
+function Add_music_style($style) {
+    $sql = "INSERT INTO `music_style`(`music_style`) VALUES (:style)";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':style', $style, PDO::PARAM_STR);
+    $query->execute();
+    SetFlashMessage('Style ajouté.');
+}
+
+/**
+ * Get all music style from db
+ * @return type array
+ */
+function get_music_style() {
+    $sql = "SELECT * FROM `music_style`";
+    $query = pdo()->prepare($sql);
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Add the music style to the music
+ * @param type $music_style_id int the style_id of the song
+ * @param type $music_id int the id of song
+ */
+function Add_style_to_music($music_style_id, $music_id) {
+    $sql = "INSERT INTO `blindtest_possesses`(`music_style_id`, `music_id`) VALUES (:music_style, :music_id)";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_style', $music_style_id, PDO::PARAM_INT);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
 }
 
 /**
@@ -208,6 +243,22 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
     }
 }
 
+function Update_music_style($music_style_id, $music_id) {
+    $sql = "UPDATE `blindtest_possesses` SET `music_style_id`=:music_style_id WHERE `music_id`= :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function get_music_style_by_music_id($music_id){
+    $sql = "SELECT `music_style_id` FROM `blindtest_possesses` WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['music_style_id'];
+}
+
 /**
  * Return all of the last record
  * @return type array
@@ -235,17 +286,6 @@ function Add_file_cover($music_id, $music_file, $music_cover) {
 }
 
 /**
- * Add music style
- * @param type $style a style of music
- */
-function Add_Music_Style($style) {
-    $sql = "INSERT INTO `music_style`(`music_style`) VALUES (:style)";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':style', $style, PDO::PARAM_STR);
-    $query->execute();
-}
-
-/**
  * Return all music
  * @return type array
  */
@@ -268,6 +308,7 @@ function Get_all_music_random($game_id) {
     $query = pdo()->prepare($sql);
     $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
     $query->execute();
+//    $query->debugDumpParams();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -290,10 +331,23 @@ function Get_all_cover_random($party_id) {
  * @param type $music_file the dir of the music file
  * @return type array
  */
-function Get_music_id($music_file) {
+function Get_music_id_by_file($music_file) {
     $sql = "SELECT `music_id` FROM `music` WHERE `music_file` = :music_file";
     $query = pdo()->prepare($sql);
     $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+    $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC)['music_id'];
+}
+
+/**
+ * Get music_id with its dir
+ * @param type $music_title the dir of the music file
+ * @return type array
+ */
+function Get_music_id_by_title($music_title) {
+    $sql = "SELECT `music_id` FROM `music` WHERE `music_title` = :music_title";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
     $query->execute();
     return $query->fetch(PDO::FETCH_ASSOC)['music_id'];
 }
@@ -323,10 +377,10 @@ function Delete_music($music_id, $music_cover, $music_file) {
     $target_dir_song = "./uploaded_files/songs/";
     $target_file_song = $target_dir_song . $music_file;
 
-    $sql3 = "DELETE FROM `music` WHERE `music_id` = :music_id";
-    $query3 = pdo()->prepare($sql3);
-    $query3->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query3->execute();
+    $sql = "DELETE FROM `music` WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
+    $query->execute();
 
     if (!empty($music_cover)) {
         opendir($target_dir_cover);
@@ -338,6 +392,13 @@ function Delete_music($music_id, $music_cover, $music_file) {
         unlink($target_file_song);
         closedir($target_dir_song);
     }
+}
+
+function Delete_music_style($music_id) {
+    $sql = "DELETE FROM `blindtest_possesses` WHERE `music_id` = :music_id";
+    $query = pdo()->prepare($sql);
+    $query->bindParam(':music_id', $music_id);
+    $query->execute();
 }
 
 /**

@@ -9,15 +9,12 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
-$music_style = get_music_style();
-
-
+$all_music_style = get_music_style();
 
 if (filter_has_var(INPUT_POST, "add_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
-    var_dump($style);
     $cover = "";
     $song = "";
 
@@ -132,7 +129,7 @@ if (filter_has_var(INPUT_POST, "add_music")) {
                     <?php endif; ?> 
                     <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
                     <label>Style de musique : <select name="music_style">
-                            <?php foreach ($music_style as $value_music_style): ?>
+                            <?php foreach ($all_music_style as $value_music_style): ?>
                                 <option value="<?= $value_music_style['music_style_id']; ?>"><?= $value_music_style['music_style']; ?></option>
                             <?php endforeach; ?>
                         </select>

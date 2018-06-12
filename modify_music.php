@@ -9,13 +9,15 @@ require_once './dao/dao.php';
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
-
 $music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);
 $music = Get_music($music_id);
+$all_music_style = get_music_style();
+$musics_style = get_music_style_by_music_id($music_id);
 
 if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
+    $style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
     $cover = "";
     $music_file = "";
 
@@ -77,6 +79,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
 
     if (empty($errors_modify_music)) {
         Update_music($music['music_id'], $title, $author, $music_file, $cover, $music['music_file'], $music['music_cover']);
+        Update_music_style($style, $music_id);
         header('Location:crud_option.php');
     }
 }
@@ -96,7 +99,10 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                 <div class="form-group">      
                     <div class="row">
                         <div class="col">
-                            <label>Titre de la musique : <input type="text" name="music_title" class="form-control" value="<?= $music['music_title']; ?>"></label>
+                            <label>
+                                Titre de la musique : 
+                                <input type="text" name="music_title" class="form-control" value="<?= $music['music_title']; ?>">
+                            </label>
                             <?php
                             if (!empty($errors_modify_music['music_title'])) {
                                 echo $errors_modify_music['music_title'];
@@ -104,7 +110,10 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                             ?>
                         </div>
                         <div class="col">
-                            <label>Auteur de la musique : <input name="music_author" class="form-control" value="<?= $music['music_author']; ?>"></label>
+                            <label>
+                                Auteur de la musique : 
+                                <input name="music_author" class="form-control" value="<?= $music['music_author']; ?>">
+                            </label>
                             <?php
                             if (!empty($errors_modify_music['music_author'])) {
                                 echo $errors_modify_music['music_author'];
@@ -114,8 +123,25 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Le morceau (16 Mo max) : <input class="form-control-file" name="song" type="file" accept="audio/*"></label>
-                    <label>La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*"></label>
+                    <label>
+                        Le morceau (16 Mo max) : <input class="form-control-file" name="song" type="file" accept="audio/*">
+                    </label>
+                    <label>
+                        La pochette d'album (optionnel) : <input class="form-control-file" name="cover" type="file" accept="image/*">
+                    </label>
+                    <label>
+                        Style de musique : 
+                        <select name="music_style">
+                            <?php foreach ($all_music_style as $value_music_style): ?>
+                                <option 
+                                <?php if ($value_music_style['music_style_id'] == $musics_style): ?>
+                                        selected="" <?php endif; ?> value="
+                                    <?= $value_music_style['music_style_id']; ?>">
+                                        <?= $value_music_style['music_style']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
                 </div>
                 <a class="btn btn-primary" href="crud_option.php">Retour</a>
                 <input class="btn btn-primary" name="modify_music" type="submit" value="Modifier"/>

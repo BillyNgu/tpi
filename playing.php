@@ -28,7 +28,7 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
 
     if (check_answer($q_answer, $_SESSION['q_audio'])) {
         $_SESSION['score'] += 1;
-        Add_game($_SESSION['game_id'], $userData['user_id'], Get_music_id($_SESSION['q_audio']));
+        Add_game($_SESSION['game_id'], $userData['user_id'], Get_music_id_by_file($_SESSION['q_audio']));
         var_dump("answer:" . $_SESSION['q_audio']);
 //        var_dump("id of the music:" . Get_music_id($_SESSION['q_audio']));
     }
