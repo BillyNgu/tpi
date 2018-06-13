@@ -317,7 +317,6 @@ function Get_all_music_random($game_id, $music_style_id) {
         $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
     }
     $query->execute();
-//    $query->debugDumpParams();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
