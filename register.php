@@ -65,7 +65,7 @@ if (filter_has_var(INPUT_POST, 'register')) {
         Create_user(strtolower($name_register_form), strtolower($nickname_register_form), strtolower($email_register_form), $pwd_register_form, $_FILES["profile_pic"]["name"]);
         $userdata = Get_user_data($nickname_register_form);
         // Save default parameters to prevent the user to play without settings
-        Save_parameters(30, 5, 1, $userdata['user_id']);
+        Save_parameters(30, 5, $userdata['user_id'], 1);
         header('Location:index.php');
     }
 }

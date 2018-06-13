@@ -16,7 +16,6 @@ $crud = TRUE;
 $music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);
 $music = Get_music($music_id);
 $all_music_style = Get_music_style();
-$musics_style = Get_music_style_by_music_id($music_id);
 
 if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
@@ -82,8 +81,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     }
 
     if (empty($errors_modify_music)) {
-        Update_music($music['music_id'], $title, $author, $music_file, $cover, $music['music_file'], $music['music_cover']);
-        Update_music_style($style, $music_id);
+        Update_music($music['music_id'], $title, $author, $music_file, $cover, $style, $music['music_file'], $music['music_cover']);
         header('Location:crud_option.php');
     }
 }
@@ -138,7 +136,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
                         <select name="music_style">
                             <?php foreach ($all_music_style as $value_music_style): ?>
                                 <option 
-                                <?php if ($value_music_style['music_style_id'] == $musics_style): ?>
+                                <?php if ($value_music_style['music_style_id'] == $music['music_style_id']): ?>
                                         selected="" <?php endif; ?> value="
                                     <?= $value_music_style['music_style_id']; ?>">
                                         <?= $value_music_style['music_style']; ?>

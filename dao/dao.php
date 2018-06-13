@@ -115,15 +115,16 @@ function Update_profile_picture($nickname, $picture, $old_picture) {
  * @param type $music_title the title of the music
  * @param type $music_author some information of the music
  */
-function Add_music($music_title, $music_author) {
+function Add_music($music_title, $music_author, $music_style_id) {
     if (!empty(Check_music($music_title))) {
         SetFlashMessage("La musique existe déjà.");
     } else {
-        $sql = "INSERT INTO `music`(`music_title`, `music_author`) "
-                . "VALUES (:music_title, :music_author)";
+        $sql = "INSERT INTO `music`(`music_title`, `music_author`, `music_style_id`) "
+                . "VALUES (:music_title, :music_author, :music_style_id)";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
         $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
         $query->execute();
         SetFlashMessage("Musique ajoutée.");
     }
@@ -153,19 +154,6 @@ function Get_music_style() {
 }
 
 /**
- * Add the music style to the music
- * @param type $music_style_id int the style_id of the song
- * @param type $music_id int the id of song
- */
-function Add_style_to_music($music_style_id, $music_id) {
-    $sql = "INSERT INTO `blindtest_possesses`(`music_style_id`, `music_id`) VALUES (:music_style, :music_id)";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_style', $music_style_id, PDO::PARAM_INT);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->execute();
-}
-
-/**
  * Check if the music already exists in db
  * @param type $music_title string
  */
@@ -184,7 +172,7 @@ function Check_music($music_title) {
  * @param type $music_file the dir of the song file
  * @param type $music_cover the dir of the cover
  */
-function Update_music($music_id, $music_title, $music_author, $music_file, $music_cover, $old_music_file, $old_music_cover) {
+function Update_music($music_id, $music_title, $music_author, $music_file, $music_cover, $music_style_id, $old_music_file, $old_music_cover) {
     $target_dir_file = "./uploaded_files/songs/";
     $target_music_file = $target_dir_file . $old_music_file;
 
@@ -199,13 +187,15 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             unlink($target_music_cover);
         }
 
-        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file,`music_cover`=:music_cover WHERE `music_id` = :music_id";
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, "
+                . "`music_file`=:music_file,`music_cover`=:music_cover, `music_style_id`=:music_style_id WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
         $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
         $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
         $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
         $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_STR);
         $query->execute();
     } elseif (!empty($music_file)) {
         if (!empty($old_music_file)) {
@@ -213,12 +203,14 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             unlink($target_music_file);
         }
 
-        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author,`music_file`=:music_file WHERE `music_id` = :music_id";
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, "
+                . "`music_file`=:music_file, `music_style_id`=:music_style_id WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
         $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
         $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
         $query->bindParam(':music_file', $music_file, PDO::PARAM_STR);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_STR);
         $query->execute();
     } elseif (!empty($music_cover)) {
         if (!empty($old_music_cover)) {
@@ -226,19 +218,23 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
             unlink($target_music_cover);
         }
 
-        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, `music_cover`=:music_cover WHERE `music_id` = :music_id";
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, "
+                . "`music_cover`=:music_cover, `music_style_id`=:music_style_id WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
         $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
         $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
         $query->bindParam(':music_cover', $music_cover, PDO::PARAM_STR);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_STR);
         $query->execute();
     } else {
-        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author WHERE `music_id` = :music_id";
+        $sql = "UPDATE `music` SET `music_title`=:music_title, `music_author`=:music_author, "
+                . "`music_style_id`=:music_style_id WHERE `music_id` = :music_id";
         $query = pdo()->prepare($sql);
         $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
         $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
         $query->bindParam(':music_author', $music_author, PDO::PARAM_STR);
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_STR);
         $query->execute();
     }
 }
@@ -249,14 +245,6 @@ function Update_music_style($music_style_id, $music_id) {
     $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
     $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
     $query->execute();
-}
-
-function Get_music_style_by_music_id($music_id) {
-    $sql = "SELECT `music_style_id` FROM `blindtest_possesses` WHERE `music_id` = :music_id";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC)['music_style_id'];
 }
 
 /**
@@ -303,11 +291,11 @@ function Get_all_music() {
  * @return type array
  */
 function Get_all_music_random($game_id, $music_style_id) {
-    // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `party` WHERE `party_id` = $party_id)";
-    // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `party` WHERE `party_id` = :party_id)";
+    // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `game` WHERE `game_id` = game_id)";
+    // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `game` WHERE `game_id` = :game_id)";
     if ($music_style_id != 1) {
         $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) AND "
-                . "`music_id` IN (SELECT `music_id` FROM `blindtest_possesses` WHERE `music_style_id` = :music_style_id) ORDER BY RAND() LIMIT 4";
+                . "`music_style_id` IN (SELECT `music_style_id` FROM `music` WHERE `music_style_id` = :music_style_id) ORDER BY RAND() LIMIT 4";
     } else {
         $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) ORDER BY RAND() LIMIT 4";
     }
@@ -402,7 +390,7 @@ function Delete_music_style($music_id) {
  * @param type $music_style_id the music style
  * @param type $user_id the id of the user
  */
-function Save_parameters($question_time, $questions_number, $music_style_id, $user_id) {
+function Save_parameters($question_time, $questions_number, $user_id, $music_style_id) {
     if (!empty(Get_parameters($user_id))) {
         // Check if parameters exist for the user, if it doesn't insert, else update
         $sql = "UPDATE `parameters` SET "
@@ -416,8 +404,8 @@ function Save_parameters($question_time, $questions_number, $music_style_id, $us
         $query->execute();
         SetFlashMessage("Paramètres enregistrés.");
     } else {
-        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `parameters_type`, `music_style_id`, `user_id`) "
-                . "VALUES (:question_time, :questions_number, :music_style_id, :user_id)";
+        $sql = "INSERT INTO `parameters`(`parameters_time`, `parameters_questions_number`, `user_id`, `music_style_id`) "
+                . "VALUES (:question_time, :questions_number, :user_id, :music_style_id)";
         $query = pdo()->prepare($sql);
         $query->bindParam(':question_time', $question_time, PDO::PARAM_INT);
         $query->bindParam(':questions_number', $questions_number, PDO::PARAM_INT);

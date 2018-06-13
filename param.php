@@ -16,12 +16,13 @@ $param = TRUE;
 $users_param = Get_parameters($userData['user_id']);
 $music_style = Get_music_style();
 
+
 if (filter_has_var(INPUT_POST, 'save')) {
     $time = trim(filter_input(INPUT_POST, 'time', FILTER_VALIDATE_INT));
     $questions_number = trim(filter_input(INPUT_POST, 'questions_number', FILTER_VALIDATE_INT));
     $user_music_style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
 
-    Save_parameters($time, $questions_number, $user_music_style, $userData['user_id']);
+    Save_parameters($time, $questions_number, $userData['user_id'], $user_music_style);
     $users_param = Get_parameters($userData['user_id']);
 }
 ?>
