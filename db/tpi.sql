@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 12 juin 2018 à 08:36
+-- Généré le :  mer. 13 juin 2018 à 10:59
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -38,6 +38,28 @@ CREATE TABLE IF NOT EXISTS `blindtest_possesses` (
   KEY `blindtest_possesses_music0_FK` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `blindtest_possesses`
+--
+
+INSERT INTO `blindtest_possesses` (`music_style_id`, `music_id`) VALUES
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6),
+(2, 7),
+(2, 8),
+(2, 9),
+(2, 10),
+(2, 11),
+(2, 12),
+(2, 13),
+(3, 14),
+(3, 15),
+(3, 16);
+
 -- --------------------------------------------------------
 
 --
@@ -51,7 +73,8 @@ CREATE TABLE IF NOT EXISTS `game` (
   `music_id` int(11) NOT NULL,
   PRIMARY KEY (`game_id`,`user_id`,`music_id`) USING BTREE,
   KEY `fk_user_id` (`user_id`),
-  KEY `fk_music_id` (`music_id`)
+  KEY `fk_music_id` (`music_id`),
+  KEY `user_id` (`user_id`,`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -104,7 +127,17 @@ CREATE TABLE IF NOT EXISTS `music_style` (
   `music_style_id` int(11) NOT NULL AUTO_INCREMENT,
   `music_style` varchar(50) NOT NULL,
   PRIMARY KEY (`music_style_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `music_style`
+--
+
+INSERT INTO `music_style` (`music_style_id`, `music_style`) VALUES
+(1, 'Tout'),
+(2, 'Pop'),
+(3, 'Metal'),
+(4, 'Rock');
 
 -- --------------------------------------------------------
 
@@ -117,19 +150,20 @@ CREATE TABLE IF NOT EXISTS `parameters` (
   `parameters_id` int(11) NOT NULL AUTO_INCREMENT,
   `parameters_time` int(11) NOT NULL,
   `parameters_questions_number` int(11) NOT NULL,
-  `parameters_type` int(11) NOT NULL,
+  `music_style_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`parameters_id`),
-  KEY `parameters_users_FK` (`user_id`)
+  KEY `parameters_users_FK` (`user_id`),
+  KEY `music_style_id` (`music_style_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `parameters`
 --
 
-INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `parameters_type`, `user_id`) VALUES
+INSERT INTO `parameters` (`parameters_id`, `parameters_time`, `parameters_questions_number`, `music_style_id`, `user_id`) VALUES
 (1, 30, 5, 1, 1),
-(2, 30, 5, 1, 2);
+(2, 20, 10, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -187,9 +221,17 @@ ALTER TABLE `blindtest_possesses`
   ADD CONSTRAINT `blindtest_possesses_music_style_FK` FOREIGN KEY (`music_style_id`) REFERENCES `music_style` (`music_style_id`);
 
 --
+-- Contraintes pour la table `game`
+--
+ALTER TABLE `game`
+  ADD CONSTRAINT `game_ibfk_1` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`),
+  ADD CONSTRAINT `game_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
 -- Contraintes pour la table `parameters`
 --
 ALTER TABLE `parameters`
+  ADD CONSTRAINT `parameters_ibfk_1` FOREIGN KEY (`music_style_id`) REFERENCES `music_style` (`music_style_id`),
   ADD CONSTRAINT `parameters_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
