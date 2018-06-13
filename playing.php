@@ -6,6 +6,10 @@
  */
 require_once './dao/dao.php';
 
+if (empty($_SESSION['user_nickname'])) {
+    header('Location:index.php');
+}
+
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
