@@ -299,16 +299,23 @@ function Get_all_music() {
 /**
  * Return 4 random musics from db 
  * @param type $game_id int the game the user is playing
+ * @param type $music_style_id int the music style
  * @return type array
  */
-function Get_all_music_random($game_id) {
+function Get_all_music_random($game_id, $music_style_id) {
     // $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN (SELECT `music_id` FROM `party` WHERE `party_id` = $party_id)";
     // $sql = "SELECT * FROM `music` WHERE `music_id` IN (SELECT `music_id` FROM `party` WHERE `party_id` = :party_id)";
-    $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) ORDER BY RAND() LIMIT 4";
-    // Next query to do
-    // SELECT * FROM `music` WHERE music_id IN (SELECT music_id FROM blindtest_possesses WHERE music_style_id = 2)
+    if ($music_style_id != 1) {
+        $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) AND "
+                . "`music_id` IN (SELECT `music_id` FROM `blindtest_possesses` WHERE `music_style_id` = :music_style_id) ORDER BY RAND() LIMIT 4";
+    } else {
+        $sql = "SELECT * FROM `music` WHERE `music_id` NOT IN(SELECT `music_id` FROM `game` WHERE `game_id` = :game_id) ORDER BY RAND() LIMIT 4";
+    }
     $query = pdo()->prepare($sql);
     $query->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+    if ($music_style_id != 1) {
+        $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
+    }
     $query->execute();
 //    $query->debugDumpParams();
     return $query->fetchAll(PDO::FETCH_ASSOC);
