@@ -20,7 +20,7 @@ if (!isset($_SESSION['game_id'])) {
 }
 
 // Get the musics or covers
-$musics_to_play = Get_all_music_random($_SESSION['game_id']);
+$musics_to_play = Get_all_music_random($_SESSION['game_id'], $paramData['music_style_id']);
 
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
@@ -73,9 +73,9 @@ if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
                         // a random music file in the $question_name array
                         if (!empty($question_name)) {
                             $question_music = $question_name[array_rand($question_name, 1)];
+                            $_SESSION['q_audio'] = $question_music;
+                            var_dump($question_music);
                         }
-                        $_SESSION['q_audio'] = $question_music;
-                        var_dump($question_music);
                         ?>
                     </table>
                     <audio autoplay="" controls="" id="question_audio">
