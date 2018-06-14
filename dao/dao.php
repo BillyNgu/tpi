@@ -239,14 +239,6 @@ function Update_music($music_id, $music_title, $music_author, $music_file, $musi
     }
 }
 
-function Update_music_style($music_style_id, $music_id) {
-    $sql = "UPDATE `blindtest_possesses` SET `music_style_id`=:music_style_id WHERE `music_id`= :music_id";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_style_id', $music_style_id, PDO::PARAM_INT);
-    $query->bindParam(':music_id', $music_id, PDO::PARAM_INT);
-    $query->execute();
-}
-
 /**
  * Return all of the last record
  * @return type array
@@ -322,19 +314,6 @@ function Get_music_id_by_file($music_file) {
 }
 
 /**
- * Get music_id with its dir
- * @param type $music_title the dir of the music file
- * @return type array
- */
-function Get_music_id_by_title($music_title) {
-    $sql = "SELECT `music_id` FROM `music` WHERE `music_title` = :music_title";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
-    $query->execute();
-    return $query->fetch(PDO::FETCH_ASSOC)['music_id'];
-}
-
-/**
  * Return the value of the specified record
  * @param type $music_id the linked music
  * @return type array
@@ -376,19 +355,12 @@ function Delete_music($music_id, $music_cover, $music_file) {
     }
 }
 
-function Delete_music_style($music_id) {
-    $sql = "DELETE FROM `blindtest_possesses` WHERE `music_id` = :music_id";
-    $query = pdo()->prepare($sql);
-    $query->bindParam(':music_id', $music_id);
-    $query->execute();
-}
-
 /**
  * Save parameters to play
  * @param type $question_time the time of each question in second
  * @param type $questions_number the number of questions the user will be asked
- * @param type $music_style_id the music style
  * @param type $user_id the id of the user
+ * @param type $music_style_id the music style
  */
 function Save_parameters($question_time, $questions_number, $user_id, $music_style_id) {
     if (!empty(Get_parameters($user_id))) {
@@ -428,6 +400,11 @@ function Get_parameters($user_id) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Return the music style name with its id
+ * @param type $music_style_id
+ * @return type array
+ */
 function Get_music_style_by_id($music_style_id) {
     $sql = "SELECT * FROM `music_style` WHERE `music_style_id` = :music_style_id";
     $query = pdo()->prepare($sql);
@@ -471,6 +448,11 @@ function Add_score($score, $score_question, $user_id) {
     $query->execute();
 }
 
+/**
+ * Return the score of the user
+ * @param type $user_id the id of the user
+ * @return type array
+ */
 function Get_score($user_id) {
     $sql = "SELECT * FROM `score` WHERE `user_id` = :user_id";
     $query = pdo()->prepare($sql);
