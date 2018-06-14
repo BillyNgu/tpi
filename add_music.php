@@ -19,7 +19,6 @@ if (filter_has_var(INPUT_POST, "add_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
-    var_dump($style);
     $cover = "";
     $song = "";
 
@@ -50,24 +49,24 @@ if (filter_has_var(INPUT_POST, "add_music")) {
     $FileType_song = strtolower(pathinfo($target_file_song, PATHINFO_EXTENSION));
 
     if (!empty($_FILES['cover'])) {
-// Allow certain file formats
+        // Allow certain file formats
         if ($FileType_cover != "jpg" && $FileType_cover != "png" && $FileType_cover != "jpeg" && $FileType_cover != "gif") {
             $uploadOk_cover = 0;
         }
 
-// if everything is ok, try to upload file
+        // if everything is ok, try to upload file
         if ($uploadOk_cover == 1) {
             move_uploaded_file($_FILES["cover"]["tmp_name"], $target_file_cover);
         }
     }
 
     if (!empty($_FILES['song'])) {
-// Allow certain file formats
+        // Allow certain file formats
         if ($FileType_song != "mp3" && $FileType_song != "m4a" && $FileType_song != "ogg") {
             $uploadOk_song = 0;
         }
 
-// if everything is ok, try to upload file
+        // if everything is ok, try to upload file
         if ($uploadOk_song == 1) {
             move_uploaded_file($_FILES["song"]["tmp_name"], $target_file_song);
         }
