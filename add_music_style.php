@@ -6,14 +6,17 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
 
+// If the button is clicked
 if (filter_has_var(INPUT_POST, "add_style")) {
     $style = trim(filter_input(INPUT_POST, 'music_style', FILTER_SANITIZE_STRING));
 

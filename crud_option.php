@@ -6,6 +6,7 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }

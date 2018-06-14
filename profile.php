@@ -6,15 +6,18 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $profile = TRUE;
 $userData = Get_user_data($nickname);
 $userScore = Get_score($userData['user_id']);
 
+// If the button is clicked
 if (filter_has_var(INPUT_POST, 'change')) {
     $uploadOk_profile = 1;
     $target_dir_profile = "./uploaded_files/img/profile/";

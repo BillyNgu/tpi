@@ -6,10 +6,12 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Inizialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);
@@ -26,6 +28,7 @@ if (!isset($_SESSION['game_id'])) {
 // Get the musics or covers
 $musics_to_play = Get_all_music_random($_SESSION['game_id'], $paramData['music_style_id']);
 
+// If the button is clicked
 if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer')) {
     $q_answer = filter_input(INPUT_POST, 'q_answer', FILTER_SANITIZE_STRING);
 
@@ -35,7 +38,7 @@ if (filter_has_var(INPUT_POST, 'answer') && filter_has_var(INPUT_POST, 'q_answer
     }
 }
 
-// Check if all the questions have been answered (right or wrong), if so, add the score to the db
+// Check if all the questions have been answered (right or wrong)
 if ($_SESSION['cpt'] >= ($paramData['parameters_questions_number'] + 1)) {
     Add_score($_SESSION['score'], $paramData['parameters_questions_number'], $userData['user_id']);
     header('Location:result.php');

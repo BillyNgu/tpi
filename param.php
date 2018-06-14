@@ -6,17 +6,19 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $param = TRUE;
 $users_param = Get_parameters($userData['user_id']);
 $music_style = Get_music_style();
 
-
+// If the button is clicked
 if (filter_has_var(INPUT_POST, 'save')) {
     $time = trim(filter_input(INPUT_POST, 'time', FILTER_VALIDATE_INT));
     $questions_number = trim(filter_input(INPUT_POST, 'questions_number', FILTER_VALIDATE_INT));

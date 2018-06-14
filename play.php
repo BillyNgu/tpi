@@ -6,10 +6,12 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $paramData = Get_parameters($userData['user_id']);

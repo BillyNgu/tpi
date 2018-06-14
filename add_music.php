@@ -6,16 +6,20 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
 $all_music_style = Get_music_style();
 
+// If the button is clicked
 if (filter_has_var(INPUT_POST, "add_music")) {
+    // Input value
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
     $style = filter_input(INPUT_POST, 'music_style', FILTER_VALIDATE_INT);
@@ -24,7 +28,8 @@ if (filter_has_var(INPUT_POST, "add_music")) {
 
     $errors_add_music = [];
     $errors_add_file_cover = [];
-
+    
+    // Check errors
     if (empty($title)) {
         $errors_add_music['music_title'] = "Le titre ne peut pas être vide.";
     }
@@ -36,7 +41,7 @@ if (filter_has_var(INPUT_POST, "add_music")) {
         Add_music($title, $author, $style);
     }
 
-
+    // Initialize file input var
     $music = Get_last_music();
     $uploadOk_cover = 1;
     $target_dir_cover = "./uploaded_files/img/cover/";
@@ -47,7 +52,8 @@ if (filter_has_var(INPUT_POST, "add_music")) {
     $target_dir_song = "./uploaded_files/songs/";
     $target_file_song = $target_dir_song . basename($music['music_id'] . "-" . $_FILES["song"]["name"]);
     $FileType_song = strtolower(pathinfo($target_file_song, PATHINFO_EXTENSION));
-
+    
+    // Check errors
     if (!empty($_FILES['cover'])) {
         // Allow certain file formats
         if ($FileType_cover != "jpg" && $FileType_cover != "png" && $FileType_cover != "jpeg" && $FileType_cover != "gif") {
@@ -86,7 +92,8 @@ if (filter_has_var(INPUT_POST, "add_music")) {
     if (empty($song)) {
         $errors_add_file_cover['song'] = "Il ne peut pas ne pas y avoir de musique.";
     }
-
+    
+    // If no errors
     if (empty($errors_add_file_cover)) {
         Add_file_cover($music['music_id'], $song, $cover);
     }

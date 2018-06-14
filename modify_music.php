@@ -6,10 +6,12 @@
  */
 require_once './dao/dao.php';
 
+// Prevent user to access page without being logged
 if (empty($_SESSION['user_nickname'])) {
     header('Location:index.php');
 }
 
+// Initialize var
 $nickname = $_SESSION['user_nickname'];
 $userData = Get_user_data($nickname);
 $crud = TRUE;
@@ -17,6 +19,7 @@ $music_id = filter_input(INPUT_GET, 'music_id', FILTER_VALIDATE_INT);
 $music = Get_music($music_id);
 $all_music_style = Get_music_style();
 
+// If the button is clicked
 if (filter_has_var(INPUT_POST, "modify_music")) {
     $title = trim(filter_input(INPUT_POST, 'music_title', FILTER_SANITIZE_STRING));
     $author = trim(filter_input(INPUT_POST, 'music_author', FILTER_SANITIZE_STRING));
@@ -36,6 +39,7 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     $target_file_song = $target_dir_song . basename($music['music_id'] . "-" . $_FILES["song"]["name"]);
     $FileType_song = strtolower(pathinfo($target_file_song, PATHINFO_EXTENSION));
 
+    // Check errors
     if (!empty($_FILES['cover'])) {
         // Allow certain file formats
         if ($FileType_cover != "jpg" && $FileType_cover != "png" && $FileType_cover != "jpeg" && $FileType_cover != "gif") {
@@ -79,7 +83,8 @@ if (filter_has_var(INPUT_POST, "modify_music")) {
     if (empty($author)) {
         $errors_modify_music['music_author'] = "L'auteur ne peut pas être vide.";
     }
-
+    
+    // If no errors
     if (empty($errors_modify_music)) {
         Update_music($music['music_id'], $title, $author, $music_file, $cover, $style, $music['music_file'], $music['music_cover']);
         header('Location:crud_option.php');
