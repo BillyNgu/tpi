@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
  * Description : script of connection to db
  */
