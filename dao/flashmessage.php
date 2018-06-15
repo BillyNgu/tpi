@@ -1,8 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Description : TPI
+ * Description : Flash message. Used to say to the user for example when he creates an account.
  */
 session_start();
 

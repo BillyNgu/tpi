@@ -1,8 +1,8 @@
 <?php
 /*
- * Auteur : Nguyen Billy
+ * Author : Nguyen Billy
  * Date : 2018-06-04
- * Description : Variables de connexion
+ * Description : Connection var
  */
 
 define('DB_HOST', 'localhost');
