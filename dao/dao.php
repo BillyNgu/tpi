@@ -158,10 +158,11 @@ function Get_music_style() {
  * @param type $music_title string
  */
 function Check_music($music_title) {
-    $sql = "SELECT `music_title` WHERE `music_title` = :music_title";
+    $sql = "SELECT `music_title` FROM `music` WHERE `music_title` = :music_title";
     $query = pdo()->prepare($sql);
     $query->bindParam(':music_title', $music_title, PDO::PARAM_STR);
     $query->execute();
+    return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
